@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 1 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14;
+  --panel: #0e1420;
+  --panel-2: #131b2a;
+  --line: #1e293b;
+  --text: #dbe3f0;
+  --muted: #8b9bb4;
+  --accent: #f0b429;
+  --accent-dim: #7a5c14;
+  --warn: #f87171;
+  --ok: #4ade80;
+  --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  font-size: 16.5px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+}
+
+/* ---- Sticky header ---- */
+header.doc {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(8, 12, 20, 0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+header.doc .inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 18px 24px 12px;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+header.doc h1 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+header.doc .sub {
+  color: var(--muted);
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+nav.sections {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+nav.sections a {
+  font-size: 12.5px;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 11px;
+  transition: all .15s ease;
+}
+nav.sections a:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+  background: var(--panel);
+}
+
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+h3 {
+  font-size: 16.5px;
+  font-weight: 600;
+  color: #f2f6fc;
+  margin: 26px 0 4px;
+}
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+
+.topic-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent);
+  font-size: 0.82em;
+  font-weight: 500;
+  margin-right: 9px;
+}
+
+/* ---- Callouts ---- */
+.callout {
+  margin: 20px 0;
+  padding: 15px 18px;
+  border-radius: 0 8px 8px 0;
+  background: var(--panel);
+  border-left: 3px solid var(--line);
+}
+.callout p:first-child { margin-top: 0; }
+.callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); }
+.callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); }
+.callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); }
+.callout-note .label { color: var(--accent); }
+
+/* ---- Tables ---- */
+.table-wrap {
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2);
+  text-align: left;
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 10px 13px;
+  border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+
+/* ---- Activity / homework block ---- */
+.activity {
+  margin: 22px 0;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol { margin-bottom: 0; }
+
+/* ---- Reminder list ---- */
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li {
+  padding: 9px 0 9px 26px;
+  border-bottom: 1px solid rgba(30,41,59,.5);
+  position: relative;
+  font-size: 15px;
+}
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 4px;
+  color: var(--accent);
+}
+
+code {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: .88em;
+  color: var(--accent);
+}
+
+footer {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 22px 24px 60px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+@media print {
+  header.doc { position: static; }
+  nav.sections { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 1</div>
+    <h1>Course Orientation &amp; Getting Set Up</h1>
+    <div class="sub">Tuesday, September 9, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#meetings">How we meet</a>
+    <a href="#canvas">Canvas</a>
+    <a href="#textbooks">Textbooks</a>
+    <a href="#simnet">SimNet modes</a>
+    <a href="#circlein">Circle In</a>
+    <a href="#grading">Grading &amp; attendance</a>
+    <a href="#ai">AI policy</a>
+    <a href="#concepts">Concepts</a>
+    <a href="#issues">Known issues</a>
+    <a href="#homework">Homework</a>
+    <a href="#ahead">What's ahead</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <p>Lecture 1 was orientation. There was no textbook chapter behind it. By the end of it you should be able to:</p>
+  <ul>
+    <li>Join class each week through <strong>Class for Teams</strong> in Canvas so your attendance records correctly.</li>
+    <li>Find the syllabus, modules, announcements, recordings, and the appointment-booking link inside our Canvas course.</li>
+    <li>Link your Canvas account to both online textbooks, <strong>Connect</strong> and <strong>SimNet</strong>.</li>
+    <li>Explain the difference between SimNet's <em>Show Me</em>, <em>Guide Me</em>, and <em>Let Me Try</em> modes, and know which one earns credit.</li>
+    <li>State the course's attendance, grading, and artificial intelligence policies.</li>
+    <li>Describe, in plain language, what a large language model is actually doing when it answers you.</li>
+  </ul>
+</section>
+
+<section id="meetings">
+  <div class="eyebrow">Logistics</div>
+  <h2><span class="topic-num">01</span>How we meet</h2>
+  <p>Class runs <strong>Tuesdays, 6:00–9:15 PM</strong>. We will rarely use the full block. The usual pattern is a lecture, sometimes an in-class exercise, and then I stay on afterward for anyone who wants help with an assignment.</p>
+  <p>We use <strong>Class for Teams</strong>, which sits on top of Microsoft Teams and takes attendance automatically. Join it from the <strong>Class for Teams</strong> link in the Canvas left-hand menu, then click <em>Join Classroom</em> and then <em>Join</em>.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Important</span>
+    <p>Do <strong>not</strong> join using a copied invite link, and do not open the meeting in a separate browser window outside Canvas. If you do, Teams shows you as a <em>guest</em> and your attendance may not record. Two students joined as guests on the first night and had to be marked present manually.</p>
+  </div>
+
+  <p><strong>Recordings.</strong> Every lecture is recorded. Past and upcoming sessions are listed under Class for Teams, so if you miss a class you can watch it there.</p>
+
+  <p><strong>Getting help.</strong> Email is the fastest way to reach me. I am an adjunct and do not have a campus office, so instead of fixed office hours there is a <strong>Book a time to meet with me</strong> link on the Start Here page and in the signature of every email I send. Pick a day and a time and it goes straight on my calendar. I work in an office Monday through Thursday, so those days I am generally available in the evenings; Fridays I work from home and have more flexibility. In a Teams meeting I can see your screen and walk you through whatever is stuck.</p>
+</section>
+
+<section id="canvas">
+  <div class="eyebrow">Navigation</div>
+  <h2><span class="topic-num">02</span>Getting around Canvas</h2>
+  <p>When you log in to Canvas and open this course, the home page shows announcements at the top and tech-support information further down. Post-worthy updates from me will appear as announcements, so do not turn those notifications off.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Where</th><th>What's there</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Start Here</strong></td><td>Class introduction, information about me, and the appointment-booking link.</td></tr>
+      <tr><td><strong>Simple Syllabus</strong></td><td>The course syllabus. Read it and click the acknowledgement.</td></tr>
+      <tr><td><strong>Modules</strong></td><td>Where the real work lives: lecture slides, the textbook links, and every assignment.</td></tr>
+      <tr><td><strong>Class for Teams</strong></td><td>Join the live class; view recordings of past sessions.</td></tr>
+      <tr><td><strong>Announcements</strong></td><td>Updates posted between classes.</td></tr>
+      <tr><td><strong>Circle In</strong></td><td>Collaboration space and study tools (see below).</td></tr>
+      <tr><td><strong>McGraw-Hill LTI 1.3 / McGraw-Hill SimNet</strong></td><td>The links that connect Canvas to your two online textbooks.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Rule of thumb</span>
+    <p>Start everything from <strong>Canvas</strong>, specifically from the <strong>Modules</strong> page. Do not go to the McGraw-Hill sites directly and work there. Launching from Canvas is what ties your work back to the gradebook.</p>
+  </div>
+</section>
+
+<section id="textbooks">
+  <div class="eyebrow">Materials</div>
+  <h2><span class="topic-num">03</span>Your two online textbooks</h2>
+  <p>This course uses two McGraw-Hill products, and both are covered by the <strong>Shark Pack</strong>. If you did not opt out of the Shark Pack, you already have them at no additional cost. If you did opt out, you will have to purchase licenses for Connect and SimNet through the bookstore — come see me and I will help you sort it out.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Product</th><th>What it covers</th><th>Assignment types</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Connect</strong></td><td>The concepts textbook — how computers, networks, security, and software actually work.</td><td>Adaptive learning assignments, e-book chapters, reading-based questions.</td></tr>
+      <tr><td><strong>SimNet</strong></td><td>Hands-on Microsoft Office and Windows practice.</td><td>Simulation lessons for Word, Excel, PowerPoint, Windows 11, plus capstone projects and exams.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Linking your accounts</h3>
+  <p>We played the McGraw-Hill registration video in class. The short version:</p>
+  <ol>
+    <li>In Canvas, open <strong>Modules</strong> and click the <strong>McGraw-Hill LTI 1.3</strong> (Connect) link, then <em>Launch Connect</em>.</li>
+    <li>Enter your email address — use your <strong>MDC school email</strong> so all your courses live in one Connect account.</li>
+    <li>If you already have a Connect account from a previous class, it will recognize you and may link automatically. If it says you have an account but you have forgotten the password, use <em>Forgot Password</em> rather than creating a second account.</li>
+    <li>If it is a new account, fill in your name, password, and security question, agree to the terms, and confirm.</li>
+    <li>Repeat with the <strong>McGraw-Hill SimNet</strong> link.</li>
+  </ol>
+  <p>Because we are on an inclusive-access program, you will not be asked for payment during registration.</p>
+  <p>Optional but useful: the <strong>McGraw-Hill Read Anywhere</strong> app (App Store or Google Play) lets you read the e-book offline.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Do this now</span>
+    <p>If you have not linked <em>both</em> products yet, do it before you do anything else. A student who never completes the link cannot complete any assignment in this course. If you get stuck, email me a screenshot.</p>
+  </div>
+</section>
+
+<section id="simnet">
+  <div class="eyebrow">How the simulations work</div>
+  <h2><span class="topic-num">04</span>SimNet: Show Me, Guide Me, Let Me Try</h2>
+  <p>When you open a SimNet lesson, you get what looks like a live copy of Windows or Microsoft Word running in your browser. The lesson gives you a task — "pin Word to the Start menu," "display the open Word window from the taskbar" — and you actually perform it. A single lesson may contain dozens of these tasks; the Windows 11 lesson we looked at had 44.</p>
+  <p>Each task offers three modes:</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Mode</th><th>What it does</th><th>Earns credit?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Show Me</strong></td><td>Plays a narrated video demonstrating the task start to finish.</td><td>No</td></tr>
+      <tr><td><strong>Guide Me</strong></td><td>Walks you through it step by step, telling you exactly what to click and confirming each click.</td><td>No</td></tr>
+      <tr><td><strong>Let Me Try</strong></td><td>Gives you the task and nothing else. You do it yourself.</td><td><strong>Yes</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="label">Strategy</span>
+    <p>Try <strong>Let Me Try</strong> first. If you get it wrong you can retry, and there is no penalty for attempts. Only if you are genuinely stuck should you fall back to <strong>Guide Me</strong> to learn the steps, then come back and do it in Let Me Try so it counts.</p>
+  </div>
+
+  <p>You only have to complete each task <em>one</em> way, and finishing it checks the item off the list. You get credit for the lesson when all of its tasks are complete — all 44 of them, in the Windows 11 example. Exit the lesson properly when you are done so your progress records.</p>
+</section>
+
+<section id="circlein">
+  <div class="eyebrow">Support tool</div>
+  <h2><span class="topic-num">05</span>Circle In</h2>
+  <p><strong>Circle In</strong> is a collaboration space linked from the Canvas menu. You can post questions for your classmates, share and build flashcards, and earn credits and rewards for participating. If you are taking several courses that use it, they all appear in one place.</p>
+  <p>It also includes an AI assistant. What makes it different from a general chatbot is that it is built to <em>help you solve</em> a problem rather than to hand you the answer — it will walk you toward the solution instead of producing it for you. That makes it the AI tool I am comfortable recommending for this course. Try it and tell me what you think.</p>
+</section>
+
+<section id="grading">
+  <div class="eyebrow">Policies</div>
+  <h2><span class="topic-num">06</span>Grading and attendance</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Grade</th><th>Range</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>90–100</td></tr>
+      <tr><td>B</td><td>80–89</td></tr>
+      <tr><td>C</td><td>70–79</td></tr>
+      <tr><td>D</td><td>60–69</td></tr>
+      <tr><td>F</td><td>Below 60</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>No fractional grades. Essentially all of your grade comes from <strong>assignments</strong> — there are a lot of them, and they are the whole ballgame. I am here to help you complete them; if you are struggling with one, reach out and we will work through it.</p>
+
+  <h3>Attendance</h3>
+  <ul>
+    <li>Attendance is mandatory, but I am flexible. If you cannot make a class, <strong>tell me ahead of time</strong> and I will excuse the absence.</li>
+    <li>Being late is recorded but not penalized.</li>
+    <li>If you simply stop showing up without contacting me, I will email you before dropping you. College policy allows automatic withdrawal after <strong>three consecutive absences</strong>.</li>
+    <li>Attending the <em>first</em> class matters at MDC. Anyone absent from session 1 who does not excuse it by the following Monday has to be dropped, and getting readmitted is a painful process.</li>
+  </ul>
+
+  <h3>Falling behind</h3>
+  <p>The most common way students lose this course is not difficulty — it is accumulation. There are many assignments, they are spread across two platforms, and they add up quickly. Do them as we cover them.</p>
+</section>
+
+<section id="ai">
+  <div class="eyebrow">Policies</div>
+  <h2><span class="topic-num">07</span>Artificial intelligence in this course</h2>
+  <p>AI is part of the curriculum here, not something we pretend does not exist. Part of what I want to teach you is how these tools work and how to use them well. So the policy is not "no AI." It is about <em>where in your process</em> the AI shows up.</p>
+
+  <div class="callout callout-info">
+    <span class="label">Encouraged</span>
+    <p>Asking an AI to explain a concept, define a term, show you what a feature is capable of, or check your understanding after you have attempted the work yourself. "How does conditional formatting work in Excel?" is a great question to ask an AI.</p>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">Not permitted</span>
+    <p>Copying an assignment prompt or question into an AI tool and submitting what it gives back. That is plagiarism, and it earns a zero for the assignment.</p>
+  </div>
+
+  <p>The reasoning is practical rather than moral. Learning a skill works like learning an instrument — you get good by doing it badly, repeatedly, until you do not. Pasting the problem into a chatbot skips the part where the learning happens, and you leave the course with a grade and no ability. When you get stuck on a question, the better move is to use the online textbook to find the answer in the text, or to use Circle In, which is designed to guide rather than to solve.</p>
+
+  <div class="callout callout-note">
+    <span class="label">Coming soon</span>
+    <p>I am revising the syllabus, and the AI policy will be restated there with worked examples of what is and is not acceptable. Watch for the announcement.</p>
+  </div>
+</section>
+
+<section id="concepts">
+  <div class="eyebrow">Content</div>
+  <h2><span class="topic-num">08</span>Concepts introduced</h2>
+  <p>These came up in discussion rather than from a chapter. All of them return later in the course.</p>
+
+  <h3>Recursion</h3>
+  <p>When a screen share captures itself, you see a display inside a display inside a display, apparently forever. In programming, a function that calls itself is <strong>recursive</strong>. It is a legitimate and useful technique, but a recursive function needs a condition that stops it. Without one you get <strong>infinite recursion</strong>, and the program eventually exhausts the computer's memory and crashes.</p>
+
+  <h3>Binary and punched cards</h3>
+  <p>Early programs were entered on <strong>punched cards</strong> — stiff cards roughly the size of a dollar bill, each holding <strong>80 characters</strong>, one per column. A card reader shone light through the card: where a hole was punched light passed through, where it did not the light was blocked. That presence-or-absence is the physical basis of everything computers do. Underneath every file, image, and program is the <strong>binary number system</strong>: ones and zeros.</p>
+  <div class="callout callout-note">
+    <span class="label">Precision</span>
+    <p>Each column held one character encoded as a specific <em>combination</em> of punches across the column's rows, not as a straight eight-bit byte. We will cover character encoding properly when we get to how data is represented.</p>
+  </div>
+
+  <h3>What a large language model actually does</h3>
+  <p>ChatGPT, Claude, and Gemini are <strong>large language models</strong>. Stripped down, they predict the next word. If I say "Mary had a little ___," the overwhelmingly likely next word is <em>lamb</em>. Other words are possible but carry lower probability.</p>
+  <p>These models were <strong>trained</strong> by processing an enormous quantity of text. Your prompt goes into the model, and it emits the words with the highest probability of following. That simple mechanism turns out to have profound consequences — the model has read essentially everything written about, say, relativity, so it can produce a genuinely good explanation of it, and you can keep asking follow-up questions.</p>
+  <div class="callout callout-warn">
+    <span class="label">The catch</span>
+    <p>Models <strong>hallucinate</strong>. Because they are predicting plausible text rather than consulting a store of verified facts, they can produce confident, fluent, completely wrong answers. They have no internal sense of true or false. Verifying model output is one of the hardest open problems in the field — which is exactly why you have to verify it yourself.</p>
+  </div>
+
+  <h3>Why GPUs power AI</h3>
+  <p>A screen image is just numbers: every pixel has a red, green, and blue value from 0 to 255, and the combination produces the color you see. Critically, pixels at opposite corners of the screen are independent of each other, so their math can be done <em>simultaneously</em>. <strong>GPUs</strong> (graphics processing units) were built to do exactly that — enormous numbers of simple calculations in parallel.</p>
+  <p>It turned out that large language models are, underneath, huge matrices of numbers called <em>weights</em>, and running them requires the same kind of massively parallel arithmetic. So the hardware built for video games became the hardware that runs AI. One visible consequence: AI companies buying every high-end card available drove graphics card prices — and PC, laptop, and phone prices generally — sharply up.</p>
+
+  <h3>Technology and jobs</h3>
+  <p>The telephone was invented in the late 1800s. Early phones had no dial; you picked up and an <strong>operator</strong> connected your call, and telephone companies employed many thousands of them. Automation eliminated that job entirely. But it did not eliminate those workers — many retrained into new roles that had not existed before.</p>
+  <p>Economists call something like this a <strong>general purpose technology</strong>: an innovation broad enough to reshape the whole economy rather than one industry. The steam engine was one. Electricity, the computer, and the internet were others. AI appears to be the next. These technologies destroy categories of work and create new ones, and living through the transition means being the person who understands the tool rather than the person replaced by it.</p>
+
+  <h3>Social engineering</h3>
+  <p>Not every attack is technical. A caller phones a company's call center, chats pleasantly with an agent, and walks away with a name and a few details. A second caller then contacts that agent claiming to be from IT, uses those details to sound legitimate, reports a "problem with your system," and gets the agent to click a link. The system is compromised, and no software vulnerability was involved at any point. This is <strong>social engineering</strong>, and it is why security training matters as much as security software.</p>
+  <p>Related habits worth adopting now: keep your devices updated, run antivirus software, and be skeptical of offers that seem too good — including "best of" review articles that are actually paid advertisements for the product they rank first.</p>
+</section>
+
+<section id="issues">
+  <div class="eyebrow">Housekeeping</div>
+  <h2><span class="topic-num">09</span>Known issues I am fixing</h2>
+  <p>A few things in the course shell are not right yet. None of them should stop you from working.</p>
+  <ul class="reminder-list">
+    <li><strong>Due dates are wrong.</strong> Some assignments currently show dates from a previous term or appear past due. Ignore them. I am resetting due dates to roughly two weeks after the lecture that covers each topic. You can still open and complete anything marked past due.</li>
+    <li><strong>Module ordering is confusing.</strong> I am reordering the modules so the sequence matches the order I teach in, and moving the lecture slides out of the assignment lists.</li>
+    <li><strong>SimNet "licensing issue / missing module" banner.</strong> Several of you are seeing this. Work does still record — I confirmed a completed 44-of-44 lesson while the banner was showing. I have screenshots with McGraw-Hill support.</li>
+    <li><strong>Grades not syncing instantly.</strong> Connect and SimNet sync to the Canvas gradebook periodically, not immediately. If something you completed still is not showing after a day or two, email me and I will force a sync.</li>
+    <li><strong>Syllabus revisions.</strong> The template included a midterm and a final exam. There is <strong>no final exam</strong> in this course. I am updating the grading section and will announce when it is done.</li>
+    <li><strong>Student survey.</strong> I will post one shortly. Please complete it.</li>
+  </ul>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">10</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Link Canvas to Connect and SimNet</strong>, if you have not already. Nothing else works until this is done.</li>
+      <li><strong>Read the syllabus</strong> in Simple Syllabus and click the acknowledgement.</li>
+      <li><strong>Start these three assignments</strong>, launched from the Canvas Modules page:
+        <ul>
+          <li>Windows 11 and OneDrive <em>(SimNet)</em></li>
+          <li>Outlook and Internet Lesson <em>(SimNet)</em></li>
+          <li>Adaptive Learning Assignment: Windows 11 <em>(Connect)</em></li>
+        </ul>
+      </li>
+      <li><strong>Try Circle In</strong> and let me know what you think of it.</li>
+      <li>If you were absent from the first class, <strong>email me before Monday</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Stuck?</span>
+    <p>Email me, or book a time through the link on the Start Here page. In a Teams meeting I can see your screen and we can fix it together in a few minutes. Do not sit on a problem for a week.</p>
+  </div>
+</section>
+
+<section id="ahead">
+  <div class="eyebrow">Looking forward</div>
+  <h2><span class="topic-num">11</span>What's ahead</h2>
+  <p>This course covers a remarkable amount of ground — hardware, software, operating systems, files, networks, security, social media, and the Microsoft Office applications. Several of you told me on the first night that Excel and Microsoft Office are the main reason you are here; we get there, and we spend real time on it.</p>
+  <p>The rough sequence from here:</p>
+  <ul>
+    <li><strong>Next week:</strong> Windows 11, and the start of Microsoft Word.</li>
+    <li><strong>Then:</strong> file management, social media, Word assignments.</li>
+    <li><strong>After that:</strong> Excel and PowerPoint, plus their assignments.</li>
+    <li><strong>Throughout:</strong> how computers work internally — the CPU, the types of memory and how they differ — along with computer security and artificial intelligence.</li>
+    <li><strong>In class:</strong> an Hour of Code project we will work through together.</li>
+    <li><strong>End of term:</strong> a final project — a PowerPoint presentation of at least five slides on a topic of your choosing. Past students have presented on music, photography, and soccer. It is the most enjoyable day of the semester.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
