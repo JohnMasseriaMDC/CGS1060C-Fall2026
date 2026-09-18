@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 2 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(8,12,20,.94); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections {
+  max-width: 860px; margin: 0 auto; padding: 0 24px 14px;
+  display: flex; flex-wrap: wrap; gap: 6px 8px;
+}
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px;
+  transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0;
+  background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; }
+.callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--accent);
+  padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px;
+  border-radius: 4px; padding: 2px 6px; font-size: .84em; color: var(--accent);
+  white-space: nowrap;
+}
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li {
+  padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5);
+  position: relative; font-size: 15px;
+}
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code {
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px;
+  padding: 1px 5px; font-size: .88em; color: var(--accent);
+}
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px;
+  border-top: 1px solid var(--line); color: var(--muted); font-size: 13px;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 2</div>
+    <h1>Windows 11 &amp; Microsoft Word, Chapters 1–2</h1>
+    <div class="sub">Tuesday, September 16, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#grading">Grading</a>
+    <a href="#versions">Windows versions</a>
+    <a href="#signin">Sign-in &amp; encryption</a>
+    <a href="#shortcuts">Shortcuts</a>
+    <a href="#desktop">Windows &amp; desktops</a>
+    <a href="#explorer">File Explorer</a>
+    <a href="#onedrive">OneDrive</a>
+    <a href="#maintenance">Security &amp; updates</a>
+    <a href="#word">Word 1–2</a>
+    <a href="#ribbon">Ribbon vocabulary</a>
+    <a href="#issues">Known issues</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <p>Tonight covered the parts of Windows 11 that are easy to miss, then the first two chapters of Word. By the end you should be able to:</p>
+  <ul>
+    <li>Identify which version of Windows 11 you are running, and explain what a version number like 25H2 means.</li>
+    <li>Explain why a PIN is safer than a Microsoft account password on a personal device.</li>
+    <li>Use the core Windows keyboard shortcuts, including clipboard history and virtual desktops.</li>
+    <li>Turn on file extensions and say why that matters for your security.</li>
+    <li>Explain the difference between a <strong>paragraph mark</strong> and a <strong>line break</strong> in Word, and predict what the alignment buttons will do.</li>
+    <li>Distinguish <strong>character formatting</strong> from <strong>paragraph formatting</strong>.</li>
+    <li>Use the ribbon vocabulary that SimNet uses when it gives you instructions.</li>
+  </ul>
+</section>
+
+<section id="grading">
+  <div class="eyebrow">Course business</div>
+  <h2><span class="topic-num">01</span>Updated grading and due dates</h2>
+  <p>The syllabus has been revised. <strong>The proctored midterm has been removed</strong> — that change is approved. Please go back into Simple Syllabus, read the updated version, and click the acknowledgement.</p>
+  <p>The course homepage now has a <strong>week-by-week summary</strong> showing what we cover each week and which assignments open then. All assignments are open and available now; the weekly listing tells you what to start.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Component</th><th>Weight</th><th>What's in it</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Connect assignments</strong></td><td>30%</td><td>Adaptive Learning Assignments (ALAs) and video cases</td></tr>
+      <tr><td><strong>SimNet assignments</strong></td><td>35%</td><td>Chapter simulations for Word, Excel, PowerPoint, plus the three capstone projects</td></tr>
+      <tr><td><strong>Office exams</strong></td><td>15%</td><td>One exam each for Word, Excel, and PowerPoint (new this semester)</td></tr>
+      <tr><td><strong>Hour of Code &amp; AI assignments</strong></td><td>15%</td><td>Minecraft Adventurer via Code.org, plus generative AI, AI ethics, prompt writing, and NotebookLM</td></tr>
+      <tr><td><strong>Final PowerPoint project</strong></td><td>5%</td><td>At least 5 slides, any topic you find interesting</td></tr>
+      <tr><td><em>Extra credit</em></td><td><em>+5%</em></td><td><em>Presenting your final project live on the last day of class</em></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Due dates</h3>
+  <p>Assignments now carry real due dates, roughly <strong>two weeks after the lecture that covers them</strong>. The reason is not to punish you — it is that Canvas does not count an unsubmitted assignment against your grade until its due date passes, which makes it very easy to drift a month behind without noticing. <strong>Late work is still accepted without penalty.</strong> If an assignment goes to zero because the date passed, finishing it still earns you whatever you score on it.</p>
+
+  <h3>Capstone projects</h3>
+  <p>Each application has one capstone project, separate from the chapter simulations. The capstone downloads a real Word (or Excel, or PowerPoint) file, asks you to make a long list of changes to it, and then you upload the finished file and submit it for grading. SimNet checks every requirement and tells you exactly which ones you missed, so you can fix those and resubmit. You get roughly three or four attempts — ask for more if you need them.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Academic integrity</span>
+    <p>You may absolutely work on assignments together. <strong>You may not upload someone else's document as your own.</strong> Each person submits their own file. The system checks for this, and submitting another student's work is an integrity violation that earns no credit.</p>
+  </div>
+</section>
+
+<section id="versions">
+  <div class="eyebrow">Windows 11</div>
+  <h2><span class="topic-num">02</span>Versions and what has changed</h2>
+  <p>Windows version numbers look like <code>24H2</code> or <code>25H2</code>: the number is the year, and the H tells you which half of the year it was released in. <strong>To check your own version:</strong> open File Explorer, right-click <em>This PC</em>, choose <em>Properties</em>, and look under Windows specifications.</p>
+
+  <div class="callout callout-note">
+    <span class="label">Correction from class</span>
+    <p>In the lecture I said 24H2 was the current version — the demonstration machine was built on it. <strong>The current release is 25H2</strong>, which shipped September 30, 2025, and <strong>24H2 stops receiving security updates on October 13, 2026.</strong> There is also a 26H1 release, which breaks the "always H2" pattern. If your own machine is on 24H2, run Windows Update before mid-October.</p>
+  </div>
+
+  <h3>Two changes the textbook doesn't reflect</h3>
+  <ul>
+    <li><strong>WordPad has been removed</strong> as of 24H2. It used to create RTF (Rich Text Format) files. Microsoft's position now is: use <strong>Notepad</strong> for plain text, use <strong>Word</strong> for formatted documents.</li>
+    <li><strong>The Action Center was renamed.</strong> Your textbook says <kbd>Win</kbd> + <kbd>A</kbd> opens the Action Center; it now opens <strong>Quick Settings</strong>. Notifications and the calendar moved to <kbd>Win</kbd> + <kbd>N</kbd>.</li>
+  </ul>
+
+  <h3>Home vs. Pro</h3>
+  <p>Windows 11 <strong>Home</strong> targets personal use; <strong>Pro</strong> targets businesses and schools. Both encrypt the data written to your drive by default, using a key unique to your machine. Pro adds administrative management on top — so a company can recover an employee's data if that employee forgets their password.</p>
+</section>
+
+<section id="signin">
+  <div class="eyebrow">Security fundamentals</div>
+  <h2><span class="topic-num">03</span>Sign-in, PINs, and disk encryption</h2>
+
+  <div class="callout callout-key">
+    <span class="label">The key idea</span>
+    <p><strong>A PIN is safer than your Microsoft account password, because a PIN only works on one device.</strong> If someone watches you type your Microsoft password, they can now reach your email, your OneDrive, and everything else tied to that account — from anywhere. If someone learns your PIN, it is useless without your physical laptop, and you fix the problem by changing the PIN on that one machine.</p>
+  </div>
+
+  <p>The same logic makes biometrics attractive. A fingerprint sensor or face unlock (Windows Hello) stores the biometric data <strong>locally on the device</strong>, not in the cloud.</p>
+
+  <h3>Why a stolen laptop no longer means stolen data</h3>
+  <p>It used to be that you could pull a hard drive out of one computer, connect it to another, and read everything on it. That no longer works, because the drive's contents are encrypted with a key that lives on the machine.</p>
+  <p>Windows 11 requires a <strong>TPM — Trusted Platform Module</strong> — which is a small dedicated chip whose job is to hold those encryption keys. When your PC boots, Windows must satisfy the TPM before the TPM will hand over the key. If it can't, the key is never released and the data stays unreadable. The key is a 256-bit value, which is large enough that brute-forcing it is not a realistic attack.</p>
+  <p>This is also why, on a company laptop, IT can recover your data when you forget your password: <strong>BitLocker Management</strong> gives administrators a recovery path that individual users don't have. As a home user you should know where <em>your</em> recovery key is stored before you need it — I'll post instructions.</p>
+
+  <div class="callout callout-note">
+    <span class="label">Correction from class</span>
+    <p>I described the TPM as requiring "a password." More precisely, the TPM releases the key based on measurements it takes of the system during startup — if the boot environment has been tampered with, the measurements don't match and the key stays locked. The practical conclusion is the same.</p>
+  </div>
+</section>
+
+<section id="shortcuts">
+  <div class="eyebrow">Reference</div>
+  <h2><span class="topic-num">04</span>Keyboard shortcuts demonstrated</h2>
+  <p>These are worth memorizing. Several appear in the SimNet Windows assignments.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Shortcut</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>Win</kbd> + <kbd>A</kbd></td><td>Quick Settings (formerly called the Action Center)</td></tr>
+      <tr><td><kbd>Win</kbd> + <kbd>N</kbd></td><td>Notifications and calendar</td></tr>
+      <tr><td><kbd>Win</kbd> + <kbd>L</kbd></td><td>Lock the computer immediately</td></tr>
+      <tr><td><kbd>Win</kbd> + <kbd>D</kbd></td><td>Show the desktop (hide all windows)</td></tr>
+      <tr><td><kbd>Win</kbd> + <kbd>V</kbd></td><td>Clipboard history — see and reuse previous copies</td></tr>
+      <tr><td><kbd>Win</kbd> + <kbd>Tab</kbd></td><td>Task view: open windows and virtual desktops</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Win</kbd> + <kbd>←</kbd>/<kbd>→</kbd></td><td>Switch between virtual desktops</td></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Space</kbd></td><td>Insert a non-breaking space <em>(in Word)</em></td></tr>
+      <tr><td><kbd>Shift</kbd> + <kbd>Enter</kbd></td><td>Line break instead of a new paragraph <em>(in Word)</em></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Clipboard history</span>
+    <p><kbd>Win</kbd> + <kbd>V</kbd> is off by default — the first time you press it, Windows offers to turn it on. Once enabled, it remembers the last several things you copied, so you are no longer limited to pasting only the most recent one.</p>
+  </div>
+</section>
+
+<section id="desktop">
+  <div class="eyebrow">Windows 11</div>
+  <h2><span class="topic-num">05</span>Arranging windows and desktops</h2>
+  <h3>Snap layouts</h3>
+  <p>Drag a window to the top or side of the screen and Windows offers preset arrangements — two side by side, three across, and so on. Once two windows are snapped, drag the divider between them to give one more space than the other.</p>
+
+  <h3>Virtual desktops</h3>
+  <p>Press <kbd>Win</kbd> + <kbd>Tab</kbd> to see task view. At the bottom you can create additional desktops with the <strong>+</strong> button, rename one by right-clicking it, or close one with the X. The point is separation: one desktop for coursework, another for personal browsing, and you switch between them without closing anything.</p>
+
+  <h3>The taskbar</h3>
+  <p>A small underline beneath an icon means that application is currently running. Right-click an icon to <strong>pin</strong> it, which keeps it on the taskbar even after you close the app, or <strong>unpin</strong> it to remove it. Pinned icons can be dragged into whatever order you like.</p>
+  <p>Right-clicking a taskbar icon may also show a <strong>jump list</strong> — recent files or locations for that application, so you can reopen something in one click.</p>
+</section>
+
+<section id="explorer">
+  <div class="eyebrow">Windows 11</div>
+  <h2><span class="topic-num">06</span>File Explorer</h2>
+  <p>When you sign in to Windows, you get a folder under <code>Users</code> named for your login. That is where your own files belong.</p>
+
+  <h3>Quick Access</h3>
+  <p>Right-click any folder and choose <strong>Pin to Quick Access</strong> to keep it in the left-hand sidebar. Pin a folder for this course and you will reach it in one click every time.</p>
+
+  <h3>Search scope matters</h3>
+  <p>Searching from the C: drive searches the entire machine, which can take a very long time. Navigate into the specific folder first and search from there — dramatically faster, because it only looks in one place.</p>
+
+  <h3>Turn on file extensions</h3>
+  <p>By default, Windows hides file extensions. Turn them on: <strong>View → (down arrow) → Show → File name extensions</strong>.</p>
+
+  <div class="callout callout-key">
+    <span class="label">Why this is a security setting, not a cosmetic one</span>
+    <p>With extensions hidden, a file that displays as <code>syllabus.pdf</code> might actually be <code>syllabus.pdf.exe</code> — a program, not a document. You would have no way to tell before double-clicking it. With extensions visible, the disguise stops working. Turn them on and leave them on.</p>
+  </div>
+
+  <p>Extensions worth recognizing:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Extension</th><th>What it is</th><th>Risk</th></tr></thead>
+    <tbody>
+      <tr><td><code>.exe</code></td><td>Executable program</td><td>High — never run one from an email</td></tr>
+      <tr><td><code>.cmd</code>, <code>.bat</code></td><td>Command scripts</td><td>High</td></tr>
+      <tr><td><code>.ps1</code></td><td>PowerShell script</td><td>High</td></tr>
+      <tr><td><code>.zip</code></td><td>Compressed folder</td><td>Depends on contents</td></tr>
+      <tr><td><code>.pdf</code></td><td>Portable document</td><td>Lower, but not zero — PDF readers have had vulnerabilities that a malicious PDF can exploit</td></tr>
+      <tr><td><code>.ini</code>, <code>.log</code></td><td>Settings and log files — plain text</td><td>Low</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Be cautious with attachments even from people you know: their account may be compromised, or the sender address may be spoofed.</p>
+</section>
+
+<section id="onedrive">
+  <div class="eyebrow">Windows 11</div>
+  <h2><span class="topic-num">07</span>OneDrive and files on demand</h2>
+  <p>OneDrive folders show a small icon next to each file telling you where it actually lives. A <strong>cloud icon</strong> means the file is stored online and is not taking up space on your machine; double-clicking downloads it. A <strong>checkmark</strong> means a local copy exists.</p>
+  <p>When your disk runs low, OneDrive can quietly remove local copies of files it has safely backed up. To prevent that for a specific file, right-click it and choose <strong>Always keep on this device</strong>. Do this before travel, or before any situation where you might be offline.</p>
+  <p>Every MDC student has a OneDrive account through the college. Use it.</p>
+
+  <div class="callout callout-info">
+    <span class="label">Turn on AutoSave for anything that matters</span>
+    <p>AutoSave in Word works in conjunction with OneDrive — save the document into your OneDrive folder and AutoSave becomes available. It also gives you <strong>version history</strong>, so you can go back to an earlier draft. Every semester someone loses a paper they had been working on for a week. Don't be that person.</p>
+  </div>
+</section>
+
+<section id="maintenance">
+  <div class="eyebrow">Windows 11</div>
+  <h2><span class="topic-num">08</span>Keeping the machine healthy</h2>
+  <ul>
+    <li><strong>Windows Security / Defender</strong> is built in and enabled by default. It scans programs before they run and can run a full system scan on demand. Its limitation is important: it recognizes <em>known</em> threats, and new malicious software appears constantly — which is exactly why keeping it updated is not optional.</li>
+    <li><strong>Windows Update</strong> — check it regularly. Security updates close the vulnerabilities that attacks depend on.</li>
+    <li><strong>Installed apps</strong> (Add/Remove Programs) — uninstall what you don't use. Sort by size to find what's eating your disk.</li>
+    <li><strong>Install software from the Microsoft Store</strong> where you can. Free download sites are a common malware vector.</li>
+    <li><strong>Default apps</strong> — this is where you decide which program opens PDFs, which browser handles links, and so on.</li>
+  </ul>
+
+  <h3>How a real attack chains together</h3>
+  <p>Suppose your PDFs open in Edge, and you're behind on updates, so you're running a version of Edge with a known bug. Someone emails you a PDF crafted to trigger that bug. You open it. Now code runs on your machine, and the attacker installs <strong>ransomware</strong> (which encrypts your files and demands payment) or a <strong>keylogger</strong> (which records everything you type, including banking passwords).</p>
+  <p>Notice that every link in that chain was preventable with an update.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Turn on two-factor authentication</span>
+    <p>For anything high-value — bank, email, school account — enable 2FA so that a stolen password alone isn't enough. Use a text code or, better, an authenticator app.</p>
+    <p>Modern authenticator prompts show a <strong>two-digit number</strong> you must type in rather than a simple Approve button. That change exists because attackers were flooding people with approval requests until someone tapped Approve by accident. And if an approval prompt appears when <em>you</em> are not logging in, that is a live signal your password is compromised — change it immediately.</p>
+  </div>
+  <p>Ransomware note: paying is no guarantee of recovery, and if attackers got in once they can get in again. Backups and updates are the real defense.</p>
+</section>
+
+<section id="word">
+  <div class="eyebrow">Microsoft Word</div>
+  <h2><span class="topic-num">09</span>Chapters 1–2: the parts that trip people up</h2>
+
+  <h3>Formatting marks — turn them on and leave them on</h3>
+  <p>On the <strong>Home</strong> tab of the ribbon, click the <strong>¶</strong> button (a <em>pilcrow</em>). This reveals characters that are normally invisible:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Mark</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td><strong>¶</strong></td><td>End of a paragraph — created every time you press <kbd>Enter</kbd></td></tr>
+      <tr><td><strong>·</strong> (raised dot)</td><td>A space</td></tr>
+      <tr><td><strong>↵</strong> (arrow)</td><td>A line break — created by <kbd>Shift</kbd> + <kbd>Enter</kbd></td></tr>
+      <tr><td><strong>→</strong></td><td>A tab character</td></tr>
+      <tr><td><strong>°</strong> (small circle)</td><td>A non-breaking space</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Keep these visible for the whole course. Most "why is this document doing that?" problems turn out to be an invisible character you couldn't see.</p>
+
+  <div class="callout callout-key">
+    <span class="label">The most important idea in this lecture</span>
+    <p>A <strong>paragraph</strong> in Word is not what you think it is. It is simply "everything between two ¶ marks" — even if that's a single line, or a single word. Press <kbd>Enter</kbd> and you have started a new paragraph. Press <kbd>Shift</kbd> + <kbd>Enter</kbd> and you have started a new <em>line</em> inside the <em>same</em> paragraph.</p>
+    <p>This is why alignment behaves the way it does. Click in a three-line address where each line ends with <kbd>Enter</kbd>, then hit Center, and only the one line you clicked in centers — because each line is its own paragraph. Use <kbd>Shift</kbd> + <kbd>Enter</kbd> between those lines instead, and all three center together, because now they are one paragraph.</p>
+  </div>
+
+  <h3>Character formatting vs. paragraph formatting</h3>
+  <p>Ribbon buttons fall into two groups, and the difference explains most unexpected results:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>Applies to</th><th>Examples</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Character formatting</strong></td><td>Only the text you have selected</td><td>Bold, italic, underline, font, font size, color</td></tr>
+      <tr><td><strong>Paragraph formatting</strong></td><td>The whole paragraph your cursor is in — no selection needed</td><td>Left / Center / Right / Justify, line spacing, indents, bullets</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>So to bold three words you must select those three words. To center a paragraph you only need to click inside it. To center three <em>separate</em> paragraphs you must select all three.</p>
+  <p><strong>Justify</strong> stretches spacing so every line reaches both margins — the look used in books and newspapers. It has little visible effect on short lines like an address.</p>
+
+  <h3>Non-breaking space</h3>
+  <p>Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Space</kbd>. This glues two words together so Word will never split them across a line break. Use it for things that should never be separated: <em>9 AM</em>, <em>Dr. Smith</em>, <em>Figure 3</em>, <em>100 MB</em>. Without it, you can end up with "9" at the end of one line and "AM" at the start of the next.</p>
+
+  <h3>The Editor: spelling and grammar</h3>
+  <ul>
+    <li>Open <strong>Editor</strong> from the Home tab to review spelling and grammar together.</li>
+    <li>If the same word is misspelled repeatedly, use <strong>Change All</strong> rather than fixing each one.</li>
+    <li><strong>Ignore Once</strong> skips this instance; <strong>Ignore All</strong> skips it for this document.</li>
+    <li><strong>Add to Dictionary</strong> is permanent and global — that word will never be flagged again in <em>any</em> document, and undoing it means editing your custom dictionary by hand. Use it sparingly.</li>
+  </ul>
+  <p>Ignoring an error does not fix it. Close and reopen the document and the flags come back, because nothing was changed.</p>
+
+  <h3>Paste options</h3>
+  <p>Click the small arrow beneath the Paste button (or right-click where you're pasting) for four choices:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Option</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Keep Source Formatting</strong></td><td>Text arrives looking exactly as it did where you copied it</td></tr>
+      <tr><td><strong>Merge Formatting</strong></td><td>Text adopts the formatting of the document you're pasting into</td></tr>
+      <tr><td><strong>Keep Text Only</strong></td><td>Strips all formatting — the safest option when pasting from a website</td></tr>
+      <tr><td><strong>Picture</strong></td><td>Pastes the content as an image rather than editable text</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Find and Replace</h3>
+  <p>Two options matter far more than students expect:</p>
+  <ul>
+    <li><strong>Find whole words only.</strong> Without it, replacing "cat" with "dog" also mangles "catalog" and "concatenate". This single checkbox is the difference between a clean replacement and a damaged document.</li>
+    <li><strong>Match case.</strong> With case matching handled properly, replacing "CAT" produces "DOG" and replacing "cat" produces "dog" — Word preserves the capitalization pattern.</li>
+  </ul>
+  <p>Find and Replace can also search for special, non-printable characters — blank lines, tabs, paragraph marks — which is how you clean up a document full of stray empty paragraphs.</p>
+
+  <h3>Change Case</h3>
+  <p>The <strong>Aa</strong> button on the Home tab converts the case of selected text without retyping it: <em>Sentence case</em>, <em>lowercase</em>, <em>UPPERCASE</em>, <em>Capitalize Each Word</em>, and <em>tOGGLE cASE</em>. For a title, Capitalize Each Word is normally what you want.</p>
+
+  <div class="callout callout-note">
+    <span class="label">Correction from class</span>
+    <p>I mentioned that two spaces after a period is generally acceptable. Current style guides — APA, Chicago, and MLA — all call for <strong>one</strong> space between sentences, and Word's Editor flags two by default. Since SimNet grades against Word's own checker, use one.</p>
+  </div>
+</section>
+
+<section id="ribbon">
+  <div class="eyebrow">Study this</div>
+  <h2><span class="topic-num">10</span>Ribbon vocabulary SimNet uses</h2>
+  <p>SimNet grades you on clicking the right thing, and it describes that thing using Microsoft's own interface vocabulary. Most points lost on these assignments are lost to terminology, not to skill. Learn these words.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Term</th><th>What SimNet means</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Ribbon</strong></td><td>The entire command bar across the top of the window</td></tr>
+      <tr><td><strong>Tab</strong></td><td>A named section of the ribbon — Home, Insert, Layout, References</td></tr>
+      <tr><td><strong>Group</strong></td><td>A labeled cluster within a tab — the Font group, the Paragraph group</td></tr>
+      <tr><td><strong>Button</strong></td><td>A single clickable command, such as Bold</td></tr>
+      <tr><td><strong>Button arrow</strong></td><td>The small arrow attached to a button that opens its extra choices</td></tr>
+      <tr><td><strong>Gallery</strong></td><td>A grid of visual choices — Styles, Themes, Table Styles</td></tr>
+      <tr><td><strong>More button</strong></td><td>The arrow that expands a gallery to show everything in it</td></tr>
+      <tr><td><strong>Dialog launcher</strong></td><td>The tiny diagonal arrow in a group's bottom-right corner that opens the full dialog box</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Practical tip</span>
+    <p>When a SimNet task says "click the dialog launcher in the Paragraph group," it is naming an exact location. Read the instruction as a map: <em>which tab → which group → which control</em>.</p>
+  </div>
+</section>
+
+<section id="issues">
+  <div class="eyebrow">Housekeeping</div>
+  <h2><span class="topic-num">11</span>Known issues</h2>
+  <ul class="reminder-list">
+    <li><strong>SimNet license error on the Word assignments.</strong> Most of you are seeing "missing modules — this assignment requires a module for which you do not have a license." This is a vendor problem, not something you did wrong, and it is my top priority. I'm opening a support ticket and will post an announcement the moment it clears. <strong>You are not behind because of this.</strong></li>
+    <li><strong>Connect ALA completion.</strong> Evelyn and Genesis both asked how you know when an Adaptive Learning Assignment is actually finished — it keeps offering more questions and never clearly says "done." I'm confirming the rule with McGraw-Hill and will post the answer.</li>
+    <li><strong>Grade syncing.</strong> Connect and SimNet push grades to Canvas periodically, not instantly. If something you completed hasn't appeared after a day, email me and I'll force the sync.</li>
+    <li><strong>Capstone weighting.</strong> I'm separating the capstone projects from the chapter assignments so each carries its own visible weight. This does not change any assignment you do.</li>
+    <li><strong>Coming from me this week:</strong> both slide decks from tonight, the zip of sample Word documents used in the demo, and these lecture notes — all on the course homepage.</li>
+  </ul>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">12</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Read the updated syllabus</strong> and click the acknowledgement — the midterm is gone, and the grade weights have changed.</li>
+      <li><strong>Try Word Chapter 1 in SimNet.</strong> If the license error appears, don't fight it — email me so I can add you to the ticket.</li>
+      <li><strong>Work through Word Chapters 1 and 2</strong> once the license clears. Everything in section 9 above appears in them.</li>
+      <li><strong>On your own machine:</strong> turn on file extensions, check your Windows version, and enable clipboard history with <kbd>Win</kbd> + <kbd>V</kbd>.</li>
+      <li><strong>Turn on AutoSave</strong> for any document you care about, saved in your college OneDrive.</li>
+    </ol>
+  </div>
+
+  <h3>Next week</h3>
+  <p>Word chapters 3 and 4, plus a first look at the format of the Word exam.</p>
+
+  <div class="callout callout-info">
+    <span class="label">Two questions to be ready for</span>
+    <p>We'll start next session with these, so think them through: <strong>(1)</strong> What is the difference between pressing <kbd>Enter</kbd> and pressing <kbd>Shift</kbd> + <kbd>Enter</kbd>? <strong>(2)</strong> Why does that difference change what the Center button does?</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
