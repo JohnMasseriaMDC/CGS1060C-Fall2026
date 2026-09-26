@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word_The_Parts_You_Cant_See</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F6F9; --sheet:#FFFFFF; --ink:#18222D; --muted:#5A6878;
+  --word:#2B579A; --word-soft:#DCE6F4; --mark:#8FA3BC; --hl:#FFE45C; --warn:#B3261E;
+  --rule:#D5DCE5;
+  --sans:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --serif:"Source Serif 4", Cambria, Georgia, serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141B24; --sheet:#1E2731; --ink:#E8EDF3; --muted:#9AA8B8;
+    --word:#7FA8E6; --word-soft:#253A57; --mark:#6D819A; --hl:#6B5B00; --warn:#FF8A80; --rule:#34414F;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141B24; --sheet:#1E2731; --ink:#E8EDF3; --muted:#9AA8B8;
+  --word:#7FA8E6; --word-soft:#253A57; --mark:#6D819A; --hl:#6B5B00; --warn:#FF8A80; --rule:#34414F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:var(--sans);overflow:hidden}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1280px;height:720px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;padding:64px 80px 70px;display:none;flex-direction:column}
+.slide.active{display:flex}
+h1{font-size:76px;line-height:1.02;margin:0 0 24px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:44px;line-height:1.1;margin:0 0 8px;font-weight:700;letter-spacing:-.01em}
+.sub{font-size:24px;color:var(--muted);margin:0 0 32px;max-width:900px;line-height:1.35}
+p,li{font-size:24px;line-height:1.4}
+ul{margin:0;padding-left:28px}
+li{margin:0 0 12px}
+kbd{font-family:var(--sans);font-size:.82em;background:var(--sheet);border:1px solid var(--rule);border-bottom-width:3px;border-radius:6px;padding:1px 8px;white-space:nowrap}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:48px;flex:1;min-height:0}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:28px 34px;font-family:var(--serif);font-size:22px;line-height:1.55;box-shadow:0 12px 30px -18px rgba(20,40,70,.35)}
+.pm{color:var(--mark);font-family:var(--sans)}
+.dot{color:var(--mark)}
+.tag{align-self:flex-start;display:inline-block;font-size:17px;color:var(--word);border:1.5px solid var(--word);border-radius:999px;padding:2px 12px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:21px}
+table.compact td,table.compact th{padding:8px 10px}
+td,th{text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.35}
+th{color:var(--muted);font-weight:400;font-size:18px}
+td:first-child{font-weight:700;white-space:nowrap}
+.hl{background:var(--hl);padding:0 4px}
+.warn{color:var(--warn);font-weight:700}
+.big-mark{font-size:300px;line-height:.8;color:var(--word);font-family:var(--serif);position:absolute;right:90px;top:120px;opacity:.9}
+.footer{position:absolute;left:80px;right:80px;bottom:26px;display:flex;justify-content:space-between;font-size:15px;color:var(--muted)}
+.callout{border-left:5px solid var(--word);background:var(--word-soft);padding:14px 20px;font-size:22px;line-height:1.4;margin-top:auto}
+svg text{font-family:var(--sans)}
+.svg-ink{fill:var(--ink)} .svg-muted{fill:var(--muted)} .svg-word{fill:var(--word)} .svg-mark{fill:var(--mark)}
+.stroke-rule{stroke:var(--rule)} .stroke-ink{stroke:var(--ink)} .stroke-word{stroke:var(--word)} .stroke-mark{stroke:var(--mark)}
+.fill-sheet{fill:var(--sheet)} .fill-soft{fill:var(--word-soft)} .fill-hl{fill:var(--hl)}
+.q{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:13px 22px;margin-bottom:11px;cursor:pointer}
+.q p{margin:0;font-size:23px}
+.q .ans{display:none;color:var(--word);margin-top:10px;font-size:21px}
+.q.open .ans{display:block}
+.q:focus-visible,button:focus-visible{outline:3px solid var(--word);outline-offset:3px}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:38vh;overflow:auto;background:var(--sheet);border-top:3px solid var(--word);padding:16px 28px 22px;font-size:17px;line-height:1.5;display:none;z-index:5}
+#notes.show{display:block}
+#notes h3{margin:0 0 6px;font-size:14px;color:var(--muted);font-weight:400}
+#notes ul{padding-left:20px} #notes li{font-size:17px;margin:0 0 4px}
+#controls{position:fixed;right:16px;bottom:14px;display:flex;gap:8px;z-index:6}
+#controls button{font-family:var(--sans);font-size:15px;background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:6px;padding:6px 12px;cursor:pointer}
+.demo{position:absolute;left:80px;bottom:22px;font-size:16px;color:var(--word);background:var(--word-soft);border-radius:4px;padding:4px 12px}
+.demo b{font-weight:700}
+#bar{position:fixed;left:0;top:0;height:4px;background:var(--word);transition:width .25s}
+@media (prefers-reduced-motion: reduce){#bar{transition:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="viewport"><div id="stage">
+
+<!-- 1 -->
+<section class="slide" data-notes="<ul><li>Frame: most of Word is easy — you click a button and something happens. This lecture skips the easy stuff (bold, fonts, zoom, printing) and targets the features that confuse people because they depend on things you can't see.</li><li>SimNet still covers every skill in Chapters 1 and 2; tonight is the 'why it behaves that way' layer.</li><li>Have Word open with the Bayside Day Spa sample files (01–11) ready; each slide&#39;s notes name the file to use.</li><li>Show the Ribbon path first for every skill. The SimNet transcripts use the Ribbon for every task, so treat keyboard shortcuts and right-click menus as extras.</li></ul>">
+  <span class="tag">CGS 1060C · Microsoft Word, Chapters 1–5</span>
+  <h1>Word: the parts<br>you can't see</h1>
+  <p class="sub">Most of Word is a button that does what it says. These are the features that trip people up, and nearly all of them come down to hidden structure inside the document. Session 1 covers Chapters 1 and 2; Session 2 covers Chapters 3 to 5.</p>
+  <div class="big-mark" aria-hidden="true">¶</div>
+  <div class="footer"><span>Miami Dade College</span><span>→ to advance · N for notes · P for presenter window</span></div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-notes="<ul><li>These are in teaching order, not chapter order: the first idea (paragraph marks) makes the rest make sense.</li><li>Rough timing: about 5 minutes each, 40–45 minutes total with demos.</li></ul>">
+  <span class="tag">Session 1 · Chapters 1 and 2</span>
+  <h2>Tonight's tricky parts</h2>
+  <p class="sub">In an order where each one builds on the last.</p>
+  <div class="cols">
+    <ul>
+      <li>Formatting marks and what a “paragraph” really is</li>
+      <li>Ribbon words: arrows, launchers, galleries</li>
+      <li>The Editor's hidden options</li>
+      <li>Paste Options and the Clipboard</li>
+      <li>Find and Replace beyond the basics</li>
+      <li>Formatting that looks the same but isn't, including shading</li>
+    </ul>
+    <ul>
+      <li>Styles instead of manual formatting</li>
+      <li>Line spacing vs. paragraph spacing</li>
+      <li>Indents, the ruler, and hanging indents</li>
+      <li>Tab stops and leaders</li>
+      <li>Restarting and continuing numbered lists</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 01-Messy-Flyer.docx. Before turning on ¶, ask the class what looks wrong. Then reveal the double spaces, the blank paragraphs used for spacing, the hours lined up with spaces, and the address lines separated with Shift+Enter.</li><li>DEMO: Home › Paragraph › Show/Hide (¶), or Ctrl+Shift+8. Leave it on for the rest of the lecture.</li><li>Point out each mark in a real document: dots between words, arrows for tabs, ¶ at each Enter, ↲ for Shift+Enter.</li><li>Type a few lines, then press Shift+Enter vs Enter and show the difference in spacing: Shift+Enter stays in the same paragraph, so no extra space appears.</li><li>Nonbreaking space: Ctrl+Shift+Space. Example: keeps '10 AM' or 'Chapter 2' from splitting across lines.</li><li>Stress: marks never print. Students worry that turning this on will mess up the document.</li></ul>">
+  <h2>Turn on ¶ first</h2>
+  <p class="sub">Show/Hide reveals the characters Word hides. They never print, but they explain almost everything strange a document does.</p>
+  <div class="cols">
+    <div class="sheet" aria-label="Sample document with formatting marks visible">
+      Welcome<span class="dot">·</span>to<span class="dot">·</span>the<span class="dot">·</span>spa!<span class="pm">¶</span><br>
+      <span class="pm">¶</span><br>
+      Hours:<span class="pm">&nbsp;→&nbsp;</span>Mon–Fri<span class="dot">·</span>9<span class="dot">°</span>AM<span class="pm">↲</span><br>
+      <span class="pm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→&nbsp;</span>Sat<span class="dot">·</span>10<span class="dot">°</span>AM<span class="pm">¶</span><br>
+      Call<span class="dot">··</span>today.<span class="pm">¶</span>
+    </div>
+    <table>
+      <tr><th>Mark</th><th>You pressed</th></tr>
+      <tr><td><span class="pm">·</span> dot</td><td>Spacebar. Two dots in a row means a double space.</td></tr>
+      <tr><td><span class="pm">¶</span> pilcrow</td><td><kbd>Enter</kbd> — a hard return. Starts a new paragraph.</td></tr>
+      <tr><td><span class="pm">↲</span> line break</td><td><kbd>Shift</kbd>+<kbd>Enter</kbd> — new line, same paragraph.</td></tr>
+      <tr><td><span class="pm">→</span> arrow</td><td><kbd>Tab</kbd></td></tr>
+      <tr><td><span class="pm">°</span> degree</td><td>Nonbreaking space: keeps two words on the same line.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 01-Messy-Flyer.docx (keep it open from the last slide).</li><li>This is the single most useful mental model in the chapter.</li><li>DEMO: click inside a paragraph (no selection) and press Center. The whole paragraph centers. Now click inside a word and press Bold — only that word bolds. Then click in empty space and press Bold: nothing visible happens until you type.</li><li>Why it matters: alignment, line spacing, spacing before/after, indents, tabs, borders/shading, bullets and numbering are all paragraph formatting.</li><li>Tie back to the previous slide: the '↲' line break line is still part of the same paragraph, so it gets the same alignment.</li></ul>">
+  <h2>To Word, a paragraph is everything up to a ¶</h2>
+  <p class="sub">A one-word heading is a paragraph. A blank line is a paragraph. That changes what you need to select.</p>
+  <div class="cols">
+    <div>
+      <p><strong>Character formatting</strong> sticks to the letters you select.</p>
+      <p style="color:var(--muted);font-size:21px;margin-top:-8px">Bold, italic, font, size, color, highlight, change case</p>
+      <p style="margin-top:28px"><strong>Paragraph formatting</strong> belongs to the whole paragraph. Just click anywhere inside it.</p>
+      <p style="color:var(--muted);font-size:21px;margin-top:-8px">Alignment, line spacing, space before/after, indents, tabs, borders, shading, bullets, numbering</p>
+    </div>
+    <svg viewBox="0 0 520 420" role="img" aria-label="Diagram: a cursor anywhere in a paragraph is enough to center the whole paragraph">
+      <rect x="10" y="10" width="500" height="400" class="fill-sheet stroke-rule" stroke-width="1.5" rx="4"/>
+      <text x="40" y="60" class="svg-muted" font-size="17">Cursor in paragraph → click Center</text>
+      <rect x="40" y="82" width="440" height="116" class="fill-soft"/>
+      <g class="svg-ink" font-size="20" font-family="Source Serif 4, serif" text-anchor="middle">
+        <text x="260" y="116">Our new massage packages start</text>
+        <text x="260" y="146">this Friday, with discounts for</text>
+        <text x="260" y="176">members who book early.<tspan class="svg-mark"> ¶</tspan></text>
+      </g>
+      <line x1="202" y1="126" x2="202" y2="152" class="stroke-word" stroke-width="2.5"/>
+      <text x="40" y="250" class="svg-muted" font-size="17">Cursor in paragraph → click Bold</text>
+      <g class="svg-ink" font-size="20" font-family="Source Serif 4, serif">
+        <text x="40" y="290">Our new massage packages start</text>
+        <text x="40" y="320">this Friday, with discounts for</text>
+        <text x="40" y="350">members who book early.<tspan class="svg-mark"> ¶</tspan></text>
+      </g>
+      <text x="40" y="392" class="svg-word" font-size="17">Nothing visible changes. Select the words first.</text>
+    </svg>
+  </div>
+</section>
+
+<!-- R1 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> any document, e.g. 01-Messy-Flyer.docx.</li><li>Why this slide exists: SimNet steps name these parts precisely (&#39;click the Font Color button arrow,&#39; &#39;the Clipboard dialog launcher,&#39; &#39;click the More button&#39;). Clicking the wrong half is a common reason a step doesn&#39;t register.</li><li>DEMO: hover the Paste button to show the divider between button and arrow. Then click the Font Color icon (applies the last color used) vs. its arrow (opens the palette). Repeat quickly on Highlight, Numbering, Bullets, Shading, and Borders.</li><li>Click the Clipboard dialog launcher (opens the Clipboard task pane) and the Paragraph dialog launcher (opens the Paragraph dialog).</li><li>Open the Styles gallery with the More button. Point out the Navigation task pane (Home › Find) as another task pane.</li></ul>">
+  <h2>Speak Ribbon</h2>
+  <p class="sub">SimNet steps name the exact part of the Ribbon to click. Most of these parts are small or easy to overlook.</p>
+  <div class="cols" style="grid-template-columns:1.3fr 1fr;gap:36px">
+    <svg viewBox="0 0 640 360" role="img" aria-label="Mock Home tab showing a button, button arrow, dialog launcher, group name, gallery, and More button" style="width:100%">
+      <g font-size="15" class="svg-muted"><text x="14" y="22">File</text><text x="116" y="22">Insert</text><text x="176" y="22">Design</text><text x="240" y="22">Layout</text></g>
+      <text x="58" y="22" font-size="15" font-weight="700" class="svg-word">Home</text>
+      <line x1="56" y1="30" x2="102" y2="30" class="stroke-word" stroke-width="3"/>
+      <rect x="4" y="36" width="632" height="150" class="fill-sheet stroke-rule" stroke-width="1.5" rx="4"/>
+      <rect x="22" y="50" width="66" height="62" class="fill-soft"/>
+      <rect x="36" y="60" width="38" height="44" rx="3" class="fill-sheet stroke-word" stroke-width="2"/>
+      <rect x="47" y="56" width="16" height="8" rx="2" class="svg-word"/>
+      <line x1="22" y1="114" x2="88" y2="114" class="stroke-mark" stroke-width="1.5"/>
+      <text x="55" y="136" text-anchor="middle" font-size="14" class="svg-ink">Paste ▾</text>
+      <g font-size="14" class="svg-ink"><text x="100" y="68">Cut</text><text x="100" y="96">Copy</text><text x="100" y="124">Format Painter</text></g>
+      <text x="100" y="174" text-anchor="middle" font-size="13" class="svg-muted">Clipboard</text>
+      <path d="M204 164 h10 v10 M205 173 l8 -8" class="stroke-mark" stroke-width="1.5" fill="none"/>
+      <line x1="224" y1="46" x2="224" y2="178" class="stroke-rule" stroke-width="1.5"/>
+      <rect x="236" y="54" width="100" height="26" class="fill-sheet stroke-rule" stroke-width="1.5"/><text x="244" y="72" font-size="14" class="svg-ink">Aptos</text><text x="324" y="72" font-size="11" class="svg-ink">▾</text>
+      <rect x="342" y="54" width="46" height="26" class="fill-sheet stroke-rule" stroke-width="1.5"/><text x="350" y="72" font-size="14" class="svg-ink">12 ▾</text>
+      <g font-size="17" class="svg-ink"><text x="240" y="118" font-weight="700">B</text><text x="264" y="118" font-style="italic">I</text><text x="284" y="118" text-decoration="underline">U</text></g>
+      <text x="330" y="116" font-size="18" font-weight="700" class="svg-ink">A</text>
+      <rect x="328" y="121" width="16" height="4" fill="#C00000"/>
+      <line x1="350" y1="100" x2="350" y2="128" class="stroke-mark" stroke-width="1"/>
+      <text x="354" y="118" font-size="11" class="svg-ink">▾</text>
+      <text x="312" y="174" text-anchor="middle" font-size="13" class="svg-muted">Font</text>
+      <path d="M380 164 h10 v10 M381 173 l8 -8" class="stroke-mark" stroke-width="1.5" fill="none"/>
+      <line x1="400" y1="46" x2="400" y2="178" class="stroke-rule" stroke-width="1.5"/>
+      <g font-size="13"><rect x="412" y="56" width="58" height="70" class="fill-sheet stroke-word" stroke-width="2"/><text x="441" y="96" text-anchor="middle" class="svg-ink">Normal</text>
+      <rect x="474" y="56" width="58" height="70" class="fill-sheet stroke-rule" stroke-width="1.5"/><text x="503" y="96" text-anchor="middle" class="svg-ink">No Spac…</text>
+      <rect x="536" y="56" width="58" height="70" class="fill-sheet stroke-rule" stroke-width="1.5"/><text x="565" y="96" text-anchor="middle" class="svg-word" font-weight="700">Heading 1</text></g>
+      <rect x="600" y="56" width="22" height="70" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+      <text x="611" y="78" text-anchor="middle" font-size="10" class="svg-muted">▴</text><text x="611" y="94" text-anchor="middle" font-size="10" class="svg-muted">▾</text>
+      <line x1="604" y1="104" x2="618" y2="104" class="stroke-ink" stroke-width="1.5"/><text x="611" y="118" text-anchor="middle" font-size="10" class="svg-ink">▾</text>
+      <text x="516" y="174" text-anchor="middle" font-size="13" class="svg-muted">Styles</text>
+      <g class="stroke-word" stroke-width="1.5" fill="none">
+        <path d="M40 236 L50 92"/><path d="M130 274 L66 140"/><path d="M240 236 L212 176"/>
+        <path d="M312 274 L312 180"/><path d="M400 236 L358 122"/><path d="M500 274 L500 130"/><path d="M596 236 L610 124"/>
+      </g>
+      <g font-size="15" class="svg-word" font-weight="700">
+        <text x="10" y="252">Button</text><text x="90" y="292">Button arrow</text><text x="190" y="252">Dialog launcher</text>
+        <text x="290" y="292">Group</text><text x="350" y="252">Button arrow</text><text x="474" y="292">Gallery</text><text x="560" y="252">More</text>
+      </g>
+      <text x="10" y="336" font-size="16" class="svg-muted">Also on Highlight, Numbering, Bullets, Shading, Borders</text>
+    </svg>
+    <table style="font-size:18px" class="compact">
+      <tr><th>SimNet says</th><th>It means</th></tr>
+      <tr><td>Button</td><td style="font-weight:400">The icon itself. Repeats the last choice.</td></tr>
+      <tr><td>Button arrow</td><td style="font-weight:400">The small ▾ beside or below it. Opens choices.</td></tr>
+      <tr><td>Dialog launcher</td><td style="font-weight:400">Corner arrow on a group. Opens a pane or dialog.</td></tr>
+      <tr><td>More button</td><td style="font-weight:400">Expands a gallery, like Styles, to show everything.</td></tr>
+      <tr><td>Smart tag</td><td style="font-weight:400">Pops up after an action, like AutoCorrect Options.</td></tr>
+      <tr><td>Task pane</td><td style="font-weight:400">A panel beside the document: Navigation, Clipboard, Editor.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- R2 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 02-Editor-Practice.docx. It contains &#39;accomodation&#39; three times, &#39;recieve,&#39; &#39;foward,&#39; the name Marisol Quintero twice, a grammar error (&#39;happy to helps&#39;), and wordy phrases (&#39;in order to,&#39; &#39;due to the fact that,&#39; &#39;at this point in time&#39;) that Word should flag as clarity or conciseness suggestions.</li><li>First right-click one red squiggle to fix it in place (Skill 1.4). Then open Home › Editor group › Editor, as the transcript does.</li><li>On &#39;accomodation,&#39; look under Consider: click the three dots (···) next to the correct spelling and choose Change All to fix all three at once. Like the button arrows, it&#39;s easy to miss.</li><li>On Marisol Quintero, compare Ignore All with Add to Dictionary. Add to Dictionary affects every Office app on that computer, so on shared machines Ignore All is usually the better choice.</li><li>Stress that clarity suggestions are optional and not always right. Students still need to proofread.</li><li>Extra: F7 opens the Editor.</li></ul>">
+  <h2>The Editor hides its best option</h2>
+  <p class="sub">Home › Editor opens a task pane that reviews spelling, grammar, and clarity. Fixing every copy of a misspelling is tucked behind a ··· menu.</p>
+  <div class="cols" style="grid-template-columns:.9fr 1.1fr">
+    <div class="sheet" style="font-family:var(--sans);font-size:19px;padding:20px 26px">
+      <div style="font-size:24px;font-weight:700;margin-bottom:8px">Editor</div>
+      <div style="color:var(--muted);font-size:16px">Corrections</div>
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--rule);padding:5px 0">Spelling<span>4</span></div>
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--rule);padding:5px 0 9px">Grammar<span>1</span></div>
+      <div style="color:var(--muted);font-size:16px;margin-top:9px">Refinements</div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0 12px">Clarity<span>2</span></div>
+      <div style="border:1.5px solid var(--word);border-radius:4px;padding:10px 14px">
+        <div style="color:var(--muted);font-size:15px">Consider</div><div style="font-family:var(--serif)">accomodation</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--word);font-weight:700">accommodation <span style="border-left:1px solid var(--rule);padding-left:12px;letter-spacing:2px">···</span></div>
+        <div style="margin-top:8px;border:1px solid var(--rule);background:var(--paper);padding:6px 12px;font-size:17px"><div>Read Aloud</div><div class="hl" style="display:inline-block;margin:3px 0">Change All</div></div>
+      </div>
+    </div>
+    <table>
+      <tr><th>Choice</th><th>What it affects</th></tr>
+      <tr><td>Click a suggestion</td><td style="font-weight:400">This one spot</td></tr>
+      <tr><td>··· › Change All</td><td style="font-weight:400">Every copy of that misspelling in the document</td></tr>
+      <tr><td>Ignore Once</td><td style="font-weight:400">Skips this spot only</td></tr>
+      <tr><td>Ignore All</td><td style="font-weight:400">Skips every copy in this document</td></tr>
+      <tr><td>Add to Dictionary</td><td style="font-weight:400">Never flags it again, in any Office app on this computer. Useful for names.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 03-Paste-Options.docx. Copy the gray, dark-red Georgia paragraph and paste it under the newsletter intro four ways. Then open the Clipboard pane, copy the three add-on lines, and paste them in reverse order under &#39;Popular add-ons.&#39; Copying from a live web page afterward makes the point even more clearly.</li><li>DEMO the split button: hover the Paste button and show the divider line. Top half pastes immediately (source formatting). Bottom half opens options.</li><li>Copy a bold, red heading from a web page or another document and paste it into body text four ways. Hover each option to show Live Preview.</li><li>Real-world tip: copying from websites into a paper. 'Keep Text Only' (Ctrl+Shift+V in current Word) avoids weird fonts and gray backgrounds.</li><li>Picture warning: text pasted as a picture can't be edited or spell-checked.</li><li>Clipboard pane: Home › Clipboard dialog launcher. Holds 24 items; the 25th pushes out the oldest. Paste All and Clear All.</li></ul>">
+  <h2>Paste is really two buttons</h2>
+  <p class="sub">The top half pastes right away. The arrow underneath asks <em>how</em> to paste, which matters when you copy from a website or another document.</p>
+  <div class="cols" style="grid-template-columns:1.35fr 1fr">
+    <table>
+      <tr><th>Option</th><th>What you get</th></tr>
+      <tr><td>Keep Source Formatting</td><td>Text looks like it did where you copied it. This is what the top half does.</td></tr>
+      <tr><td>Merge Formatting</td><td>Text adopts the look of where you paste it, but keeps basics like bold.</td></tr>
+      <tr><td>Keep Text Only</td><td>Plain text, no formatting at all. Best for pasting from the web.</td></tr>
+      <tr><td>Picture</td><td>A single image of the text. <span class="warn">You can't edit it afterward.</span></td></tr>
+    </table>
+    <div style="display:flex;flex-direction:column">
+      <p><strong>The Clipboard pane</strong> keeps your last <strong>24</strong> cut or copied items, from any Office app.</p>
+      <ul>
+        <li>Open it with the small launcher arrow in the Clipboard group</li>
+        <li>Click any item to paste it, in any order</li>
+        <li>Paste All and Clear All work on everything at once</li>
+      </ul>
+      <div class="callout">Copy (<kbd>Ctrl</kbd>+<kbd>C</kbd>) leaves the original. Cut (<kbd>Ctrl</kbd>+<kbd>X</kbd>) removes it. Both land on the Clipboard.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 04-Find-and-Replace.docx. Replace &#39;cat&#39; with &#39;dog&#39; and point to the count in the message box (the transcript has students click OK, then Close). It will hit catalog, location, education, communication, dedicated, and vacation. Undo, then retry with Match case and Find whole words only. Finally remove the blank paragraphs with ^p^p and the double spaces.</li><li>Ctrl+F opens the Navigation pane (find only). Ctrl+H opens Find and Replace.</li><li>DEMO the 'Replace All' trap: replace 'cat' with 'dog' in a document containing 'catalog' and 'education'. Show 'dogalog' and 'edudogion'. Undo (Ctrl+Z), then repeat with 'Find whole words only' checked.</li><li>DEMO special characters: More >> › Special › Paragraph Mark inserts ^p. Find ^p^p, replace with ^p to remove blank lines. With ¶ turned on, students can watch them disappear.</li><li>Formatting search: More >> › Format lets you find all italic text and make it bold, for example.</li><li>Editor side note: Ignore Once skips this spot, Ignore All skips every occurrence in this document, Add to Dictionary skips it in every Office app from now on.</li></ul>">
+  <h2>Replace All is powerful and a little dangerous</h2>
+  <p class="sub">Replace changes one match at a time. Replace All changes every match, including ones hidden inside other words.</p>
+  <div class="cols">
+    <div>
+      <div class="sheet" style="font-size:21px">
+        <div style="color:var(--muted);font-family:var(--sans);font-size:16px;margin-bottom:6px">Replace “cat” with “dog” → Replace All</div>
+        The <span class="hl">dog</span> slept on the spa <span class="hl" style="padding:0">dog</span>alog while staff completed their edu<span class="hl" style="padding:0">dog</span>ion.
+      </div>
+      <p style="margin-top:22px">Fix: click <strong>More &gt;&gt;</strong> and check <strong>Find whole words only</strong>. Add <strong>Match case</strong> when capitals matter.</p>
+    </div>
+    <div>
+      <p><strong>It can find what you can't type.</strong> Under More &gt;&gt; › Special:</p>
+      <table>
+        <tr><th>Find</th><th>Replace with</th><th>Result</th></tr>
+        <tr><td>^p^p</td><td>^p</td><td style="font-weight:400">Removes blank lines between paragraphs</td></tr>
+        <tr><td>··&nbsp;(2 spaces)</td><td>·&nbsp;(1 space)</td><td style="font-weight:400">Removes double spaces</td></tr>
+        <tr><td>^t</td><td>&nbsp;</td><td style="font-weight:400">Finds every tab</td></tr>
+      </table>
+      <p style="margin-top:18px;font-size:21px;color:var(--muted)">Open with <kbd>Ctrl</kbd>+<kbd>H</kbd>. <kbd>Ctrl</kbd>+<kbd>F</kbd> only finds.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 05-Formatting-Lookalikes.docx. Apply All caps and then UPPERCASE to &#39;member benefits guide.&#39; Double-click Format Painter on the teal &#39;Massage&#39; heading and paint the other three headings. Apply shading and a border to the Special offer paragraph with only the cursor placed, and highlight a phrase next to it. Finally, Clear All Formatting on the red Courier sentence: the highlight stays.</li><li>UPPERCASE vs All Caps: type 'spa hours', apply All Caps from the Font dialog (Ctrl+D), then copy and paste as text only — it comes back lowercase. Do the same with Change Case › UPPERCASE and the letters stay capital. Also note Shift+F3 cycles case.</li><li>Clear All Formatting: resets to Normal style but deliberately leaves highlighting. Remove highlighting with Text Highlight Color › No Color.</li><li>Format Painter: single-click = one use. Double-click = stays on until Esc or clicking the button again. The number one student mistake is single-clicking and wondering why it stopped working.</li><li>Format Painter works for paragraph formatting too if you include the ¶ in what you copy.</li></ul>">
+  <h2>Looks the same, isn't the same</h2>
+  <p class="sub">Four places where two things look alike on screen but behave differently.</p>
+  <table>
+    <tr><th>These two</th><th>The difference</th><th>Why you care</th></tr>
+    <tr><td>Change Case › UPPERCASE<br>vs. Font dialog › All caps</td><td style="font-weight:400">UPPERCASE retypes the letters as capitals. All caps is just a costume; the letters underneath are still lowercase.</td><td style="font-weight:400;white-space:normal">Remove All caps and your original typing comes back. Remove UPPERCASE and it doesn't.</td></tr>
+    <tr><td>Clear All Formatting<br>vs. highlighting</td><td style="font-weight:400">Clear All Formatting strips fonts, colors, and styles back to Normal, but <em>leaves highlighting</em>.</td><td style="font-weight:400;white-space:normal">To remove highlight: Text Highlight Color › No Color.</td></tr>
+    <tr><td>Shading<br>vs. highlighting</td><td style="font-weight:400">Shading is paragraph formatting: it fills the full width and only needs the cursor. Highlight is character formatting and needs a selection.</td><td style="font-weight:400;white-space:normal">Borders work like shading. Click inside the paragraph, then use the Shading or Borders button <em>arrow</em>.</td></tr>
+    <tr><td>Format Painter:<br>click vs. double-click</td><td style="font-weight:400">One click paints once, then turns off. Double-click keeps it on until you press <kbd>Esc</kbd>.</td><td style="font-weight:400;white-space:normal">Double-click when you have several headings to fix.</td></tr>
+  </table>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 06-Headings-and-Styles.docx. Every heading is plain Normal text. Apply Title, Heading 1 to the four service names, and Heading 2 to the subtypes. Use the More button to open the full gallery, since the transcript mentions it.</li><li>Styles are the 'professional' way to format and the thing most students skip.</li><li>DEMO: format three headings manually (bold, 16pt, blue). Then ask: 'Your instructor wants all headings green.' Now apply Heading 1 to all three instead, right-click Heading 1 in the gallery › Modify, change color once, and all update.</li><li>Open View › Navigation Pane to show headings appearing as clickable outline. Mention References › Table of Contents builds from the same headings (covered later in the book).</li><li>Connects to Chapter 1: a theme changes the fonts and colors that styles use.</li></ul>">
+  <h2>Styles: format once, change everywhere</h2>
+  <p class="sub">A style is a saved bundle of formatting with a name. Manual formatting gives you the same look, but none of the benefits.</p>
+  <div class="cols">
+    <svg viewBox="0 0 520 400" role="img" aria-label="Diagram: changing the Heading 1 style updates all three headings at once">
+      <rect x="10" y="10" width="220" height="380" class="fill-sheet stroke-rule" stroke-width="1.5" rx="4"/>
+      <text x="30" y="46" class="svg-muted" font-size="16">Document</text>
+      <g font-size="20" font-weight="700" class="svg-word">
+        <text x="30" y="96">Massage</text>
+        <text x="30" y="206">Facials</text>
+        <text x="30" y="316">Memberships</text>
+      </g>
+      <g class="fill-soft">
+        <rect x="30" y="110" width="170" height="10"/><rect x="30" y="128" width="150" height="10"/>
+        <rect x="30" y="220" width="170" height="10"/><rect x="30" y="238" width="120" height="10"/>
+        <rect x="30" y="330" width="170" height="10"/><rect x="30" y="348" width="140" height="10"/>
+      </g>
+      <rect x="310" y="150" width="200" height="100" class="fill-soft stroke-word" stroke-width="2" rx="4"/>
+      <text x="410" y="190" text-anchor="middle" font-size="22" font-weight="700" class="svg-word">Heading 1</text>
+      <text x="410" y="222" text-anchor="middle" font-size="16" class="svg-muted">Modify once</text>
+      <g class="stroke-word" stroke-width="2" fill="none">
+        <path d="M310 185 C 270 160, 260 100, 170 90"/>
+        <path d="M310 200 L 130 200"/>
+        <path d="M310 215 C 270 240, 260 300, 200 310"/>
+      </g>
+    </svg>
+    <div>
+      <ul>
+        <li>Change the style, and every paragraph using it updates at once</li>
+        <li>Heading styles show up in the <strong>Navigation pane</strong> as a clickable outline</li>
+        <li>A <strong>table of contents</strong> builds itself from heading styles</li>
+        <li>Changing the document <strong>theme</strong> restyles everything consistently</li>
+      </ul>
+      <div class="callout">Where: Home › Styles gallery. Right-click a style › Modify to change it everywhere.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 07-Spacing-Two-Ways.docx. Page 1 is spaced with blank paragraphs and page 2 with Spacing After. Ask the class to make the gaps smaller on both pages. Page 2 takes one change; page 1 takes one fix per gap.</li><li>Students constantly confuse these two. Line spacing = gap between lines inside a paragraph. Paragraph spacing = extra gap before/after the paragraph as a whole.</li><li>Defaults in current Word: 1.15 line spacing (Home tab) and 8 pt after each paragraph.</li><li>DEMO with ¶ on: show a document where someone pressed Enter twice between paragraphs. Remove the empty ¶s and use Layout › Spacing After instead. Changing one number re-spaces the whole document; double Enters have to be fixed one at a time.</li><li>Shortcuts: Ctrl+1 single, Ctrl+5 1.5, Ctrl+2 double.</li><li>'Why is there a gap between my bullets?' — it's usually Spacing After on each list paragraph.</li><li>Whole document at once: Design › Paragraph Spacing.</li></ul>">
+  <h2>Line spacing is not paragraph spacing</h2>
+  <p class="sub">Two different settings control white space. Pressing Enter twice is a third way, and the one to avoid.</p>
+  <div class="cols" style="grid-template-columns:1.1fr 1fr">
+    <svg viewBox="0 0 600 420" role="img" aria-label="Diagram: line spacing is inside a paragraph, spacing before and after is between paragraphs">
+      <rect x="10" y="10" width="400" height="400" class="fill-sheet stroke-rule" stroke-width="1.5" rx="4"/>
+            <g class="fill-soft">
+        <rect x="40" y="76" width="340" height="16"/><rect x="40" y="112" width="340" height="16"/><rect x="40" y="148" width="250" height="16"/>
+        <rect x="40" y="226" width="340" height="16"/><rect x="40" y="262" width="340" height="16"/><rect x="40" y="298" width="200" height="16"/>
+      </g>
+      <rect x="40" y="176" width="340" height="38" class="fill-hl" opacity=".75"/>
+      <rect x="40" y="92" width="340" height="20" class="fill-hl" opacity=".35"/>
+            <g class="stroke-word" stroke-width="2">
+        <line x1="400" y1="92" x2="400" y2="112"/><line x1="392" y1="92" x2="408" y2="92"/><line x1="392" y1="112" x2="408" y2="112"/>
+        <line x1="400" y1="176" x2="400" y2="214"/><line x1="392" y1="176" x2="408" y2="176"/><line x1="392" y1="214" x2="408" y2="214"/>
+      </g>
+      <text x="418" y="100" class="svg-word" font-size="17" font-weight="700">Line spacing</text>
+      <text x="418" y="121" class="svg-muted" font-size="15">inside a paragraph</text>
+      <text x="418" y="190" class="svg-word" font-size="17" font-weight="700">Space after /</text>
+      <text x="418" y="210" class="svg-word" font-size="17" font-weight="700">space before</text>
+      <text x="418" y="231" class="svg-muted" font-size="15">between paragraphs</text>
+    </svg>
+    <table>
+      <tr><th>Setting</th><th>Default · Where</th></tr>
+      <tr><td>Line spacing</td><td style="font-weight:400">1.15 · Home › Line and Paragraph Spacing<br><kbd>Ctrl</kbd>+<kbd>1</kbd> single, <kbd>Ctrl</kbd>+<kbd>2</kbd> double</td></tr>
+      <tr><td>Spacing after</td><td style="font-weight:400">8 pt · Layout › Paragraph › After</td></tr>
+      <tr><td>Spacing before</td><td style="font-weight:400">0 pt · Layout › Paragraph › Before</td></tr>
+      <tr><td class="warn">Enter twice</td><td style="font-weight:400">Creates an empty paragraph. Works, but has to be fixed by hand everywhere later.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 08-Indents-Works-Cited.docx. Page 1: add a 0.5&quot; first-line indent to the body paragraphs, then set the quote paragraph to Left 1&quot; and Right 1&quot; in the Layout tab boxes, pressing Enter after each value as the transcript does. Page 2 is built the wrong way with line breaks and tabs; add a word to the first entry to show it falling apart. Page 3 has the same entries unformatted; apply a hanging indent.</li><li>Turn on the ruler: View › Show › Ruler. It's off by default, and the markers only make sense when you can see them.</li><li>Walk through the three markers on the left: top triangle = first line indent, bottom triangle = hanging indent, rectangle = moves both together (left indent).</li><li>DEMO hanging indent on a works-cited entry. Home › Paragraph launcher › Special › Hanging, 0.5&quot;. Keyboard: Ctrl+T.</li><li>Why they'll care: APA and MLA reference lists require hanging indents. Pressing Enter and Tab on each line breaks the moment you edit the entry.</li><li>Increase/Decrease Indent buttons move the whole paragraph by one level (0.5&quot;).</li></ul>">
+  <h2>Indents live on the ruler</h2>
+  <p class="sub">Turn it on at View › Ruler. The markers on the left edge are three separate controls stacked together.</p>
+  <div class="cols" style="grid-template-columns:1.25fr 1fr">
+    <svg style="width:100%;height:100%" viewBox="0 0 600 430" role="img" aria-label="Ruler with first line and hanging indent markers, and examples of each indent type">
+      <rect x="10" y="10" width="580" height="44" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+      <g class="stroke-mark" stroke-width="1.5">
+        <line x1="60" y1="40" x2="60" y2="54"/><line x1="160" y1="40" x2="160" y2="54"/><line x1="260" y1="40" x2="260" y2="54"/><line x1="360" y1="40" x2="360" y2="54"/><line x1="460" y1="40" x2="460" y2="54"/>
+        <line x1="110" y1="46" x2="110" y2="54"/><line x1="210" y1="46" x2="210" y2="54"/><line x1="310" y1="46" x2="310" y2="54"/><line x1="410" y1="46" x2="410" y2="54"/>
+      </g>
+      <g font-size="13" class="svg-muted" text-anchor="middle"><text x="160" y="34">1</text><text x="260" y="34">2</text><text x="360" y="34">3</text><text x="460" y="34">4</text></g>
+      <!-- markers -->
+      <path d="M54 12 L66 12 L60 22 Z" class="svg-word"/>
+      <path d="M104 38 L116 38 L110 28 Z" class="svg-word"/>
+      <rect x="104" y="40" width="12" height="7" class="svg-word"/>
+      <g font-size="15">
+        <text x="20" y="96" class="svg-muted">First line indent</text>
+        <text x="20" y="224" class="svg-muted">Hanging indent (works cited)</text>
+        <text x="20" y="352" class="svg-muted">Left indent (whole paragraph)</text>
+      </g>
+      <g class="fill-soft">
+        <rect x="110" y="110" width="470" height="14"/><rect x="60" y="134" width="520" height="14"/><rect x="60" y="158" width="360" height="14"/>
+        <rect x="160" y="366" width="420" height="14"/><rect x="160" y="390" width="360" height="14"/>
+      </g>
+      <g class="svg-ink" font-size="17" font-family="Source Serif 4, serif">
+        <text x="60" y="254">Rivera, A. (2025). <tspan font-style="italic">Caring for clients:</tspan></text>
+        <text x="110" y="278"><tspan font-style="italic">A spa manager's handbook</tspan>. Harbor</text>
+        <text x="110" y="302">Press.</text>
+      </g>
+      <line x1="60" y1="238" x2="60" y2="306" class="stroke-word" stroke-width="2" stroke-dasharray="4 4"/>
+      <line x1="110" y1="262" x2="110" y2="306" class="stroke-word" stroke-width="2" stroke-dasharray="4 4"/>
+    </svg>
+    <div style="display:flex;flex-direction:column"><table>
+      <tr><th>Marker</th><th>Moves</th></tr>
+      <tr><td>▽ Top triangle</td><td style="font-weight:400">First line only</td></tr>
+      <tr><td>△ Bottom triangle</td><td style="font-weight:400">Every line <em>except</em> the first (hanging)</td></tr>
+      <tr><td>▭ Rectangle</td><td style="font-weight:400">Both together (left indent)</td></tr>
+    </table>
+    <p style="font-size:21px;margin:18px 0 0"><strong>Exact amounts:</strong> Layout › Paragraph › Indent Left or Right. Type a value and press <kbd>Enter</kbd>.</p>
+    <div class="callout" style="margin-top:16px;font-size:20px">For hanging indents, use Paragraph dialog › Special › Hanging. Never use Enter and Tab on each line.</div></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 09-Tab-Stops-Price-List.docx. Every column is already separated by one tab, but only the default stops are set, so the columns don&#39;t line up. Select the rows and add Center, Right, Decimal, and Left stops from the ruler.</li><li>Start with the problem: students line up columns with the spacebar. With ¶ on, show the row of dots. Change the font and everything misaligns.</li><li>Default tab stops exist every 0.5&quot; even if you set none. A custom tab stop replaces the defaults to its left.</li><li>DEMO: select the lines FIRST (the #1 mistake — tab stops apply only to selected paragraphs, or the one with the cursor). Click the tab selector at the far left of the ruler to cycle types: Left, Center, Right, Decimal, Bar, then First Line Indent and Hanging Indent.</li><li>Click the ruler to place each stop, then press Tab while typing. Decimal is the showpiece for prices.</li><li>Remove a tab stop: drag it down off the ruler.</li><li><strong>The header row:</strong> a decimal tab aligns on the first period, and with no period Word aligns as if the decimal came at the end, so &#39;Price&#39; ends at the stop. Fix it by clicking in the header row ALONE, dragging the decimal stop off the ruler, and setting a Center stop at about 4.75&quot;. Say why it works: tab stops are paragraph formatting, so the header can differ from the rows below. Clicking back into a data row shows the decimal marker again, which proves it.</li></ul>">
+  <h2>Tab stops, not the spacebar</h2>
+  <p class="sub">Each tab stop tells text where to go when you press Tab, and how to line up once it gets there.</p>
+  <svg viewBox="0 0 1120 360" role="img" aria-label="Ruler with left, center, right, decimal, and bar tab stops and a spa price list aligned to them" style="width:100%;flex:1">
+    <rect x="0" y="8" width="1120" height="44" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+    <!-- markers: left 80, center 420, right 700, decimal 900, bar 990 -->
+    <g class="stroke-word" stroke-width="3" fill="none">
+      <path d="M80 22 V42 H96"/>
+      <path d="M420 22 V42 M404 42 H436"/>
+      <path d="M700 22 V42 H684"/>
+      <path d="M900 22 V42 M884 42 H916"/><circle cx="908" cy="34" r="1.5" class="svg-word"/>
+      <path d="M990 14 V46"/>
+    </g>
+    <g font-size="17" class="svg-word" text-anchor="middle">
+      <text x="88" y="76">Left</text><text x="420" y="76">Center</text><text x="692" y="76">Right</text><text x="900" y="76">Decimal</text><text x="990" y="76">Bar</text>
+      <text x="900" y="98" font-size="14" class="svg-muted" text-anchor="end">header ends at the stop</text>
+    </g>
+    <g class="stroke-mark" stroke-width="1" stroke-dasharray="3 5">
+      <line x1="80" y1="84" x2="80" y2="350"/><line x1="420" y1="84" x2="420" y2="350"/><line x1="700" y1="84" x2="700" y2="350"/><line x1="900" y1="84" x2="900" y2="350"/>
+    </g>
+    <line x1="990" y1="110" x2="990" y2="350" class="stroke-ink" stroke-width="1.5"/>
+    <g font-size="23" class="svg-ink" font-family="Source Serif 4, serif">
+      <g font-weight="600" class="svg-muted" font-size="19" font-family="Atkinson Hyperlegible, sans-serif">
+        <text x="80" y="130">Service</text><text x="420" y="130" text-anchor="middle">Room</text><text x="700" y="130" text-anchor="end">Minutes</text><text x="900" y="130" text-anchor="end">Price</text><text x="1010" y="130">Code</text>
+      </g>
+      <text x="80" y="190">Swedish massage</text><text x="420" y="190" text-anchor="middle">Garden</text><text x="700" y="190" text-anchor="end">60</text><text x="900" y="190" text-anchor="end">95</text><text x="900" y="190">.00</text><text x="1010" y="190">SM1</text>
+      <text x="80" y="250">Hydrating facial</text><text x="420" y="250" text-anchor="middle">Ocean</text><text x="700" y="250" text-anchor="end">45</text><text x="900" y="250" text-anchor="end">120</text><text x="900" y="250">.50</text><text x="1010" y="250">HF2</text>
+      <text x="80" y="310">Manicure</text><text x="420" y="310" text-anchor="middle">Sunrise suite</text><text x="700" y="310" text-anchor="end">30</text><text x="900" y="310" text-anchor="end">8</text><text x="900" y="310">.75</text><text x="1010" y="310">MN3</text>
+    </g>
+  </svg>
+  <div class="callout"><span class="warn">Select the lines first.</span> Tab stops belong to paragraphs, so they only apply where your selection or cursor is. Change type with the selector at the ruler's far left; drag a stop off the ruler to delete it.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 09-Tab-Stops-Price-List.docx, Spa Menu section. Select the four lines, open the Tabs dialog, and add a right tab stop at 6&quot; with a dot leader.</li><li>The Tabs dialog is the precise alternative to clicking the ruler: Home › Paragraph launcher › Tabs… button.</li><li>DEMO: select lines, type 6 in Tab stop position, choose Right alignment and Leader 2 (dots), then click OK. Type 'Swedish massage', Tab, '$95'.</li><li>Clicking OK sets the stop typed in the position box. Set is only needed to add several stops without closing the dialog.</li><li>Leaders are used in tables of contents, menus, programs, and indexes.</li><li>Also where you Clear or Clear All tab stops when a document inherited messy tabs.</li></ul>">
+  <h2>Leaders fill the gap</h2>
+  <p class="sub">The Tabs dialog sets a stop at an exact position and can add a leader: dots, dashes, or a line that fills the tabbed space.</p>
+  <div class="cols">
+    <div class="sheet" style="font-size:24px;line-height:2">
+      <div style="display:flex;gap:6px"><span>Swedish massage</span><span style="flex:1;border-bottom:3px dotted var(--mark);margin-bottom:14px"></span><span>$95.00</span></div>
+      <div style="display:flex;gap:6px"><span>Hydrating facial</span><span style="flex:1;border-bottom:3px dotted var(--mark);margin-bottom:14px"></span><span>$120.50</span></div>
+      <div style="display:flex;gap:6px"><span>Chapter 2 Formatting</span><span style="flex:1;border-bottom:3px dotted var(--mark);margin-bottom:14px"></span><span>47</span></div>
+      <p style="font-family:var(--sans);font-size:17px;color:var(--muted);margin:8px 0 0">One right tab stop at 6&Prime; with a dot leader</p>
+    </div>
+    <div>
+      <p><strong>In the dialog</strong> (Home › Paragraph launcher › <strong>Tabs…</strong>):</p>
+      <ul>
+        <li>Type a <strong>position</strong> in inches</li>
+        <li>Choose an <strong>alignment</strong> and a <strong>leader</strong></li>
+        <li>Click <strong>OK</strong></li>
+      </ul>
+      <div class="callout">OK sets the stop you typed. Use <strong>Set</strong> when you want to add several stops before closing, and <strong>Clear All</strong> to start over.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 10-Numbered-Lists.docx. Steps 1–2 are numbered, then comes the italic lockers note, and the next three steps are plain text. Select the plain steps, click Numbering, and catch the AutoCorrect Options smart tag before clicking elsewhere. Step 2 contains a Shift+Enter line, so it stays one item. Use the Aftercare lines for Bullets, choosing a style from the Bullets button arrow.</li><li>Scenario: numbered steps, then a paragraph of explanation, then more steps. Word starts over at 1.</li><li>DEMO (transcript path): select the second group, click Numbering, then click the AutoCorrect Options smart tag › Continue Numbering. Right-click › Continue Numbering is the backup if the tag disappears.</li><li>Quick creation tricks: type '1.' + space, or '*' + space, and Word starts the list automatically. Press Enter twice to end a list.</li><li>Each item needs its own ¶. Items separated with Shift+Enter stay one numbered item — a good tie-back to slide 3.</li></ul>">
+  <h2>Why did my list start over at 1?</h2>
+  <p class="sub">Any paragraph that isn't numbered breaks the list. Word guesses you're starting a new one, and you can tell it otherwise.</p>
+  <div class="cols">
+    <div class="sheet" style="font-size:21px">
+      <div>1.&nbsp;&nbsp;Check in at the front desk<span class="pm">¶</span></div>
+      <div>2.&nbsp;&nbsp;Change into a robe<span class="pm">¶</span></div>
+      <div style="color:var(--muted);font-style:italic;margin:8px 0">Lockers are available near the pool.<span class="pm">¶</span></div>
+      <div><span class="hl">1.</span>&nbsp;&nbsp;Wait in the relaxation lounge<span class="pm">¶</span></div>
+      <div><span class="hl">2.</span>&nbsp;&nbsp;Your therapist will meet you<span class="pm">¶</span></div>
+      <p style="font-family:var(--sans);font-size:17px;color:var(--word);margin:12px 0 0">Should be 3 and 4</p>
+    </div>
+    <div>
+      <p>Apply <strong>Numbering</strong> to the second group, then click the <strong>AutoCorrect Options</strong> smart tag that appears beside it:</p>
+      <ul>
+        <li><strong>Continue Numbering</strong> picks up where the last list stopped</li>
+        <li>After that, the same tag offers <strong>Restart Numbering</strong></li>
+      </ul>
+      <p style="font-size:21px;color:var(--muted)">The tag disappears once you click elsewhere. If you miss it, right-click the first number for the same choices.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-notes="<ul><li>Good place to use Teams chat: have students type answers before you reveal.</li><li>Click each card to reveal the answer.</li></ul>">
+  <h2>Quick check</h2>
+  <p class="sub" style="margin-bottom:20px">Type your answer in the chat, then click a card to reveal it.</p>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>Your cursor is blinking inside a paragraph with nothing selected. You click Center. What gets centered?</p><p class="ans">The whole paragraph. Alignment is paragraph formatting, so the cursor is enough.</p></div>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>SimNet says “click the Shading button arrow.” You click the paint bucket itself. What happens?</p><p class="ans">Word applies the last shading color used instead of opening the palette. The arrow opens the choices.</p></div>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>You pasted a quote from a website and it came in with a gray background and a strange font. Which paste option should you have used?</p><p class="ans">Keep Text Only. It drops all formatting from the source.</p></div>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>Your works-cited entries need every line indented except the first. What is that called, and where do you set it?</p><p class="ans">A hanging indent. Paragraph dialog › Special › Hanging, the bottom triangle on the ruler, or <kbd>Ctrl</kbd>+<kbd>T</kbd>.</p></div>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>You set a decimal tab stop, but only the first line of your price list lines up. What happened?</p><p class="ans">Only that paragraph was selected. Select all the lines, then set the tab stop.</p></div>
+</section>
+
+<!-- P2-0 -->
+<section class="slide" data-notes="<ul><li>Session 2 covers Chapters 3, 4, and 5. Same approach: skip what a button obviously does, spend the time on the ideas that explain the surprises.</li><li>Rough timing: about 5 minutes per topic with a demo, so roughly two hours with questions and a break.</li><li>Tell students the big theme of Session 2: Word is doing bookkeeping for them (fields, styles, captions, citations, tracked edits) and most confusion comes from forgetting that bookkeeping exists.</li></ul>">
+  <span class="tag">Session 2 · Chapters 3, 4, and 5</span>
+  <h2>The document builds itself</h2>
+  <p class="sub">Chapters 3 to 5 are about parts of a document Word maintains for you: page furniture, pictures and tables, and references. When they misbehave, it's almost always because Word is tracking something you can't see.</p>
+  <div class="cols">
+    <ul>
+      <li>Themes and style sets</li>
+      <li>Fields: text Word writes for you</li>
+      <li>Headers, footers, and page numbers</li>
+      <li>Page breaks, column breaks, and columns</li>
+      <li>Page-level vs. paragraph-level decoration</li>
+      <li>Printing copies and page ranges</li>
+    </ul>
+    <ul>
+      <li>Why a picture won't move</li>
+      <li>Resizing without distortion, and alt text</li>
+      <li>Tables: the Tab key, selecting, merging</li>
+      <li>Sorting, table styles, and charts</li>
+      <li>Table of contents and captions</li>
+      <li>Citations, footnotes, and the index</li>
+      <li>Track Changes and comments</li>
+    </ul>
+  </div>
+</section>
+
+<!-- P2-1 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 06-Headings-and-Styles.docx, after heading styles have been applied in Session 1.</li><li>DEMO: Design tab. Apply a theme, then a style set, then just Colors, then just Fonts. Each one is a different control on the same tab, which is why students mix them up.</li><li>The critical point: themes and style sets only change text that uses theme fonts and styles. Manually formatted text (a heading someone bolded by hand) ignores them completely. Show this by adding a hand-formatted heading and applying a new theme.</li><li>Theme = colors + fonts + effects. Style set = the look and spacing of the built-in styles. Colors and Fonts change only that part of the theme.</li><li>Themes are shared across Office, so the same theme in PowerPoint and Excel keeps a set of documents consistent.</li></ul>">
+  <h2>Themes, style sets, and why nothing changed</h2>
+  <p class="sub">All four controls live on the Design tab and all four change how the document looks. They are not the same thing.</p>
+  <div class="cols" style="grid-template-columns:1.1fr 1fr">
+    <table>
+      <tr><th>Control</th><th>Changes</th></tr>
+      <tr><td>Themes</td><td style="font-weight:400">Colors, fonts, and effects together, across Word, Excel, and PowerPoint</td></tr>
+      <tr><td>Style Sets</td><td style="font-weight:400">The look and spacing of the built-in styles: Heading 1, Normal, Quote</td></tr>
+      <tr><td>Colors</td><td style="font-weight:400">Only the theme's color palette</td></tr>
+      <tr><td>Fonts</td><td style="font-weight:400">Only the heading and body font pair</td></tr>
+    </table>
+    <div style="display:flex;flex-direction:column">
+      <div class="sheet" style="font-size:20px">
+        <div style="color:var(--word);font-weight:700;font-family:var(--sans)">Heading 1 style</div>
+        <div>Changes with the theme.</div>
+        <div style="margin-top:12px;font-weight:700;color:#444;font-family:var(--sans)">Hand-bolded heading</div>
+        <div>Ignores the theme forever.</div>
+      </div>
+      <div class="callout" style="margin-top:20px">Themes only reach text that uses <strong>theme fonts and styles</strong>. This is the payoff for using styles in Chapter 2.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-2 -->
+<section class="slide" data-notes="<ul><li>This is the single most useful idea in Session 2. A field is a placeholder that Word fills in and can refresh later.</li><li>DEMO: insert a page number, then click it. The gray shading means it is a field, not typed text. Press Alt+F9 to show the field code, then Alt+F9 again to hide it.</li><li>Date &amp; Time: point out the Update automatically checkbox. Checked means the date changes every time the document opens, which is wrong for a dated letter and right for a printed status report.</li><li>Property controls (Insert › Text › Quick Parts › Document Property) pull from File › Info, so typing in one place updates every copy in the document.</li><li>Fields that need a manual refresh: table of contents, index, bibliography. Select and press F9, or use the Update button on the References tab.</li><li>Fields are how Chapter 3 and Chapter 5 connect; mention now that the TOC later in the session is also a field.</li></ul>">
+  <h2>Fields: text Word writes for you</h2>
+  <p class="sub">Page numbers, dates, document properties, a table of contents, and a bibliography are not typed text. They are fields, and Word keeps them up to date.</p>
+  <div class="cols" style="grid-template-columns:1fr 1.2fr">
+    <div>
+      <div class="sheet" style="font-size:21px">
+        Page <span style="background:var(--word-soft);padding:1px 6px">7</span> of <span style="background:var(--word-soft);padding:1px 6px">12</span><br>
+        <span style="color:var(--muted);font-family:var(--sans);font-size:16px">Click a field and it turns gray. That's how you know Word owns it.</span>
+      </div>
+      <p style="margin-top:20px">Fields update in different ways:</p>
+      <ul style="font-size:22px">
+        <li><strong>By themselves:</strong> page numbers, property controls</li>
+        <li><strong>On open, if you let them:</strong> the date stamp, when <em>Update automatically</em> is checked</li>
+        <li><strong>Only when asked:</strong> table of contents, index, bibliography</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <table>
+        <tr><th>Field</th><th>Where it comes from</th></tr>
+        <tr><td>Page number</td><td style="font-weight:400">Header &amp; Footer tab › Page Number</td></tr>
+        <tr><td>Date stamp</td><td style="font-weight:400">Insert › Date &amp; Time</td></tr>
+        <tr><td>Title, Author</td><td style="font-weight:400">Quick Parts › Document Property, filled from File › Info</td></tr>
+        
+        <tr><td style="white-space:normal">Contents, index, bibliography</td><td style="font-weight:400">References tab</td></tr>
+      </table>
+      <div class="callout" style="margin-top:20px">Select a field and press <kbd>F9</kbd> to refresh it. Typing over a field replaces it with ordinary text.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-3 -->
+<section class="slide" data-notes="<ul><li>DEMO: double-click in the top margin to enter the header, type something, then double-click in the body to leave. Also show the Close Header and Footer button, which the transcript uses.</li><li>Header and footer content repeats on every page, so it is edited in its own area, not in the body. Students often try to type the title on page 1 and wonder why page 2 is blank.</li><li>Different First Page (Header &amp; Footer tab › Options group) is how a cover page or letterhead avoids repeating. Turn it on and show the header label change to First Page Header.</li><li>Page numbers: Header &amp; Footer › Page Number › Top or Bottom of Page. Do NOT type numbers by hand; insert one on any page and every page numbers itself.</li><li>Built-in header and footer designs are building blocks, the same mechanism as Quick Parts.</li><li>Watch out: page numbers in the header still show if the header is otherwise empty, and Remove Page Numbers is on the same menu.</li></ul>">
+  <h2>Headers and footers are a separate room</h2>
+  <p class="sub">The top and bottom margins are their own editing area. What you put there repeats on every page automatically.</p>
+  <div class="cols" style="grid-template-columns:1fr 1.05fr">
+    <svg viewBox="0 0 520 420" role="img" aria-label="Page with header area, body area, and footer area labeled" style="width:100%">
+      <rect x="60" y="10" width="400" height="400" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+      <rect x="60" y="10" width="400" height="70" class="fill-soft"/>
+      <rect x="60" y="340" width="400" height="70" class="fill-soft"/>
+      <line x1="60" y1="80" x2="460" y2="80" class="stroke-word" stroke-width="1.5" stroke-dasharray="6 5"/>
+      <line x1="60" y1="340" x2="460" y2="340" class="stroke-word" stroke-width="1.5" stroke-dasharray="6 5"/>
+      <text x="80" y="52" font-size="17" class="svg-word" font-weight="700">Header: repeats on every page</text>
+      <text x="80" y="382" font-size="17" class="svg-word" font-weight="700">Footer: page 3 of 8</text>
+      <g class="fill-soft" opacity=".8">
+        <rect x="90" y="120" width="340" height="12"/><rect x="90" y="146" width="340" height="12"/><rect x="90" y="172" width="250" height="12"/>
+        <rect x="90" y="214" width="340" height="12"/><rect x="90" y="240" width="340" height="12"/><rect x="90" y="266" width="180" height="12"/>
+      </g>
+      <text x="90" y="305" font-size="16" class="svg-muted">Body: what you type normally</text>
+    </svg>
+    <div style="display:flex;flex-direction:column">
+      <ul>
+        <li><strong>Get in:</strong> double-click the top or bottom margin, or Insert › Header</li>
+        <li><strong>Get out:</strong> double-click the body, or click <strong>Close Header and Footer</strong></li>
+        <li><strong>Skip the cover page:</strong> check <strong>Different First Page</strong> in the Options group</li>
+        <li><strong>Page numbers:</strong> Header &amp; Footer › Page Number. Insert once and every page numbers itself</li>
+      </ul>
+      <div class="callout" style="margin-top:auto">Never type page numbers by hand. Add a page in the middle and every number after it would be wrong.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-4 -->
+<section class="slide" data-notes="<ul><li>DEMO with ¶ on: press Enter repeatedly to push a heading to the next page, then add a sentence above it and watch the heading drift. Undo, then press Ctrl+Enter and add the same sentence: the break holds.</li><li>Page break: Ctrl+Enter, or Layout › Breaks › Page, or Insert › Page Break. With formatting marks on, it shows as a dotted line labeled Page Break.</li><li>Columns: Layout › Columns. In More Columns, the Apply to box is the part students miss. Whole document vs. This point forward decides whether the whole paper turns into two columns.</li><li>Column break: Layout › Breaks › Column pushes the following text to the top of the next column. Useful when the first column runs long.</li><li>To end columns and go back to one, insert a break and set Columns to One from that point forward.</li></ul>">
+  <h2>Let Word decide where the page ends</h2>
+  <p class="sub">Pressing Enter until text falls onto the next page works until you add a sentence above it. A break is an instruction, not padding.</p>
+  <div class="cols">
+    <div>
+      <div class="sheet" style="font-size:20px">
+        The spa opened in 2019.<span class="pm">¶</span><br>
+        <span class="pm">¶ ¶ ¶ ¶ ¶ ¶</span><br>
+        <span style="color:var(--warn);font-family:var(--sans);font-size:16px">Six empty paragraphs. Add a line above and everything shifts.</span>
+      </div>
+      <div class="sheet" style="font-size:20px;margin-top:18px">
+        The spa opened in 2019.<span class="pm">¶</span><br>
+        <span style="color:var(--mark);font-family:var(--sans);font-size:15px;border-top:1px dotted var(--mark);display:block;margin-top:6px">· · · · · Page Break · · · · ·</span>
+        <span style="color:var(--word);font-family:var(--sans);font-size:16px">Holds no matter what you add above it. <kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <p><strong>Columns</strong> (Layout › Columns) reflow the text automatically. Two settings matter:</p>
+      <table>
+        <tr><th>Setting</th><th>Why it matters</th></tr>
+        <tr><td>Apply to</td><td style="font-weight:400">In More Columns: <em>Whole document</em> or <em>This point forward</em>, so one part can be two columns</td></tr>
+        <tr><td>Column break</td><td style="font-weight:400">Layout › Breaks › Column pushes the rest to the top of the next column</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- P2-5 -->
+<section class="slide" data-notes="<ul><li>Ties directly back to the shading vs. highlighting slide in Session 1. Same idea, one level up: some formatting belongs to the page, not the paragraph.</li><li>DEMO: Design tab › Page Background group. Add a watermark (DRAFT), a page color, and a page border. Then compare with a paragraph border from the Home tab: one surrounds the sheet, the other surrounds the paragraph.</li><li>Page Borders opens the Borders and Shading dialog on the Page Border tab. Point out the Apply to box: Whole document or This section.</li><li>Page color is screen-only by default. It does not print unless the user turns on background printing in Word Options › Display, which is worth warning students about before they submit a colored page.</li><li>Watermarks live in the header layer, which is why they appear on every page and why you edit them from Design, not by clicking them.</li></ul>">
+  <h2>Decorating the page, not the paragraph</h2>
+  <p class="sub">Chapter 2 put borders and shading around paragraphs. Chapter 3 does the same thing to the whole sheet, from a different tab.</p>
+  <div class="cols">
+    <table>
+      <tr><th>Feature</th><th>Where</th><th>Applies to</th></tr>
+      <tr><td>Watermark</td><td style="font-weight:400">Design › Page Background</td><td style="font-weight:400">Behind text, every page</td></tr>
+      <tr><td>Page Color</td><td style="font-weight:400">Design › Page Background</td><td style="font-weight:400">The whole sheet, on screen</td></tr>
+      <tr><td>Page Borders</td><td style="font-weight:400">Design › Page Background</td><td style="font-weight:400">The page edge. Check <em>Apply to</em></td></tr>
+      <tr><td>Borders &amp; Shading</td><td style="font-weight:400">Home › Paragraph</td><td style="font-weight:400">One paragraph</td></tr>
+      <tr><td>Cover Page</td><td style="font-weight:400">Insert › Pages</td><td style="font-weight:400">Adds page 1 and pushes the rest down</td></tr>
+    </table>
+    <div style="display:flex;flex-direction:column">
+      <svg viewBox="0 0 420 300" role="img" aria-label="A page border surrounds the whole sheet while a paragraph border surrounds one paragraph" style="width:100%">
+        <rect x="10" y="10" width="400" height="280" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+        <rect x="26" y="26" width="368" height="248" fill="none" class="stroke-word" stroke-width="3"/>
+        <g class="fill-soft"><rect x="52" y="60" width="316" height="12"/><rect x="52" y="84" width="316" height="12"/></g>
+        <rect x="44" y="120" width="332" height="76" fill="none" class="stroke-ink" stroke-width="2"/>
+        <g class="fill-soft"><rect x="60" y="140" width="300" height="12"/><rect x="60" y="164" width="220" height="12"/></g>
+        <g class="fill-soft"><rect x="52" y="224" width="316" height="12"/><rect x="52" y="248" width="200" height="12"/></g>
+        <text x="200" y="20" font-size="14" class="svg-word" text-anchor="middle">page border</text>
+      </svg>
+      <div class="callout" style="margin-top:16px;font-size:20px">Page color shows on screen but does not print unless the student changes a Word option. Warn them before they submit.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-6 -->
+<section class="slide" data-notes="<ul><li>Short slide, but these are the settings students get wrong on a real assignment.</li><li>DEMO File › Print. Type 1-3, 5 in the Pages box and point to the preview. Show Print All Pages › Custom Print, and Print Current Page.</li><li>Collated vs. Uncollated: with 3 copies of a 4-page handout, Collated gives 1234 1234 1234 and Uncollated gives 111 222 333 344. Uncollated is faster on some printers and fine if you are stapling sets yourself.</li><li>Also point out Print One Sided vs. Print on Both Sides, and that the preview is the last chance to catch a stray blank page caused by extra paragraph marks.</li></ul>">
+  <h2>Printing: two boxes people get wrong</h2>
+  <p class="sub">File › Print, or <kbd>Ctrl</kbd>+<kbd>P</kbd>. The preview on the right updates as you change these.</p>
+  <div class="cols">
+    <div>
+      <p><strong>Pages box</strong> takes a list, not just one number:</p>
+      <table>
+        <tr><th>Type</th><th>Prints</th></tr>
+        <tr><td>5</td><td style="font-weight:400">Page 5 only</td></tr>
+        <tr><td>1-3</td><td style="font-weight:400">Pages 1 through 3</td></tr>
+        <tr><td>1-3, 5, 8-10</td><td style="font-weight:400">All of those, in one job</td></tr>
+      </table>
+    </div>
+    <div>
+      <p><strong>Collated or not</strong>, for three copies of a four-page handout:</p>
+      <div class="sheet" style="font-size:21px">
+        <div><strong>Collated</strong><br><span style="font-family:var(--sans);color:var(--muted);font-size:18px">1 2 3 4 · 1 2 3 4 · 1 2 3 4</span></div>
+        <div style="margin-top:14px"><strong>Uncollated</strong><br><span style="font-family:var(--sans);color:var(--muted);font-size:18px">1 1 1 · 2 2 2 · 3 3 3 · 4 4 4</span></div>
+      </div>
+      <p style="font-size:21px;color:var(--muted);margin-top:14px">Collated hands out ready-to-staple sets. Uncollated is for sorting yourself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-7 -->
+<section class="slide" data-notes="<ul><li><strong>The most common picture complaint:</strong> &#39;I can&#39;t move it.&#39; The picture is In Line with Text, which means Word treats it as one giant letter in the paragraph. It can only sit where a character could sit.</li><li>DEMO: insert a picture, try to drag it, and show it snapping back into the line. Then click the Layout Options button that appears at the top-right corner of the picture and choose Square. Now it moves freely.</li><li>Layout Options also has Move with text vs. Fix position on page. Move with text keeps the picture beside its paragraph as the document grows, which is usually what students want.</li><li>Picture Format › Arrange › Position gives nine preset spots with wrapping already applied, which the transcript uses.</li><li>Behind Text is how a picture becomes a background; In Front of Text will cover the words.</li><li>Same rules apply to icons, shapes, SmartArt, and WordArt.</li></ul>">
+  <h2>Why the picture won't move</h2>
+  <p class="sub">A newly inserted picture is <em>In Line with Text</em>. Word treats it as a single, very large character, so it can only go where a letter could go.</p>
+  <div class="cols" style="grid-template-columns:1fr 1.1fr">
+    <svg viewBox="0 0 480 330" role="img" aria-label="An inline picture sits in the line of text while a square-wrapped picture has text flowing around it" style="width:100%">
+      <text x="10" y="26" font-size="16" class="svg-muted">In Line with Text</text>
+      <rect x="10" y="38" width="460" height="120" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+      <g class="fill-soft"><rect x="26" y="54" width="180" height="11"/></g>
+      <rect x="26" y="74" width="120" height="66" class="fill-soft stroke-word" stroke-width="2"/>
+      <g class="fill-soft"><rect x="26" y="146" width="0" height="0"/></g>
+      <text x="160" y="112" font-size="14" class="svg-muted">nothing fits beside it</text>
+      <text x="10" y="196" font-size="16" class="svg-muted">Square wrapping</text>
+      <rect x="10" y="208" width="460" height="112" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+      <rect x="26" y="224" width="120" height="80" class="fill-soft stroke-word" stroke-width="2"/>
+      <g class="fill-soft">
+        <rect x="160" y="228" width="292" height="11"/><rect x="160" y="248" width="292" height="11"/>
+        <rect x="160" y="268" width="292" height="11"/><rect x="160" y="288" width="230" height="11"/>
+      </g>
+    </svg>
+    <div style="display:flex;flex-direction:column">
+      <p>Click the picture, then the <strong>Layout Options</strong> button at its top-right corner.</p>
+      <table>
+        <tr><th>Option</th><th>Effect</th></tr>
+        <tr><td>In Line with Text</td><td style="font-weight:400">Stuck in the paragraph. The default</td></tr>
+        <tr><td>Square / Tight</td><td style="font-weight:400">Text flows around it. Drag it anywhere</td></tr>
+        <tr><td>Behind Text</td><td style="font-weight:400">Becomes a background image</td></tr>
+        </table>
+      <div class="callout" style="margin-top:auto;font-size:20px">Picture Format › Position applies a spot and a wrapping style in one click.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-8 -->
+<section class="slide" data-notes="<ul><li>DEMO: drag a side handle to stretch a photo of a face, so the distortion is obvious, then undo and drag a corner handle.</li><li>Corner handles keep the proportions. Side and top handles stretch one direction only. For exact sizes, use the Height and Width boxes in Picture Format › Size; with Lock aspect ratio on, changing one updates the other.</li><li>The rotation handle is the curved arrow above the picture. Hold Shift while rotating to snap to 15-degree steps.</li><li>Alt text (Picture Format › Alt Text, or right-click › View Alt Text): a written description read aloud by screen readers. Word can generate a description, but it is often wrong, so students should write their own. Mark as decorative is for images that add nothing.</li><li>Tell students alt text is required in many workplaces and on public websites, and that SimNet grades it, so a blank box fails.</li><li>Stock images and icons come from Insert › Pictures › Stock Images, licensed by Microsoft for personal and commercial use, which is safer than a web image search.</li></ul>">
+  <h2>Resize without squashing, and write alt text</h2>
+  <p class="sub">Two small habits that separate a finished document from a homemade one.</p>
+  <div class="cols">
+    <div>
+      <svg viewBox="0 0 460 250" role="img" aria-label="Corner handles keep proportions, side handles stretch the image" style="width:100%">
+        <rect x="20" y="40" width="150" height="150" class="fill-soft stroke-word" stroke-width="2"/>
+        <g fill="#FFFFFF" class="stroke-word" stroke-width="2">
+          <circle cx="20" cy="40" r="7"/><circle cx="170" cy="40" r="7"/><circle cx="20" cy="190" r="7"/><circle cx="170" cy="190" r="7"/>
+          <circle cx="95" cy="40" r="7"/><circle cx="95" cy="190" r="7"/><circle cx="20" cy="115" r="7"/><circle cx="170" cy="115" r="7"/>
+        </g>
+        <text x="95" y="222" font-size="15" class="svg-word" text-anchor="middle">corners keep proportions</text>
+        <rect x="250" y="70" width="190" height="90" class="fill-soft stroke-mark" stroke-width="2"/>
+        <text x="345" y="192" font-size="15" class="svg-muted" text-anchor="middle">a side handle stretched this</text>
+      </svg>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <p><strong>Alt text</strong> describes the picture for someone using a screen reader, and shows if the image fails to load.</p>
+      <ul style="font-size:22px">
+        <li>Right-click the picture › <strong>View Alt Text</strong></li>
+        <li>Write one clear sentence: <em>Therapist applying hot stones to a guest's back</em></li>
+        <li>Word can generate a description. Read it: they are often wrong</li>
+        <li><strong>Mark as decorative</strong> for images that carry no information</li>
+      </ul>
+      <div class="callout" style="margin-top:auto;font-size:20px">SimNet grades alt text, and many workplaces require it. A blank box is a fail either way.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-9 -->
+<section class="slide" data-notes="<ul><li>DEMO: create a 4x3 table, then navigate with Tab and Shift+Tab. In the last cell, press Tab once more: a new row appears. This is the fastest way to build a table and the thing students never discover.</li><li>Warn that pressing Enter inside a cell makes the row taller instead of moving on.</li><li>Selecting: click the small arrow above a column, click just left of a row, or use the move handle at the top-left corner to select the whole table. The Layout tab also has a Select button.</li><li>The Delete key only clears contents. To remove the row itself: Layout › Delete › Delete Rows. This trips up nearly everyone.</li><li>Insert rows quickly with the small plus that appears when hovering between rows on the left edge.</li><li>Merge and Split: select cells, Layout › Merge Cells, usually for a title row across the top. Split Cells asks for a number of columns and rows.</li><li>AutoFit (Layout › Cell Size › AutoFit): AutoFit Contents shrinks columns to the text, AutoFit Window stretches the table to the margins, Fixed Column Width stops Word from resizing as you type.</li><li>Two tabs appear when the cursor is in a table: Table Design for looks, Layout for structure.</li></ul>">
+  <h2>Tables: the Tab key does the work</h2>
+  <p class="sub">Two contextual tabs appear when the cursor is inside a table. Layout handles structure, Table Design handles looks.</p>
+  <div class="cols">
+    <table>
+      <tr><th>To do this</th><th>Do this</th></tr>
+      <tr><td>Next cell</td><td style="font-weight:400"><kbd>Tab</kbd>. <kbd>Shift</kbd>+<kbd>Tab</kbd> goes back</td></tr>
+      <tr><td>Add a row at the end</td><td style="font-weight:400">Press <kbd>Tab</kbd> in the last cell</td></tr>
+      <tr><td>Select a column</td><td style="font-weight:400">Click the small arrow above it</td></tr>
+      <tr><td>Select a row</td><td style="font-weight:400">Click just outside its left edge</td></tr>
+      <tr><td>Combine cells</td><td style="font-weight:400">Select, then Layout › Merge Cells</td></tr>
+      <tr><td>Fit columns to text</td><td style="font-weight:400">Layout › AutoFit › AutoFit Contents</td></tr>
+    </table>
+    <div style="display:flex;flex-direction:column">
+      <div class="callout" style="margin-bottom:20px"><span class="warn">Delete only empties cells.</span> To remove the row or column itself, use Layout › Delete › Delete Rows or Delete Columns.</div>
+      <p><strong>Enter inside a cell</strong> adds a line and makes the row taller. It does not move to the next cell.</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-10 -->
+<section class="slide" data-notes="<ul><li>DEMO sorting: Layout › Data › Sort. In the Sort dialog, choose the column in Sort by, then Ascending or Descending. The Header row radio button at the bottom is the part students miss; without it, the heading row gets sorted into the data.</li><li>Sorting rewrites the table. There is no live link, so Ctrl+Z is the only undo.</li><li>DEMO table styles: Table Design › Table Styles gallery, then the Table Style Options checkboxes to the left: Header Row, Total Row, Banded Rows, First Column. The same style looks different depending on which boxes are checked, which explains why a student&#39;s table does not match the book&#39;s screenshot.</li><li>Borders: Table Design › Borders. Border Styles sets the pen, then the Border Painter lets you draw borders on individual edges; press Esc when done.</li><li>Charts: Insert › Chart opens a small spreadsheet window over the document. Type over the sample data, close the window, and the chart updates. To edit later: select the chart, Chart Design › Edit Data. Point out the + button for chart elements like titles and labels.</li></ul>">
+  <h2>Sorting, styles, and charts</h2>
+  <p class="sub">Three places where Word quietly makes a decision for you.</p>
+  <div class="cols" style="grid-template-columns:1fr 1fr">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div>
+        <p style="font-weight:700;font-size:26px">Sorting</p>
+        <p style="font-size:22px">Layout › Sort. Choose the column, then Ascending or Descending. Check <strong>Header row</strong> so your headings stay on top instead of being sorted with the data.</p>
+      </div>
+      <div>
+        <p style="font-weight:700;font-size:26px">Table styles</p>
+        <p style="font-size:22px">The <strong>Table Style Options</strong> checkboxes (Header Row, Banded Rows, First Column) change how the chosen style draws itself. Same style, different look.</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <p style="font-weight:700;font-size:26px">Charts</p>
+      <p style="font-size:22px">Insert › Chart opens a small spreadsheet window. Type over the sample data, then close that window. The chart stays in the document.</p>
+      <div class="sheet" style="font-size:20px;margin-top:8px">
+        <div style="color:var(--muted);font-family:var(--sans);font-size:16px">Chart in Microsoft Word</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:8px">
+          <div style="background:var(--word-soft);padding:4px 8px">Service</div><div style="background:var(--word-soft);padding:4px 8px">Q1</div><div style="background:var(--word-soft);padding:4px 8px">Q2</div>
+          <div style="padding:4px 8px">Massage</div><div style="padding:4px 8px">120</div><div style="padding:4px 8px">160</div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:16px;font-size:20px">To change the numbers later: select the chart, then Chart Design › <strong>Edit Data</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-11 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 06-Headings-and-Styles.docx with heading styles already applied.</li><li>DEMO: References › Table of Contents › Automatic Table 1. It appears instantly because the headings are styled. Then delete a heading style from one section and show that entry vanish after an update.</li><li>Update Table gives two choices: Update page numbers only (keeps your manual edits to the wording, which you should not be making) and Update entire table (rebuilds from the headings). Teach Update entire table.</li><li>A TOC does not refresh itself. Students print a paper with wrong page numbers because they never pressed Update.</li><li>Custom Table of Contents is where the tab leader style is chosen, which connects back to the Tabs dialog from Session 1.</li><li>Captions: select the figure or table, References › Insert Caption. Choose Figure or Table, pick above or below, type a description. Numbering is automatic, so inserting a new Figure 2 renumbers everything after it.</li></ul>">
+  <h2>A table of contents is a field, not a list</h2>
+  <p class="sub">Word builds it from heading styles, then leaves it frozen until you tell it to update.</p>
+  <div class="cols">
+    <div>
+      <div class="sheet" style="font-size:21px;line-height:1.9">
+        <div style="display:flex;gap:6px"><span>Massage Therapy</span><span style="flex:1;border-bottom:3px dotted var(--mark);margin-bottom:12px"></span><span>2</span></div>
+        <div style="display:flex;gap:6px;padding-left:24px"><span>Swedish Massage</span><span style="flex:1;border-bottom:3px dotted var(--mark);margin-bottom:12px"></span><span>2</span></div>
+        <div style="display:flex;gap:6px"><span>Facials</span><span style="flex:1;border-bottom:3px dotted var(--mark);margin-bottom:12px"></span><span>4</span></div>
+        <p style="font-family:var(--sans);font-size:17px;color:var(--muted);margin:6px 0 0">Heading 1 and Heading 2 became the two levels. Nothing here was typed.</p>
+      </div>
+      <div class="callout" style="margin-top:18px">No heading styles, no table of contents. This is the reason Chapter 2 spends a skill on styles.</div>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <table>
+        <tr><th>Step</th><th>Where</th></tr>
+        <tr><td>Insert</td><td style="font-weight:400">References › Table of Contents › Automatic Table 1</td></tr>
+        <tr><td>Refresh</td><td style="font-weight:400">Click the table, then <strong>Update Table</strong></td></tr>
+        <tr><td>Which update?</td><td style="font-weight:400"><em>Page numbers only</em> keeps the old wording. <em>Entire table</em> rebuilds from your headings</td></tr>
+        <tr><td>Captions</td><td style="font-weight:400">Select the figure, References › Insert Caption. Numbering is automatic</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- P2-12 -->
+<section class="slide" data-notes="<ul><li>Order matters: pick the style first, then add sources, then insert the bibliography. Changing the style afterward reformats every citation, which is the payoff.</li><li>DEMO: References › Style › APA. Insert Citation › Add New Source, fill the dialog, and a short citation appears. Insert a second one. Then switch the style to MLA and show every citation change.</li><li>Add New Placeholder is for when you do not have the details yet; the placeholder shows in the Source Manager with a question mark until you fill it in.</li><li>Source Manager (Manage Sources): the Master list follows you from document to document on that computer; the Current list belongs to this document. Copy moves a source between them. This is the part students find confusing, and it explains why a source from last semester is still offered.</li><li>Bibliography is a building block and a field: References › Bibliography › Works Cited. If you add a source later, click the bibliography and press Update Citations and Bibliography.</li><li>Tie back to Session 1: the entries get hanging indents automatically, which is what we built by hand in 08-Indents-Works-Cited.docx.</li></ul>">
+  <h2>Citations: style first, then sources</h2>
+  <p class="sub">Word stores the facts about a source once, then formats them however the assignment requires.</p>
+  <div class="cols" style="grid-template-columns:1.15fr 1fr">
+    <div>
+      <svg viewBox="0 0 560 260" role="img" aria-label="One source record produces both an in-text citation and a bibliography entry" style="width:100%">
+        <rect x="10" y="80" width="200" height="100" rx="6" class="fill-soft stroke-word" stroke-width="2"/>
+        <text x="110" y="120" text-anchor="middle" font-size="19" font-weight="700" class="svg-word">Source record</text>
+        <text x="110" y="148" text-anchor="middle" font-size="15" class="svg-muted">author, title, year</text>
+        <g class="stroke-word" stroke-width="2" fill="none"><path d="M210 110 L330 60"/><path d="M210 150 L330 200"/></g>
+        <rect x="330" y="30" width="220" height="62" rx="6" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+        <text x="345" y="68" font-size="18" class="svg-ink" font-family="Source Serif 4, serif">(Alvarez, 2024)</text>
+        <rect x="330" y="168" width="220" height="72" rx="6" class="fill-sheet stroke-rule" stroke-width="1.5"/>
+        <text x="345" y="198" font-size="15" class="svg-ink" font-family="Source Serif 4, serif">Alvarez, D. (2024).</text>
+        <text x="360" y="220" font-size="15" class="svg-ink" font-family="Source Serif 4, serif">The business of wellness.</text>
+      </svg>
+      <div class="callout" style="margin-top:12px">Switch References › Style from APA to MLA and every citation reformats itself.</div>
+    </div>
+    <table>
+      <tr><th>Tool</th><th>What it holds</th></tr>
+      <tr><td>Insert Citation</td><td style="font-weight:400">Add a new source, or reuse one already in this document</td></tr>
+      <tr><td>Source Manager</td><td style="font-weight:400"><strong>Master list:</strong> every source on this computer.<br><strong>Current list:</strong> just this document</td></tr>
+      <tr><td>Bibliography</td><td style="font-weight:400">A field. Add a source later, then click <em>Update Citations and Bibliography</em></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- P2-13 -->
+<section class="slide" data-notes="<ul><li>Footnotes: References › Insert Footnote, or Ctrl+Alt+F. The note goes at the bottom of the same page, and numbering renumbers itself if you insert one earlier. Endnotes (Ctrl+Alt+D) collect at the end of the document.</li><li>Converting: click the dialog launcher in the Footnotes group, then the Convert button, as the transcript does.</li><li>DEMO the renumbering: insert a footnote before an existing one and watch the numbers shift. Deleting the superscript number in the text deletes the note itself; deleting the note text at the bottom does not remove the reference.</li><li>Index: select a word, References › Mark Entry (Alt+Shift+X), then Mark or Mark All. Word inserts a hidden XE field and turns on formatting marks, so the document suddenly looks broken, with text shifting position. That is expected. Turn Show/Hide off to see the real layout.</li><li>Marking is only half the job. Insert Index puts the index where the cursor is, usually at the end after a page break. Mark more entries later and you must click Update Index.</li><li>Keep this slide brisk. The goal is recognition, since SimNet walks them through the steps.</li></ul>">
+  <h2>Notes at the bottom, entries in the back</h2>
+  <p class="sub">Both features hide something in the document that explains the odd behavior students report.</p>
+  <div class="cols">
+    <div>
+      <p style="font-weight:700;font-size:26px">Footnotes and endnotes</p>
+      <table>
+        <tr><th></th><th>Appears</th><th>Shortcut</th></tr>
+        <tr><td>Footnote</td><td style="font-weight:400">Bottom of the same page</td><td style="font-weight:400"><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd></td></tr>
+        <tr><td>Endnote</td><td style="font-weight:400">End of the document</td><td style="font-weight:400"><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>D</kbd></td></tr>
+      </table>
+      <p style="font-size:21px;margin-top:14px">Numbering is automatic. Delete the superscript number in the text and the note disappears with it.</p>
+    </div>
+    <div>
+      <p style="font-weight:700;font-size:26px">Marking index entries</p>
+      <div class="sheet" style="font-size:20px">
+        The <span style="background:var(--word-soft)">courtyard</span><span class="pm">{ XE "courtyard" }</span> is open daily.
+      </div>
+      <p style="font-size:21px;margin-top:14px">Mark Entry hides a code in the document and switches formatting marks on, so the page looks like it fell apart. It didn't.</p>
+      <div class="callout" style="font-size:20px">Mark everything first, then Insert Index. Mark more later and you must click <strong>Update Index</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-14 -->
+<section class="slide" data-notes="<ul><li><strong>The trap:</strong> Display for Review changes what you see, not what is in the file. A student sets No Markup, thinks the edits are gone, and submits a document still full of tracked changes and the reviewer&#39;s name.</li><li>DEMO: turn on Track Changes, edit a paragraph, then cycle Simple Markup, All Markup, No Markup, Original. Save and reopen in All Markup to prove the changes are still there.</li><li>To actually remove them: Review › Changes › Accept or Reject, one at a time or Accept All Changes. Only then is the document clean.</li><li>Before submitting, File › Info › Check for Issues › Inspect Document also finds leftover comments and tracked changes.</li><li>Lock Tracking (Track Changes button arrow › Lock Tracking) asks for a password so a collaborator cannot turn tracking off. It is a deterrent, not real security.</li><li>Comments: Review › New Comment, or Ctrl+Alt+M. Reply keeps the conversation together. Resolve grays the thread but keeps it; Delete removes it. Teach Resolve for group work and Delete before submitting.</li></ul>">
+  <h2>No Markup does not mean no changes</h2>
+  <p class="sub">The Display for Review box on the Review tab changes your view only. The tracked edits stay in the file until you accept or reject them.</p>
+  <div class="cols" style="grid-template-columns:1.1fr 1fr">
+    <table>
+      <tr><th>Display for Review</th><th>You see</th></tr>
+      <tr><td>Simple Markup</td><td style="font-weight:400">The finished text, with a change bar in the margin</td></tr>
+      <tr><td>All Markup</td><td style="font-weight:400">Every insertion, deletion, and who made it</td></tr>
+      <tr><td class="warn">No Markup</td><td style="font-weight:400">The document as if everything were accepted. <span class="warn">The changes are still there.</span></td></tr>
+      <tr><td>Original</td><td style="font-weight:400">The document before any edits</td></tr>
+    </table>
+    <div style="display:flex;flex-direction:column">
+      <div class="callout" style="margin-bottom:18px">To really remove them: Review › <strong>Accept</strong> or <strong>Reject</strong>, one at a time or all at once.</div>
+      <p><strong>Comments</strong> (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>M</kbd>): <strong>Reply</strong> keeps a conversation together. <strong>Resolve</strong> grays it out but keeps it. <strong>Delete</strong> removes it.</p>
+      <p style="font-size:21px;color:var(--muted)">Before submitting anything: File › Info › Check for Issues › Inspect Document finds leftover comments and changes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-15 -->
+<section class="slide" data-notes="<ul><li>Same format as the Session 1 check. Have students answer in Teams chat before revealing.</li></ul>">
+  <h2>Quick check: Session 2</h2>
+  <p class="sub" style="margin-bottom:20px">Type your answer in the chat, then click a card to reveal it.</p>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>You applied a new theme, but three of your headings didn't change. Why not?</p><p class="ans">They were formatted by hand instead of with heading styles. Themes only reach text using theme fonts and styles.</p></div>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>You added two pages in the middle of your paper. What has to happen before you print?</p><p class="ans">Update the table of contents, and any index or bibliography. They're fields and don't refresh themselves.</p></div>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>You inserted a picture and it won't move anywhere on the page. What's wrong?</p><p class="ans">It's In Line with Text. Use Layout Options and pick Square or Tight.</p></div>
+  <div class="q" tabindex="0" role="button" aria-expanded="false"><p>Your instructor can still see every edit you made, even though you set Display for Review to No Markup. Why?</p><p class="ans">No Markup only hides them. The changes are still in the file until you accept or reject them.</p></div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-notes="<ul><li><strong>Sample file:</strong> 11-Guest-Guide-Views-Print.docx (three pages). Switch among Read Mode, Web Layout, and Print Layout from the status bar. In Read Mode, point out that the Ribbon disappears and you move between screens with the side arrows. Then open Review › Word Count and File › Print to show the preview, page count, and printer name.</li><li>Remind: SimNet requires Let Me Try mode for credit; Show Me and Guide Me are for practice.</li><li>Assignments open this week and are due in two weeks.</li><li>Encourage students to leave ¶ turned on while they work through SimNet so they can see what the steps are doing.</li></ul>">
+  <h2>Before you start the SimNet chapters</h2>
+  <p class="sub">Every skill from Chapters 1 to 5 is in SimNet, including the easy ones we skipped.</p>
+  <ul style="max-width:860px">
+    <li>Leave <strong>¶ Show/Hide</strong> on while you practice. Most “why did that happen?” moments explain themselves.</li>
+    <li>Read each step's opening words. <em>Verify the text is selected</em> means select it. <em>Verify the cursor is placed</em> means just click inside the paragraph.</li>
+    <li>If the Ribbon disappears, you're in Read Mode. Click the Print Layout icon at the bottom right of the window.</li>
+    <li>Use Show Me and Guide Me to learn. Only <strong>Let Me Try</strong> counts for credit.</li>
+    <li>When something looks broken, ask what Word is tracking: a ¶, a wrapping setting, or a field that needs updating.</li>
+    <li>Stuck? Use Circle In, or book a time with me through the appointment link in Canvas.</li>
+  </ul>
+  <div class="big-mark" aria-hidden="true" style="top:auto;bottom:50px;font-size:150px">¶</div>
+</section>
+
+</div></div>
+
+<aside id="notes" aria-live="polite"><h3>Speaker notes · slide <span id="nnum"></span></h3><div id="nbody"></div></aside>
+<div id="controls">
+  <button id="prev" aria-label="Previous slide">‹</button>
+  <button id="count" aria-label="Toggle speaker notes">1 / 15</button>
+  <button id="next" aria-label="Next slide">›</button>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0, stage=document.getElementById('stage');
+  try{var s=parseInt(sessionStorage.getItem('wordDeckSlide'),10); if(!isNaN(s)&&s>=0&&s<slides.length) i=s;}catch(e){}
+  slides.forEach(function(sl){
+    var m=(sl.getAttribute('data-notes')||'').match(/Sample file:<\/strong>[^0-9]*?(\d\d-[A-Za-z-]+\.docx)/);
+    if(m){var d=document.createElement('div');d.className='demo';d.innerHTML='Demo in Word: <b>'+m[1]+'</b>';sl.appendChild(d);}
+  });
+  function fit(){
+    var notesH=document.getElementById('notes').classList.contains('show')?document.getElementById('notes').offsetHeight:0;
+    var sc=Math.min(window.innerWidth/1280,(window.innerHeight-notesH)/720)*0.97;
+    stage.style.transform='scale('+sc+')';
+    document.getElementById('viewport').style.bottom=notesH+'px';
+  }
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){s.classList.toggle('active',k===i)});
+    document.getElementById('count').textContent=(i+1)+' / '+slides.length;
+    document.getElementById('bar').style.width=((i+1)/slides.length*100)+'%';
+    document.getElementById('nnum').textContent=i+1;
+    document.getElementById('nbody').innerHTML=slides[i].getAttribute('data-notes')||'';
+    try{sessionStorage.setItem('wordDeckSlide',i)}catch(e){}
+    paintPresenter();
+    fit();
+  }
+  var pw=null;
+  window.__deckShow=function(n){show(n)};
+  function slideTitle(k){
+    var h=slides[k].querySelector('h1,h2');
+    return h?h.textContent:'Slide '+(k+1);
+  }
+  function openPresenter(){
+    pw=window.open('','wordDeckPresenter','width=980,height=760');
+    if(!pw){alert('Your browser blocked the presenter window. Allow pop-ups for this page and press P again.');return;}
+    pw.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>Presenter notes</title>'+
+      '<style>body{margin:0;font-family:system-ui,sans-serif;background:#14202b;color:#eef2f6}'+
+      'header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 24px;background:#0d1720;border-bottom:3px solid #4c8ce0}'+
+      'h1{font-size:22px;margin:0}#pn{font-size:14px;color:#9fb0c2}'+
+      '#body{padding:20px 24px 90px}#body ul{padding-left:22px;line-height:1.5;font-size:17px}#body li{margin-bottom:10px}'+
+      '#next{color:#9fb0c2;font-size:15px;padding:0 24px 20px}'+
+      'footer{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;padding:12px 24px;background:#0d1720;border-top:1px solid #2b3b4c}'+
+      'button{font:inherit;font-size:16px;padding:8px 20px;border-radius:8px;border:1px solid #3b5a7e;background:#1b2a39;color:#eef2f6;cursor:pointer}'+
+      '</style></head><body><header><h1 id="pt"></h1><span id="pn"></span></header>'+
+      '<div id="body"></div><div id="next"></div>'+
+      '<footer><button id="pp">&lsaquo; Prev</button><button id="pnx">Next &rsaquo;</button></footer></body></html>');
+    pw.document.close();
+    pw.document.getElementById('pp').onclick=function(){if(window.opener!==pw)show(i-1)};
+    pw.document.getElementById('pnx').onclick=function(){show(i+1)};
+    pw.document.addEventListener('keydown',function(e){
+      if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();show(i+1)}
+      else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();show(i-1)}
+    });
+    pw.addEventListener('beforeunload',function(){pw=null});
+    paintPresenter();
+  }
+  function paintPresenter(){
+    if(!pw||pw.closed){return;}
+    var d=pw.document;
+    if(!d.getElementById('pt')){return;}
+    d.getElementById('pt').textContent=slideTitle(i);
+    d.getElementById('pn').textContent='Slide '+(i+1)+' of '+slides.length;
+    d.getElementById('body').innerHTML=slides[i].getAttribute('data-notes')||'<p>No notes for this slide.</p>';
+    d.getElementById('next').innerHTML=(i+1<slides.length)?('Next: '+slideTitle(i+1)):'End of deck';
+  }
+  function toggleNotes(){document.getElementById('notes').classList.toggle('show');fit();}
+  document.addEventListener('keydown',function(e){
+    if(e.target.classList&&e.target.classList.contains('q')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();reveal(e.target);return;}
+    if(['ArrowRight','PageDown',' '].indexOf(e.key)>-1){e.preventDefault();show(i+1)}
+    else if(['ArrowLeft','PageUp'].indexOf(e.key)>-1){e.preventDefault();show(i-1)}
+    else if(e.key==='Home'){show(0)} else if(e.key==='End'){show(slides.length-1)}
+    else if(e.key==='n'||e.key==='N'){toggleNotes()}
+    else if(e.key==='p'||e.key==='P'){if(pw&&!pw.closed){pw.focus()}else{openPresenter()}}
+  });
+  function reveal(q){q.classList.toggle('open');q.setAttribute('aria-expanded',q.classList.contains('open'))}
+  [].forEach.call(document.querySelectorAll('.q'),function(q){q.addEventListener('click',function(){reveal(q)})});
+  document.getElementById('prev').onclick=function(){show(i-1)};
+  document.getElementById('next').onclick=function(){show(i+1)};
+  document.getElementById('count').onclick=toggleNotes;
+  var tx=null;
+  document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){if(tx===null)return;var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(d<0?i+1:i-1);tx=null});
+  window.addEventListener('resize',fit);
+  show(i);
+})();
+</script>
+</body>
+</html>

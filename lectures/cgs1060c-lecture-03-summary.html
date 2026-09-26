@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 3 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(8,12,20,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+}
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections { max-width: 860px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0; background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--accent);
+  padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px;
+  border-radius: 4px; padding: 2px 6px; font-size: .84em; color: var(--accent); white-space: nowrap;
+}
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li { padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5); position: relative; font-size: 15px; }
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: .88em; color: var(--accent); }
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 3</div>
+    <h1>File Management, Digital Identity &amp; Word Chapters 3–5</h1>
+    <div class="sub">Tuesday, September 23, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#simnet">SimNet fix</a>
+    <a href="#files">File structure</a>
+    <a href="#formats">Saving &amp; formats</a>
+    <a href="#compression">Compression</a>
+    <a href="#deleting">Deleting</a>
+    <a href="#cloud">Cloud &amp; backup</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#copyright">Copyright</a>
+    <a href="#scams">Scams &amp; payments</a>
+    <a href="#word">Word 3–5</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <ul>
+    <li>Describe how files and folders are organized as a tree, and name the parts.</li>
+    <li>Choose the right save format for a document, and say what you lose in each.</li>
+    <li>Explain the difference between <strong>lossless</strong> and <strong>lossy</strong> compression, and pick between PNG and JPEG.</li>
+    <li>Say what actually happens when you delete a file — and when it is genuinely gone.</li>
+    <li>Build a backup strategy that survives ransomware, hardware failure, and a hurricane.</li>
+    <li>Explain what GDPR requires, what copyright protects, and what a Creative Commons licence does and doesn't give you.</li>
+    <li>Set tab stops with leaders, insert page breaks and page numbers, control image text wrapping, add alt text, and generate citations in Word.</li>
+  </ul>
+</section>
+
+<section id="simnet">
+  <div class="eyebrow">Important</div>
+  <h2><span class="topic-num">01</span>The SimNet license problem — solved</h2>
+  <p>Here is what happened. The college changed the SimNet textbook for this semester, and the template I was working from matched the <em>old</em> edition. The Windows 11 and Outlook assignments are identical in both editions, which is why those worked and nothing looked wrong — until you reached the Word assignments, which exist only in the new edition.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">What you need to do</span>
+    <p><strong>Relink to SimNet</strong> through the Canvas Modules page. Nothing else in the course works until you do. Once you have relinked, I can see it on my end — you don't need to email me.</p>
+  </div>
+
+  <p><strong>You will not lose the work you already did.</strong> There is no way to migrate progress between editions automatically, so I am doing it by hand:</p>
+  <ul>
+    <li>If you <strong>completed</strong> the Windows 11 or Outlook assignment in the old edition, you get full credit in the new one. I move those grades over once you have relinked.</li>
+    <li>If you completed <strong>part</strong> of an assignment, tell me which sections you already did. You can skip them, and I will adjust your grade manually.</li>
+    <li>If you haven't started, just work in the new edition normally.</li>
+  </ul>
+
+  <p>The custom homepage is temporarily disabled so nobody follows a stale link to the old textbook. It will return.</p>
+
+  <div class="callout callout-info">
+    <span class="label">Due dates</span>
+    <p>The current set of assignments is due <strong>September 30</strong>. The next group — three more Word chapters in SimNet, plus two new Adaptive Learning Assignments in Connect — is due a week after that. There are roughly 30 to 40 assignments in this course overall, so pace yourself rather than batching them.</p>
+  </div>
+</section>
+
+<section id="files">
+  <div class="eyebrow">File management</div>
+  <h2><span class="topic-num">02</span>How files are organized</h2>
+  <p>Every file has an address, and the structure that gives it one is called a <strong>directory tree</strong>. It's called a tree because each folder is a node, and the items beneath it are branches. Folders can contain folders can contain folders; a file is always the end of a branch, because nothing lives inside a file.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Directory / folder</strong></td><td>The same thing, two names. A container for files and other folders.</td></tr>
+      <tr><td><strong>Subdirectory / subfolder</strong></td><td>A folder inside another folder.</td></tr>
+      <tr><td><strong>Parent directory</strong></td><td>The folder one level up.</td></tr>
+      <tr><td><strong>Root directory</strong></td><td>The top of the tree. <code>C:\</code> on Windows, <code>/</code> on Mac and Linux.</td></tr>
+      <tr><td><strong>Home directory</strong></td><td>Your personal folder, named after your login, holding Documents, Downloads, and so on.</td></tr>
+      <tr><td><strong>Path</strong></td><td>The full address of a file, written out folder by folder.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>The slashes differ.</strong> Windows separates folders with a backslash (<code>C:\Users\John\Documents</code>). Mac and Linux use a forward slash (<code>/Users/John/Documents</code>). That's a surface difference, but it's the one you'll notice first.</p>
+
+  <p>A directory doesn't hold your data — it holds <em>information about</em> the files inside it: names, sizes, dates, where the actual content sits on disk. That's why you can't open a folder and read it as a document; you run a command that reads the folder's records and formats them for you.</p>
+
+  <h3>Where the "Downloads" file went</h3>
+  <p>When you download something in a browser, it almost always lands in your <strong>Downloads</strong> folder. Nine times out of ten, the file you "can't find" is there. It's also worth clearing out periodically — most people's Downloads folder holds years of accumulated junk.</p>
+
+  <h3>A little history</h3>
+  <p>Mac OS is built on <strong>Unix</strong>, an operating system created at AT&amp;T Bell Labs in the early 1970s. The name was a joke: the big mainframe system of the day was called <strong>Multics</strong> — <em>multiplexed</em> — so the smaller, simpler system its authors wrote became <em>Unics</em>, then Unix. <strong>Linux</strong> is a Unix-like system written by Linus Torvalds, and he still approves the changes that go into it. macOS and iOS descend genuinely from Unix; Android is built on the Linux kernel, so it is Unix-<em>like</em> rather than Unix-derived. Windows comes from a separate lineage, which is why its conventions differ.</p>
+</section>
+
+<section id="formats">
+  <div class="eyebrow">File management</div>
+  <h2><span class="topic-num">03</span>Saving, and which format to choose</h2>
+  <p><kbd>Ctrl</kbd> + <kbd>S</kbd> saves — on Windows and on Mac (where it's <kbd>Cmd</kbd> + <kbd>S</kbd>). The first time you save a new document, Word asks where to put it and what format to use.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Format</th><th>Use it when</th><th>What you lose</th></tr></thead>
+    <tbody>
+      <tr><td><code>.docx</code></td><td>Default. Normal Word documents.</td><td>Nothing</td></tr>
+      <tr><td><code>.doc</code></td><td>Sending to someone on a very old version of Word</td><td>Newer formatting features may not survive</td></tr>
+      <tr><td><code>.pdf</code></td><td>Sending a document that must look identical everywhere</td><td>Easy editing — that's the point</td></tr>
+      <tr><td>Web page (<code>.htm</code>)</td><td>Publishing content to a website</td><td>Layout fidelity</td></tr>
+      <tr><td>Plain text (<code>.txt</code>)</td><td>You need only the words</td><td><strong>All</strong> formatting — fonts, sizes, alignment, images</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">Why PDF exists</span>
+    <p>Before PDF, a document written on one kind of computer frequently looked wrong — or wouldn't open at all — on another. Adobe's answer was a format that renders identically everywhere, readable with free software. That is still the reason to use it: you should never require someone to buy Microsoft Word just to read what you sent them. Both Chrome and Edge display PDFs directly, with no reader to install.</p>
+  </div>
+
+  <h3>The mysterious <code>~$</code> file</h3>
+  <p>Open a Word document and look in its folder: you'll find a second file with the same name prefixed by <code>~$</code>. That's a temporary working file Word creates while the document is open, used partly for crash recovery. Close the document and it disappears on its own. Don't delete it by hand while Word is running.</p>
+
+  <h3>Save As, and versions</h3>
+  <p><strong>Save</strong> overwrites the existing file — the previous content is gone unless you have a backup. <strong>Save As</strong> creates a new file and leaves the original alone, which is the manual way to keep a version history (<code>report-v1.docx</code>, <code>report-v2.docx</code>). The automatic way is OneDrive, below.</p>
+</section>
+
+<section id="compression">
+  <div class="eyebrow">File management</div>
+  <h2><span class="topic-num">04</span>Compression, and file types</h2>
+
+  <div class="callout callout-key">
+    <span class="label">The core distinction</span>
+    <p><strong>Lossless</strong> compression finds repetition and stores it more efficiently. Unzip the file and you get back <em>byte for byte</em> exactly what you started with. Nothing is discarded.</p>
+    <p><strong>Lossy</strong> compression permanently throws away detail chosen to be hard for human senses to notice. The file gets far smaller, and you can never recover what was removed.</p>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Category</th><th>Extensions</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Documents</strong></td><td><code>.docx</code> <code>.pdf</code> <code>.txt</code> <code>.rtf</code></td><td>—</td></tr>
+      <tr><td><strong>Images</strong></td><td><code>.jpg</code> <code>.png</code> <code>.gif</code></td><td>JPEG is lossy; PNG and GIF are lossless</td></tr>
+      <tr><td><strong>Audio</strong></td><td><code>.mp3</code> <code>.wav</code></td><td>MP3 is lossy; WAV is uncompressed</td></tr>
+      <tr><td><strong>Video</strong></td><td><code>.mp4</code> <code>.mov</code> <code>.avi</code></td><td>—</td></tr>
+      <tr><td><strong>Archives</strong></td><td><code>.zip</code> <code>.rar</code></td><td>Lossless. Windows and Mac both zip and unzip natively now</td></tr>
+      <tr><td><strong>Executables</strong></td><td><code>.exe</code> <code>.cmd</code> <code>.bat</code> <code>.ps1</code></td><td>Programs. Never run one that arrived by email</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>PNG vs. JPEG — the practical rule</h3>
+  <p>JPEG discards visual detail the eye is poor at noticing, which makes photographs dramatically smaller. PNG keeps everything, and compresses by finding repeated patterns.</p>
+  <div class="callout callout-note">
+    <span class="label">Refining what I said in class</span>
+    <p>I said PNG files are much larger than JPEG. That's true <strong>for photographs</strong> — and false for screenshots, logos, diagrams, and anything with large areas of flat color, where PNG is frequently <em>smaller</em> as well as lossless. The rule to remember: <strong>photographs → JPEG. Screenshots and graphics → PNG.</strong> Also use PNG when you need transparency, which JPEG cannot do.</p>
+  </div>
+
+  <h3>Audio, and why it mattered</h3>
+  <p>Sound is analog. Digitizing it means sampling the wave many times a second and storing the numbers; play the numbers back and you reconstruct the wave. A <code>.wav</code> file stores those samples uncompressed, so a CD-quality track runs roughly 30–50 MB. MP3 compresses the same track to around 3–5 MB — about ten to one — by discarding detail most listeners can't hear. Not identical to the original, but close enough that it changed the industry: MP3 is what made a pocket-sized music player possible, which is what made the iPod possible.</p>
+
+  <h3>RAW, for photographers</h3>
+  <p>A camera's RAW format keeps the full sensor data with no compression loss, so editing in Photoshop doesn't degrade the image. Export to JPEG at the end, once.</p>
+</section>
+
+<section id="deleting">
+  <div class="eyebrow">File management</div>
+  <h2><span class="topic-num">05</span>What happens when you delete</h2>
+  <p>Deleting a file normally does not destroy it. It moves to the <strong>Recycle Bin</strong> (Windows) or <strong>Trash</strong> (Mac), and you can right-click and Restore it. The bin's icon changes to show it has contents.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Situation</th><th>Recoverable?</th></tr></thead>
+    <tbody>
+      <tr><td>Normal delete on your hard drive</td><td><strong>Yes</strong> — it's in the Recycle Bin</td></tr>
+      <tr><td><kbd>Shift</kbd> + <kbd>Delete</kbd> on Windows</td><td><strong>No</strong> — bypasses the bin entirely</td></tr>
+      <tr><td>Deleting from a USB / thumb drive</td><td><strong>No</strong> — these have no recycle bin</td></tr>
+      <tr><td>Deleting from a network drive</td><td><strong>Usually no</strong></td></tr>
+      <tr><td>Deleting from OneDrive</td><td><strong>Yes</strong> — OneDrive has its own recycle bin</td></tr>
+      <tr><td>A file too large to fit in the bin</td><td><strong>No</strong> — Windows warns you first</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><strong>Avoid <kbd>Shift</kbd> + <kbd>Delete</kbd> as a habit.</strong> The recycle bin costs you nothing and has saved everyone at least once.</p>
+
+  <h3>Copy, cut, move</h3>
+  <ul>
+    <li><kbd>Ctrl</kbd> + <kbd>C</kbd> then <kbd>Ctrl</kbd> + <kbd>V</kbd> — copy a file, leaving the original in place.</li>
+    <li><kbd>Ctrl</kbd> + <kbd>X</kbd> then <kbd>Ctrl</kbd> + <kbd>V</kbd> — move it.</li>
+    <li>Or drag it. Watch the tooltip while you drag — Windows tells you whether it's about to copy or move before you let go.</li>
+  </ul>
+</section>
+
+<section id="cloud">
+  <div class="eyebrow">Protecting your work</div>
+  <h2><span class="topic-num">06</span>Cloud storage and backup</h2>
+  <p>The three big consumer services are <strong>OneDrive</strong> (Microsoft), <strong>Google Drive</strong>, and <strong>iCloud</strong> (Apple). Free tiers are typically around 5 GB, which fills up fast if you take photos; paid tiers run from about $2/month for 100 GB to roughly $10/month for a terabyte shared across a family.</p>
+  <p>Through Miami Dade College you already have a Microsoft account tied to your school email, with OneDrive attached. Use it for coursework.</p>
+
+  <div class="callout callout-key">
+    <span class="label">Version history is the feature that saves you</span>
+    <p>Save a file in OneDrive and it keeps <em>every previous version</em>. Open the file's location, click the three dots, choose <strong>Version history</strong>, and restore any earlier copy. I demonstrated this on a file I've revised 164 times since 2024.</p>
+    <p>This is also why Word's <strong>AutoSave</strong> only switches on for documents stored in OneDrive — AutoSave depends on version history to be safe. Without it, autosaving would just overwrite your work faster.</p>
+  </div>
+
+  <h3>Why version history beats ransomware</h3>
+  <p>Ransomware encrypts everything it can reach and demands payment for the key. If it reaches your OneDrive folder it will encrypt those files too — but the <em>previous versions</em> are still there, so you can roll back. On a computer with no cloud sync and no backup, your only option is paying, and paying is not a guarantee.</p>
+
+  <h3>A real backup plan</h3>
+  <ol>
+    <li><strong>Important documents and photos go in the cloud.</strong> Preferably more than one service; they're cheap and they fail independently.</li>
+    <li><strong>Buy an external USB drive</strong> and run a full backup to it. Buy from a manufacturer with a reputation — a suspiciously cheap high-capacity drive is a bad bet when the whole point is reliability.</li>
+    <li><strong>Disconnect the drive between backups.</strong> A backup drive permanently attached to an infected computer gets encrypted along with everything else. Unplug it and put it in a drawer.</li>
+    <li><strong>Repeat weekly.</strong> The first backup copies everything and takes a while; after that, <strong>incremental backups</strong> copy only what changed, so they're fast.</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <span class="label">A South Florida consideration</span>
+    <p>Hurricanes and house fires destroy the drive in your drawer as effectively as they destroy the computer. Irreplaceable documents and photographs should exist in at least one place outside your house — which is what cloud storage is for. People who lost family photos in Hurricane Andrew had no digital copy anywhere.</p>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="eyebrow">Digital identity</div>
+  <h2><span class="topic-num">07</span>Privacy and your data</h2>
+
+  <h3>GDPR</h3>
+  <p>The <strong>General Data Protection Regulation</strong> is European law, but its reach is global: if your company has customers in the EU, you must comply regardless of where you are based. Penalties run up to <strong>4% of worldwide annual revenue</strong>, which is large enough that essentially every multinational complies. It is a major reason websites now ask you about cookies, and why companies must disclose breaches.</p>
+
+  <h3>Cambridge Analytica</h3>
+  <p>Around the 2016 election, a company called Cambridge Analytica put a personality quiz on Facebook. Facebook's data-sharing rules at the time let the quiz collect information not just about the person taking it, but about <em>all of their friends</em>. Most people whose data was harvested never touched the quiz.</p>
+  <p>The lesson isn't "don't take quizzes." It's that <strong>your privacy depends partly on other people's choices</strong>, and that connecting an app to a social account grants access that persists until you revoke it. Go into Facebook's settings and remove apps you no longer use.</p>
+
+  <h3>Metadata in your photos</h3>
+  <p><strong>Metadata means data about data.</strong> Every photo your phone takes carries hidden fields: the date, the time, the camera settings — and, because your phone has GPS, <strong>the exact location where it was taken</strong>. Post a photo taken at home and you may have published your address. Both iOS and Android can strip location data when sharing; find that setting and use it.</p>
+
+  <h3>How the ad business actually works</h3>
+  <p>Facebook, Google, and Amazon are free or cheap because knowing about you <em>is</em> the product. Search for something on Google and an ad for it follows you onto YouTube, because they're the same company. Look at coffee on Amazon and the coffee ads arrive that evening. Feeds are tuned to keep you scrolling, because time on the app is inventory to sell.</p>
+  <p>Companies can also <em>infer</em> things you never told them. In a well-documented case, Target identified pregnant customers from shifts in ordinary shopping patterns — and started mailing baby coupons before some of them had told their families.</p>
+
+  <h3>DNA testing sites</h3>
+  <p>Consumer genetic testing is <strong>not covered by HIPAA</strong>. Those databases have been used by police to identify suspects — often not by finding the person, but by finding a cousin and working backwards. The Golden State Killer was identified this way in 2018. Whatever you think about that outcome, notice the mechanism: <strong>a relative's decision can expose you</strong>, and you never consented to anything.</p>
+
+  <h3>VPNs and HTTPS</h3>
+  <p>On a coffee-shop network, a site using <strong>HTTPS</strong> already encrypts the contents of what you send, so an eavesdropper can't read it. What still leaks is <strong>DNS</strong> — the lookup that turns a site name into an address — which reveals <em>which sites</em> you're visiting even if not what you do there. A VPN encrypts that too, so the network owner sees nothing useful.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Never click through a certificate warning</span>
+    <p>If your browser says a site's security certificate is invalid, do not click the button to proceed. You may have mistyped the address, or the site may be misconfigured, or someone may be intercepting your connection. Check the URL, try a different browser, but don't bypass the warning.</p>
+  </div>
+
+  <h3>Deepfakes and AI-generated media</h3>
+  <p>Telling a real video from a generated one is already difficult and getting worse. The defensive habit is not visual — it's <strong>checking the source</strong>. Where did this come from? Does anyone else report it? Does the account have a history?</p>
+</section>
+
+<section id="copyright">
+  <div class="eyebrow">Digital identity</div>
+  <h2><span class="topic-num">08</span>Copyright, licensing, and open source</h2>
+  <p>Copyright protects <strong>the expression of an idea</strong>, not the idea itself. You can copyright your photograph of a sunset. Nobody can copyright sunsets. Copyright is automatic when you create something, and it expires eventually — the original <em>Steamboat Willie</em> Mickey Mouse entered the public domain on January 1, 2024. Anything in the public domain is free for anyone to use.</p>
+
+  <p>What this means in practice: using someone else's software code verbatim, or ripping a DVD and posting it, is infringement. If you need an image for something you're publishing, you either <strong>license it</strong> or use something that is already free to use.</p>
+
+  <div class="callout callout-note">
+    <span class="label">Correction from class — this one matters</span>
+    <p>I described <strong>Creative Commons</strong> as material with no copyright over it. That isn't right, and the difference will cost you points. CC works <em>are</em> copyrighted — the licence grants specific permissions in advance, and <strong>most CC licences require you to credit the creator</strong>. Some also forbid commercial use, or require that your own work carry the same licence. Read which licence applies before you use the image, and attribute it.</p>
+  </div>
+
+  <h3>The DMCA</h3>
+  <p>The <strong>Digital Millennium Copyright Act</strong> (1998) is why YouTube and Facebook can exist. It shields a platform from liability for what users upload, <em>provided</em> the platform gives copyright owners a way to report infringement and removes it promptly. That's the takedown-notice system.</p>
+
+  <h3>Open source</h3>
+  <p>Open source software publishes its source code so anyone can read it. Linux is the best-known example. Licences differ in what they demand of you — some require only attribution, some require that anything you build on top also be open. "No licence stated" does <em>not</em> mean free to use; legally it means all rights reserved.</p>
+  <p>There's a long-running argument about whether open source is more secure. One side: more people can read the code, so bugs get found — and many projects pay <strong>bug bounties</strong> to the <em>white hat</em> researchers who report them. The other side: proprietary code is harder to study, so it's harder to attack. Both arguments have merit.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Don't use pirated software</span>
+    <p>Beyond the legal exposure: whoever cracked that software is not doing it as a public service. Pirated installers are one of the most reliable ways to get malware. You have free access to Microsoft Office through the college — use it.</p>
+  </div>
+</section>
+
+<section id="scams">
+  <div class="eyebrow">Digital identity</div>
+  <h2><span class="topic-num">09</span>Paying online without getting burned</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Payment method</th><th>Protection if things go wrong</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Credit card</strong></td><td><strong>Best.</strong> You can dispute a charge, and the card network claws the money back from the seller. Vendors with too many disputes lose card access.</td></tr>
+      <tr><td><strong>PayPal</strong></td><td><strong>Good.</strong> A dispute process for items that never arrive or arrive broken.</td></tr>
+      <tr><td><strong>Debit card</strong></td><td><strong>Weaker.</strong> The money leaves your bank account immediately and you have to chase it back.</td></tr>
+      <tr><td><strong>Venmo, Zelle, Cash App</strong></td><td><strong>None.</strong> Treat these like handing over cash — or like cryptocurrency. Once sent, effectively unrecoverable.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">A story against myself</span>
+    <p>I was reading an article and clicked an ad headlined something like "the 20 best bone-conducting headphones." The top-rated product looked reasonably priced, so I bought it — and then bought a second at 50% off. It turned out the company that makes the product had written the "review." The headphones are not good.</p>
+    <p>Two things to take from that. <strong>A ranked list can be an advertisement</strong>, and the tell — an immediate upsell after purchase — was right in front of me. And because I paid by credit card, I can still get my money back if the return is refused.</p>
+  </div>
+
+  <p>The same skepticism applies to messages. A WhatsApp message from your boss stranded overseas asking for money is a well-worn scam, and it works because the account may genuinely be compromised. Verify through a channel you chose, not the one that contacted you.</p>
+</section>
+
+<section id="word">
+  <div class="eyebrow">Microsoft Word</div>
+  <h2><span class="topic-num">10</span>Chapters 3–5: what we covered</h2>
+
+  <div class="callout callout-note">
+    <span class="label">Mac users</span>
+    <p>SimNet simulates Word on <strong>Windows</strong>. Word for Mac has real differences in menu placement and some shortcuts. The simulations will still work — they run in your browser — but if you practice in Word on your own Mac, expect the odd thing to sit somewhere else.</p>
+  </div>
+
+  <h3>Tab stops and the ruler</h3>
+  <p>Tab stops are set on the <strong>ruler</strong> at the top of the document. The small marker at the ruler's left end cycles through the tab types when you click it; then click on the ruler to place one.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Tab type</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Left</strong></td><td>Text begins at the stop and runs right</td></tr>
+      <tr><td><strong>Center</strong></td><td>Text centers on the stop</td></tr>
+      <tr><td><strong>Right</strong></td><td>Text ends at the stop</td></tr>
+      <tr><td><strong>Decimal</strong></td><td>Numbers align on their decimal point — use this for columns of currency</td></tr>
+      <tr><td><strong>Bar</strong></td><td>Draws a vertical line at that position</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">The mistake everyone makes</span>
+    <p><strong>Tab stops apply only to the paragraphs you have selected.</strong> Click in one line and set a right tab, and only that line moves. To format a whole table of tabbed text, <strong>select all of it first</strong>, then set the stop.</p>
+  </div>
+
+  <p><strong>Leaders</strong> are the dots that run from a chapter title to its page number in a table of contents. Double-click the tab stop on the ruler to open the Tabs dialog, and choose a leader: none, dots, dashes, or a solid line.</p>
+
+  <h3>Page breaks</h3>
+  <p>To push content to the next page, do <strong>not</strong> press Enter repeatedly. That looks right until you add a sentence above it, and then the whole document shifts. Use <strong>Insert → Page Break</strong>, which stays put no matter what you edit above it.</p>
+
+  <h3>Headers, footers, and page numbers</h3>
+  <p>Double-click the top or bottom margin to enter the header or footer area. From there, <strong>Page Number</strong> inserts a number that updates itself as the document grows. Headers and footers repeat on every page automatically — put them in once.</p>
+
+  <h3>Images: wrapping and alt text</h3>
+  <p>Right-click an image and choose <strong>Wrap Text</strong> to control how the text relates to it: in line with text, square, tight, behind text, in front of text. "Behind text" and "in front of text" let images and words overlap.</p>
+  <div class="callout callout-info">
+    <span class="label">Alt text is an accessibility feature</span>
+    <p>Alternative text describes an image for someone using a screen reader, who cannot see it. Right-click the image and add alt text — Word can suggest a description using AI, which you should then <strong>read and correct</strong>, since Word labels its own suggestions as possibly inaccurate. If an image is purely decorative and carries no information, mark it as decorative instead so readers skip it.</p>
+  </div>
+
+  <h3>Citations and bibliographies</h3>
+  <p>The <strong>References</strong> tab will build your citations for you. Insert a citation, choose the source type (website, book, journal), fill in the fields once, and Word formats it. Insert a bibliography or works-cited page, and when you add more sources later, click <strong>Update Citations and Bibliography</strong> and it regenerates itself.</p>
+  <p>The two common styles are <strong>APA</strong> (American Psychological Association) and <strong>MLA</strong> (Modern Language Association). Word handles both, plus Chicago and others. Your instructor in any given course tells you which to use.</p>
+
+  <div class="callout callout-key">
+    <span class="label">Still the single most useful habit</span>
+    <p>Turn on the <strong>pilcrow (¶)</strong> button on the Home tab and leave it on. Seeing the paragraph marks, spaces, tabs, and line breaks explains almost every "why is Word doing this?" moment you will have this semester.</p>
+  </div>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">11</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Relink to SimNet</strong> if you haven't. Everything depends on it, and I can't move your old grades over until you do.</li>
+      <li><strong>Current assignments are due September 30.</strong> The next group is due a week later.</li>
+      <li><strong>Word chapters 3, 4, and 5</strong> in SimNet, plus the <strong>two new Adaptive Learning Assignments</strong> in Connect covering file management and digital identity.</li>
+      <li><strong>Fill in the course feedback</strong> in Circle In — is the pace too fast, too slow, about right? It's how I calibrate.</li>
+      <li><strong>On your own machine:</strong> check where your important files actually live, and pick one cloud service to put them in.</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">How to use the tools without cheating yourself</span>
+    <p>When a SimNet task stumps you, use <strong>Show Me</strong> or <strong>Guide Me</strong> to learn the steps, then do it in <strong>Let Me Try</strong> — only Let Me Try earns credit. If you're still stuck, ask the AI tutor in Circle In or search for it. Nobody memorizes all of this; knowing how to look it up is a real skill.</p>
+    <p>The line is simple: <strong>you need to be the one at the keyboard.</strong> Don't have a tool do the assignment for you — you're responsible for the result, and the exam will find out.</p>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="label">Two questions to think about before next week</span>
+    <p><strong>(1)</strong> If I click in the middle line of a three-line address and press Center, what happens — and why? <strong>(2)</strong> You need to email a report to someone and it must look exactly the same on their screen as on yours. Which format, and why that one?</p>
+  </div>
+
+  <p><strong>Getting help:</strong> email me, or book a time through the link on the Start Here page. I also stay on after class — if something is broken, stay and we'll fix it together.</p>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
