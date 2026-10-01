@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 4 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc { position: sticky; top: 0; z-index: 20; background: rgba(8,12,20,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections { max-width: 860px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none; border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 11px; transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0; background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0; font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--accent); padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px; border-radius: 4px;
+  padding: 2px 6px; font-size: .84em; color: var(--accent); white-space: nowrap;
+}
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li { padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5); position: relative; font-size: 15px; }
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: .88em; color: var(--accent); }
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 4</div>
+    <h1>How the Internet Gets to You — and Excel Chapters 1–2</h1>
+    <div class="sub">Tuesday, September 30, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#admin">Deadlines &amp; exams</a>
+    <a href="#packets">Packets</a>
+    <a href="#latency">Speed &amp; latency</a>
+    <a href="#hardware">Hardware</a>
+    <a href="#addresses">IP addresses</a>
+    <a href="#tools">Troubleshooting</a>
+    <a href="#https">HTTPS</a>
+    <a href="#gap">Notes to follow</a>
+    <a href="#cells">Excel: cells</a>
+    <a href="#dates">Dates &amp; autofill</a>
+    <a href="#formulas">Formulas</a>
+    <a href="#editing">Editing &amp; formatting</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <ul>
+    <li>Explain how data moves across the internet in <strong>packets</strong>, and why that design survives failures.</li>
+    <li>Define <strong>bandwidth</strong> and <strong>latency</strong>, and say why they are different things.</li>
+    <li>Identify a modem, router, switch, and access point, and say what each one does.</li>
+    <li>Distinguish a <strong>public</strong> from a <strong>private</strong> IP address, and an IP address from a <strong>MAC address</strong>.</li>
+    <li>Say what DHCP and DNS each do, and use <code>ping</code>, <code>ipconfig</code>, and <code>traceroute</code> to diagnose a connection.</li>
+    <li>Explain what the S in HTTPS protects.</li>
+    <li>In Excel: distinguish what a cell <em>displays</em> from what it <em>contains</em>, build formulas, use absolute vs. relative references, work with dates, and apply the right number format.</li>
+  </ul>
+</section>
+
+<section id="admin">
+  <div class="eyebrow">Course business</div>
+  <h2><span class="topic-num">01</span>Deadlines, capstones, and the new exams</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>What</th><th>Due</th></tr></thead>
+    <tbody>
+      <tr><td>Week 2 assignments</td><td><strong>Overdue</strong> — finish these now</td></tr>
+      <tr><td>Week 3 (file management, social media, Word ch. 3–5)</td><td>October 7</td></tr>
+      <tr><td>Word capstone project</td><td>October 14</td></tr>
+      <tr><td>Week 5 manually-graded assignments</td><td>Extended to end of October</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">On late work</span>
+    <p>Auto-graded assignments carry <strong>no late penalty</strong> — the system grades them, so lateness costs me nothing. Assignments I grade by hand <em>will</em> be penalized. Either way, if you need more time, <strong>ask me</strong> and I'll extend it. Asking always works; silence doesn't.</p>
+  </div>
+
+  <h3>The capstone project</h3>
+  <p>One capstone per application — Word, Excel, PowerPoint. It works like this:</p>
+  <ol>
+    <li>Click <strong>Start File</strong> to download a document. <strong>Your name is in the filename</strong> — you must submit your own.</li>
+    <li>You're given roughly 50 instructions. Work through them in Word on your computer, ticking them off as you go. (SimNet detects whether you're on Mac or Windows and adjusts the instructions.)</li>
+    <li>If the document opens in Protected View, click <strong>Enable Editing</strong> first.</li>
+    <li>Save a local copy, upload it, and click <strong>Submit for Grading</strong>.</li>
+    <li>SimNet tells you which items you got right and which you missed. Fix the misses in the file you already have — no need to re-download — and resubmit. <strong>Three attempts</strong>; ask me if you need more.</li>
+  </ol>
+  <p>You may work alongside a classmate, but each person submits their own named document.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">New this semester: the Office exams</span>
+    <p>There is now one exam each for Word, Excel, and PowerPoint — <strong>5% of your final grade each</strong>. The Word exam is roughly 50 questions, and it works like a SimNet simulation with one critical difference: <strong>everything is in Let Me Try mode and you get one attempt per question.</strong> No Show Me, no Guide Me, and clicking in the wrong order can mark a question wrong.</p>
+    <p><strong>Strategy:</strong> finish all the Word chapter simulations first, then take the exam — the tasks are things you've already practiced. Take the exam <em>before</em> the capstone. If something goes badly wrong, tell me and I can grant another attempt, though a retake means redoing all 50 questions.</p>
+  </div>
+</section>
+
+<section id="packets">
+  <div class="eyebrow">Networking</div>
+  <h2><span class="topic-num">02</span>How data actually moves</h2>
+
+  <h3>The old way: circuit switching</h3>
+  <p>On a traditional telephone network, dialing a number physically connected your line to the other phone through switches at the central office. For the length of the call you had a <strong>dedicated circuit</strong> — real copper, end to end. It worked, but the circuit was yours alone whether you were talking or not, and if any part of the path failed, the call dropped.</p>
+
+  <h3>The new way: packet switching</h3>
+  <p>The internet grew out of US Department of Defense research in the 1950s and 60s. The problem they were solving was blunt: build a communications network that keeps working when parts of it are destroyed. <strong>ARPANET</strong> — from the Advanced Research Projects Agency — was the direct ancestor, with its first links in 1969.</p>
+  <p>The answer was to stop reserving circuits. Instead, break every message into small <strong>packets</strong> and send them independently.</p>
+
+  <div class="callout callout-key">
+    <span class="label">What's inside a packet</span>
+    <ul>
+      <li><strong>A destination address</strong> — where it's going</li>
+      <li><strong>A sequence number</strong> — "I'm packet 3 of 7," so the receiver can reassemble them in the right order even if they arrive jumbled</li>
+      <li><strong>A checksum</strong> — a value that lets the receiver verify that no bits were corrupted in transit. Bad checksum means the packet is discarded and retransmitted.</li>
+    </ul>
+  </div>
+
+  <p>Each node in the network connects to several others, so if one route fails the packets simply go around. The internet has millions of these nodes, which is where its resilience comes from. Think of it as <strong>a network of networks</strong> — Miami Dade College runs its own network across campuses and also connects outward to everyone else's.</p>
+
+  <h3>Why your call stutters but your music recovers</h3>
+  <p>Drive away from a cell tower and the signal weakens, so packets get lost. What happens next depends on the application:</p>
+  <ul>
+    <li><strong>Streaming music</strong> can wait. Lost packets get retransmitted, the audio pauses, then resumes where it left off.</li>
+    <li><strong>A live voice call</strong> can't wait — a delayed word is worse than a missing one. So lost packets are simply dropped, which is why you hear gaps or every other word.</li>
+  </ul>
+  <p>The internet's core has enormous capacity and redundancy. Problems almost always happen in the <strong>last mile</strong> — the connection between you and your provider.</p>
+</section>
+
+<section id="latency">
+  <div class="eyebrow">Networking</div>
+  <h2><span class="topic-num">03</span>Bandwidth, latency, and satellites</h2>
+
+  <div class="callout callout-key">
+    <span class="label">Two different things</span>
+    <p><strong>Bandwidth</strong> is how much data you can move per second — measured in megabits per second (Mbps). Think of it as how wide the road is.</p>
+    <p><strong>Latency</strong> is how long it takes a single message to get there and back — measured in milliseconds (ms). Think of it as how long the drive is. Driving 300 miles to Gainesville at 50 mph gives you a latency of six hours, no matter how many lanes the highway has.</p>
+  </div>
+
+  <p>Data travels close to the speed of light — about <strong>186,000 miles per second</strong>, or 3 × 10⁸ meters per second. Fast, but not instant. Miami to Northern Virginia and back lands around <strong>20–30 ms</strong>, which you'd never notice.</p>
+
+  <h3>Why satellite internet used to be unusable</h3>
+  <p>Traditional satellites sit in geostationary orbit, roughly <strong>22,000 miles up</strong>. A signal must climb all the way there and come back down, which costs 500–700 ms round trip. That's long enough to see: type a character, wait, watch it appear. (Shipboard systems at sea ran exactly like this.)</p>
+  <p><strong>Starlink</strong> changed the arithmetic by putting many small satellites in <em>low</em> Earth orbit, a few hundred miles up instead of twenty-two thousand. The distance collapses, so the latency does too — modern satellite internet now feels essentially normal.</p>
+
+  <h3>Bits and bytes</h3>
+  <p>A <strong>bit</strong> is a single binary value: 0 or 1. Eight bits make a <strong>byte</strong>, which has 256 possible values — enough for every uppercase letter, lowercase letter, digit, and punctuation mark. Network speeds are quoted in <strong>bits</strong> per second; file sizes are in <strong>bytes</strong>. A 300-baud modem moved 300 bits per second, which is about 30 characters a second — text only, one line at a time.</p>
+</section>
+
+<section id="hardware">
+  <div class="eyebrow">Networking</div>
+  <h2><span class="topic-num">04</span>The hardware</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Device</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Modem</strong><br><em>MOdulator-DEModulator</em></td><td>Converts between your computer's digital data and whatever signal your provider's line carries. Sending, it <strong>modulates</strong> digital data onto the analog carrier; receiving, it <strong>demodulates</strong> the analog signal back into digital.</td></tr>
+      <tr><td><strong>Router</strong></td><td>Reads the destination IP address on each packet and forwards it toward the right next hop, using routing tables.</td></tr>
+      <tr><td><strong>Switch</strong></td><td>Gives you more wired ports. If your router has one Ethernet jack and you need five, a switch fans it out.</td></tr>
+      <tr><td><strong>Access point</strong></td><td>Bridges the wireless world to the wired one. Mesh systems use several access points spread through a house.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="label">Correction from class</span>
+    <p>I said in class that <strong>Wi-Fi stands for "Wireless Fidelity."</strong> It doesn't stand for anything — it's a brand name created by a marketing agency for the Wi-Fi Alliance, and "Wireless Fidelity" was a tagline attached briefly afterward and then dropped. The textbook may repeat the myth; it's still a myth.</p>
+  </div>
+
+  <h3>Cable types</h3>
+  <ul>
+    <li><strong>Coaxial</strong> — a copper core, a plastic insulator (the <em>dielectric</em>), and a metal shield. The shield blocks interference, which is what lets coax carry a lot of data with little signal loss. This is typical cable-internet wiring.</li>
+    <li><strong>Fiber optic</strong> — glass, carrying light rather than electricity. Immune to moisture and electrical interference, which matters near the coast where salt air degrades copper. The trade-off: it's physically glass, so a sharp bend can break it, and repair needs specialist tools.</li>
+    <li><strong>Twisted-pair Ethernet</strong> — the familiar copper patch cable with the clip.</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <span class="label">Practical: call 811 before you dig</span>
+    <p>Those small orange marker posts along roadsides flag buried fiber. Before digging on your own property, call <strong>811</strong> — a free national service that sends someone to spray-paint where the buried electrical, cable, and fiber lines run. Hitting a buried electrical line can kill you; hitting fiber is merely expensive.</p>
+  </div>
+
+  <h3>A home network, end to end</h3>
+  <p>Your laptop connects by Wi-Fi or Ethernet to a <strong>router</strong> (often built into the cable modem). The modem connects by coax or fiber to your <strong>ISP</strong>. The ISP connects to the internet backbone. The backbone carries your packets through many routers to the <strong>web server</strong> you asked for, which has its own routers in front of it. Dozens of hops, every time, in milliseconds.</p>
+</section>
+
+<section id="addresses">
+  <div class="eyebrow">Networking</div>
+  <h2><span class="topic-num">05</span>IP addresses, MAC addresses, DHCP, and DNS</h2>
+
+  <p>An <strong>IP address</strong> is the postal address of a device on a network. Give a map app a street address and it can route a car there; give the internet an IP address and it can route packets there.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th></th><th>IPv4</th><th>IPv6</th></tr></thead>
+    <tbody>
+      <tr><td>Format</td><td>Four numbers 0–255, e.g. <code>192.168.1.47</code></td><td>Eight groups of hex, e.g. <code>2001:0db8:85a3::8a2e:0370:7334</code></td></tr>
+      <tr><td>Size</td><td>32 bits</td><td>128 bits</td></tr>
+      <tr><td>Total addresses</td><td>About 4 billion</td><td>About 3.4 × 10³⁸</td></tr>
+      <tr><td>Status</td><td>Running out — every phone needs one</td><td>The long-term answer</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Public vs. private</h3>
+  <p>Your <strong>public IP address</strong> is what the rest of the internet sees. Everyone on your home network — or everyone in a large company office — typically shares a single public address. That's one of the tricks keeping IPv4 alive.</p>
+  <p>Your <strong>private IP address</strong> is the one your device holds inside the local network. Ranges beginning <code>192.168.</code> and <code>10.</code> are reserved for private use, which is why nearly every home router hands out something like <code>192.168.1.x</code>. Your router translates between the two as traffic goes in and out.</p>
+
+  <h3>MAC address</h3>
+  <p>A <strong>MAC address</strong> is a hardware address burned into the network adapter by its manufacturer. It identifies the physical interface, not its position on the network. Within a local network, your device translates a local IP address into the MAC address it needs to actually deliver the data.</p>
+
+  <div class="callout callout-key">
+    <span class="label">The distinction that shows up on quizzes</span>
+    <p><strong>MAC address</strong> — set by the manufacturer, burned into the hardware, permanent.<br>
+    <strong>Private IP address</strong> — handed out by your router, can change.<br>
+    <strong>Public IP address</strong> — assigned by your ISP, shared across your network.</p>
+  </div>
+
+  <h3>DHCP and DNS</h3>
+  <p><strong>DHCP</strong> — Dynamic Host Configuration Protocol — is how your router hands each device an IP address automatically. Before DHCP, an administrator had to walk to every machine and assign addresses by hand.</p>
+  <p><strong>DNS</strong> — the <strong>Domain Name System</strong> — converts names into addresses. You type <code>mdc.edu</code>; DNS returns the numeric IP address your computer actually needs. <em>(In class I called it "Dynamic Name Service." Domain Name System is correct.)</em></p>
+</section>
+
+<section id="tools">
+  <div class="eyebrow">Networking</div>
+  <h2><span class="topic-num">06</span>Troubleshooting commands</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Command</th><th>Platform</th><th>What it tells you</th></tr></thead>
+    <tbody>
+      <tr><td><code>ipconfig</code></td><td>Windows</td><td>Your local IP address, gateway, and adapter details</td></tr>
+      <tr><td><code>ifconfig</code></td><td>Mac / Linux</td><td>The same</td></tr>
+      <tr><td><code>ping &lt;address&gt;</code></td><td>Both</td><td>Sends a message and reports whether a reply came back, and how long it took. Windows prints "Request timed out" on failure; Mac and Linux simply print nothing.</td></tr>
+      <tr><td><code>nslookup &lt;name&gt;</code></td><td>Both</td><td>Asks DNS what IP address a hostname resolves to</td></tr>
+      <tr><td><code>traceroute</code> / <code>tracert</code></td><td>Mac–Linux / Windows</td><td>Lists every router your packets pass through on the way to a destination</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">The one diagnostic worth memorizing</span>
+    <p>Run <code>ipconfig</code> and if your address starts with <strong><code>169.254.</code></strong>, your computer <em>failed to get an address from the router</em> and assigned itself a placeholder. That is not a working connection.</p>
+    <p><strong>On Ethernet:</strong> check the link lights on the switch port, try a different port, try a different cable.<br>
+    <strong>On Wi-Fi:</strong> you probably aren't actually connected to the network.</p>
+  </div>
+
+  <p>If pages won't load but your connection otherwise looks fine, suspect <strong>DNS</strong>. Chrome will usually say outright that it couldn't resolve the name.</p>
+
+  <p>In the live <code>traceroute</code> demo, each hop came back with a name as well as an address — Griffin, Pompano, North Dade. Providers name routers after real places so technicians can locate a fault geographically. Note also that the trace from the corporate network died immediately: many networks deliberately block the packets traceroute depends on.</p>
+</section>
+
+<section id="https">
+  <div class="eyebrow">Networking</div>
+  <h2><span class="topic-num">07</span>HTTP, HTTPS, and encryption</h2>
+  <p><strong>Tim Berners-Lee</strong>, working at CERN in Switzerland, invented the World Wide Web between 1989 and 1991. Three of his inventions are still the foundation of everything you do online:</p>
+  <ul>
+    <li><strong>HTML</strong> — HyperText Markup Language, the code that describes a web page. Right-click any page and choose <em>View page source</em> to see it.</li>
+    <li><strong>HTTP</strong> — HyperText Transfer Protocol, the rules for requesting and delivering those pages.</li>
+    <li><strong>URL</strong> — Uniform Resource Locator, the address of a page.</li>
+  </ul>
+
+  <div class="callout callout-key">
+    <span class="label">What the S adds</span>
+    <p><strong>HTTPS encrypts everything between your browser and the server.</strong> Someone intercepting the traffic sees only meaningless data, because only your browser and that server hold the key.</p>
+    <p>The keys are typically 256 bits. That's about 1.2 × 10⁷⁷ possible values — a number in the same territory as the count of atoms in the observable universe. Simply <em>counting</em> that high would take more energy than the Sun will produce in its entire lifetime. Brute force is not a realistic attack.</p>
+  </div>
+
+  <p>Check for the lock or security indicator in the address bar. Most major sites now redirect you from HTTP to HTTPS automatically, and browsers warn loudly when a site isn't secured.</p>
+
+  <h3>The quantum caveat</h3>
+  <p>A sufficiently large <strong>quantum computer</strong> could break today's encryption — and that drives a real strategy called <em>harvest now, decrypt later</em>: capture encrypted traffic today and store it until the hardware exists. Practical quantum attacks are likely still years away, and <strong>post-quantum encryption algorithms</strong> designed to resist them already exist. We'll return to this in the emerging-technologies unit.</p>
+</section>
+
+<section id="gap">
+  <div class="eyebrow">Please read</div>
+  <h2><span class="topic-num">08</span>Material not on the recording</h2>
+  <div class="callout callout-warn">
+    <span class="label">My mistake, and how I'm fixing it</span>
+    <p>I failed to restart the recording after the break, so roughly an hour of the networking lecture isn't captured. The topics in that stretch were:</p>
+    <ul>
+      <li><strong>Home Wi-Fi security</strong>, including why hiding your SSID is <em>not</em> an effective security measure despite what the textbook says</li>
+      <li><strong>URL anatomy</strong> — the parts of a web address and what each one means</li>
+      <li><strong>VPNs</strong> — virtual private networks, and what they do and don't protect</li>
+      <li><strong>Cloud computing</strong></li>
+    </ul>
+    <p><strong>I'll write these up and post them as a separate page this week.</strong> They are on the adaptive learning assignment, so don't skip them — watch for the announcement. If you were in class and took notes, you're fine; if you weren't, wait for that page rather than relying on the recording.</p>
+  </div>
+</section>
+
+<section id="cells">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">09</span>Chapter 1: what's really in a cell</h2>
+
+  <div class="callout callout-key">
+    <span class="label">The idea everything else depends on</span>
+    <p><strong>Every cell has two layers: what it displays, and what it contains.</strong> The cell might show <code>$1,250.00</code> while actually containing the number <code>1250</code>. It might show <code>30</code> while containing <code>=10+20</code>. It might show <code>9/30/26</code> while containing <code>46295</code>.</p>
+    <p>The <strong>formula bar</strong> always shows what's really in there. When Excel surprises you, look at the formula bar first.</p>
+  </div>
+
+  <h3>Cell addresses and the status bar</h3>
+  <p>A cell's address is its column letter plus its row number — A1, B7, D23. The bottom-left of the window shows the current mode: <strong>Ready</strong> (a cell is selected), <strong>Enter</strong> (you're typing new content), or <strong>Edit</strong> (you're modifying existing content).</p>
+
+  <h3>Number formats</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Format</th><th>What it shows</th></tr></thead>
+    <tbody>
+      <tr><td><strong>General</strong></td><td>Exactly what you typed — no commas, no forced decimals</td></tr>
+      <tr><td><strong>Number</strong></td><td>Two decimal places, optional thousands separator</td></tr>
+      <tr><td><strong>Currency</strong></td><td>Comma separator and the <strong>$ immediately before the digits</strong></td></tr>
+      <tr><td><strong>Accounting</strong></td><td>Comma separator and the <strong>$ pushed to the left edge of the cell</strong>, decimals aligned in a column</td></tr>
+      <tr><td><strong>Percentage</strong></td><td>Displays the value × 100 with a % sign. 0.02 displays as 2%.</td></tr>
+      <tr><td><strong>Date</strong></td><td>Interprets the underlying number as a date</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">The trap that will cost you points</span>
+    <p>The <strong>$ button</strong> on the ribbon does <em>not</em> apply Currency format. It applies <strong>Accounting</strong> format. Hover over it and Excel says so: "Accounting Number Format."</p>
+    <p>When SimNet or the exam tells you to <strong>apply currency formatting</strong>, clicking that button marks you <strong>wrong</strong>. Instead use the <strong>number-format dropdown</strong> and choose Currency, or right-click → <strong>Format Cells</strong> → Currency.</p>
+    <p>Visual tell: Currency puts the dollar sign right against the number. Accounting pins it to the far left of the cell.</p>
+  </div>
+
+  <p>The small <strong>increase/decrease decimal</strong> buttons change how many decimal places display — they don't change the stored value.</p>
+</section>
+
+<section id="dates">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">10</span>Dates and autofill</h2>
+
+  <h3>Dates are just numbers</h3>
+  <p>Excel stores a date as the number of days since <strong>January 1, 1900</strong>, which is serial number 1. Type <code>46295</code>, format the cell as a date, and you get 9/30/26. Format it back to General and the number returns. <em>(In class I first said 1970 and corrected it later — 1900 is right.)</em></p>
+  <p>This has a genuinely useful consequence: <strong>you can do arithmetic on dates.</strong> <code>=A1+1</code> gives you tomorrow. Subtract two dates and you get the number of days between them.</p>
+
+  <div class="callout callout-info">
+    <span class="label">Format dates as YYYY-MM-DD when the data will be reused</span>
+    <p>Right-click → Format Cells → Date gives you many display options. The year-month-day form has a practical advantage: <strong>it sorts correctly as text</strong> in any other program you export to. Also use four-digit years whenever your data includes dates from the last century — birthdates, for instance.</p>
+  </div>
+
+  <p>Shortcut: <kbd>Ctrl</kbd> + <kbd>;</kbd> inserts today's date into the current cell. It works the same on Mac — that's the Control key, not Command.</p>
+
+  <h3>A piece of leap-year trivia that's actually relevant</h3>
+  <p>A year is a leap year if it divides evenly by 4 — except century years, which must divide by 400. So 1900 was <em>not</em> a leap year, while 2000 was. All of this exists because Earth's orbit takes roughly 365¼ days, not 365.</p>
+  <p>The wrinkle: <strong>Excel deliberately treats 1900 as a leap year anyway</strong>, to stay compatible with Lotus 1-2-3, which had the bug first. It's a rare case of software preserving a known error on purpose.</p>
+
+  <h3>Autofill</h3>
+  <p>Grab the small square at a cell's bottom-right corner and drag.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>What's in the cell</th><th>What dragging produces</th></tr></thead>
+    <tbody>
+      <tr><td>A single number, e.g. <code>30</code></td><td>Copies it — 30, 30, 30</td></tr>
+      <tr><td><code>Mon</code></td><td>Mon, Tue, Wed… Excel recognizes day abbreviations</td></tr>
+      <tr><td><code>January</code></td><td>February, March, April…</td></tr>
+      <tr><td>Text plus a number, e.g. <code>Quarter 1</code></td><td>Quarter 2, Quarter 3…</td></tr>
+      <tr><td>Two cells showing a pattern</td><td>Continues the pattern</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>After dragging, a small options button appears letting you switch between <strong>Copy Cells</strong> and <strong>Fill Series</strong>. Autofill works across columns as well as down rows.</p>
+</section>
+
+<section id="formulas">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">11</span>Formulas and references</h2>
+  <p>Every formula starts with <code>=</code>. Without it, Excel stores what you typed as text — <code>123+321</code> just sits there as characters.</p>
+  <p>Reference cells rather than typing values. <code>=A1+A2</code> recalculates automatically whenever A1 or A2 changes. That automatic recalculation is the entire point of a spreadsheet.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Don't hard-code values you might change</span>
+    <p><code>=A1*7.5%</code> works until the tax rate changes, and then you edit every formula by hand. <code>=A1*B1</code> with the rate in B1 means you change one cell. Both produce the same answer today; only one survives next year.</p>
+  </div>
+
+  <h3>Relative vs. absolute references</h3>
+  <p>Copy a formula down a column and Excel adjusts the row numbers automatically. <code>=B2*C2</code> becomes <code>=B3*C3</code>, then <code>=B4*C4</code>. That's a <strong>relative reference</strong>, and it's usually exactly what you want — Excel is really storing "two cells to my left times one cell to my left."</p>
+  <p>But sometimes a formula must always point at one specific cell — a tax rate in B1, say. Copy <code>=A2*B1</code> down and it becomes <code>=A3*B2</code>, then <code>=A4*B3</code>, pointing at empty cells and eventually producing <code>#VALUE!</code>.</p>
+
+  <div class="callout callout-key">
+    <span class="label">The fix: lock it with dollar signs</span>
+    <p><code>$B$1</code> — column and row both locked. Never changes when copied.<br>
+    <code>B$1</code> — row locked only.<br>
+    <code>$B1</code> — column locked only.<br>
+    <code>B1</code> — fully relative.</p>
+    <p>Here the dollar sign means "absolute reference." It has nothing to do with currency — a confusing overlap, but a different context entirely.</p>
+  </div>
+  <p>You can also give a cell a name and use that name in formulas, which is self-documenting and never shifts.</p>
+
+  <h3>Order of operations</h3>
+  <p>School taught PEMDAS: parentheses, exponents, multiplication/division, addition/subtraction. Excel's order is slightly longer:</p>
+  <ol>
+    <li>Parentheses</li>
+    <li><strong>Negation</strong> (making a number negative)</li>
+    <li><strong>Percent</strong></li>
+    <li>Exponentiation</li>
+    <li>Multiplication and division, left to right</li>
+    <li>Addition and subtraction, left to right</li>
+  </ol>
+  <p>So <code>=2+3*4</code> is 14, not 20. And note the consequence of negation ranking above exponentiation: <code>=-2^2</code> returns <strong>positive 4</strong> in Excel, where standard math notation would give −4.</p>
+
+  <h3>Functions</h3>
+  <p><code>=SUM(A1,A2,A3)</code> adds the listed cells. <code>=SUM(A1:A10)</code> adds everything in the range — the colon means "through." Ranges are better: add a value inside the range and the total updates by itself.</p>
+
+  <h3>Chart vocabulary</h3>
+  <p>Terms you'll be asked to identify: the <strong>chart title</strong>, the <strong>x-axis</strong> and <strong>y-axis</strong> with their titles, the <strong>legend</strong>, the <strong>plot area</strong>, and a <strong>data series</strong> — one set of related values, usually a row or column from your sheet.</p>
+</section>
+
+<section id="editing">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">12</span>Chapter 2: moving, pasting, and formatting</h2>
+
+  <h3>Copy vs. cut — they treat references differently</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th></th><th>Original cell</th><th>Relative references</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Copy and paste</strong></td><td>Stays as it was</td><td><strong>Adjust</strong> to the new position</td></tr>
+      <tr><td><strong>Cut and paste</strong></td><td>Is emptied</td><td><strong>Stay exactly the same</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Paste Special</h3>
+  <p>A normal paste brings values, formulas, and formatting together. <strong>Paste Special</strong> lets you take only part of that — most usefully <strong>Values</strong>, which pastes the calculated result and discards the formula. The pasted number is then frozen: change the source cells and it won't update. That's sometimes exactly what you want.</p>
+
+  <h3>Column widths</h3>
+  <p><code>#####</code> is not an error. It means <strong>the column is too narrow to display the value</strong>. Fixes:</p>
+  <ul>
+    <li><strong>Double-click</strong> the boundary between column headers to auto-fit to the widest entry.</li>
+    <li><strong>Drag</strong> the boundary to set a width by hand — Excel shows the measurement as you drag.</li>
+    <li>Select several columns first, then drag one, to make them all the same width.</li>
+  </ul>
+
+  <h3>Delete vs. Delete</h3>
+  <p>Pressing <kbd>Delete</kbd> clears a cell's <em>contents</em> and leaves the empty cell in place. Right-click → <strong>Delete</strong> removes the cell, row, or column entirely and shifts the surrounding cells up or left. <strong>Insert</strong> does the reverse. Choose deliberately — the two have very different effects on everything below.</p>
+
+  <h3>Conditional formatting</h3>
+  <p>Change a cell's appearance based on its value: select the range, choose <strong>Conditional Formatting</strong>, pick a rule such as <em>Highlight Cells Rules → Greater Than</em>, enter a threshold, and choose a fill. Cells that meet the condition are formatted automatically, and they update as values change.</p>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">13</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Finish the week 2 assignments.</strong> They're past due. If you need an extension, email me — it will be granted.</li>
+      <li><strong>Week 3 assignments are due October 7</strong>: file management, social media, and Word chapters 3–5.</li>
+      <li><strong>Once all Word chapters are complete, take the Word exam.</strong> One attempt per question, so finish the practice first.</li>
+      <li><strong>The Word capstone is due October 14.</strong> Start it after the exam.</li>
+      <li><strong>Start Excel chapters 1 and 2</strong> in SimNet.</li>
+      <li><strong>Watch for the networking notes page</strong> covering the material missing from the recording.</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Two to think about before next week</span>
+    <p><strong>(1)</strong> You type <code>=2+3*4</code> into a cell. What appears, and why isn't it 20?<br>
+    <strong>(2)</strong> You run <code>ipconfig</code> and your address starts with <code>169.254</code>. What has gone wrong, and what do you check first?</p>
+  </div>
+
+  <p><strong>Getting help:</strong> email me, or book a time through the link on the Start Here page. I stay on after class as well — that's often the fastest way to get something unstuck.</p>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
