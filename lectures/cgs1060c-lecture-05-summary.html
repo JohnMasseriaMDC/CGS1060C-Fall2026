@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 5 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc { position: sticky; top: 0; z-index: 20; background: rgba(8,12,20,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections { max-width: 860px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none; border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 11px; transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0; background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0; font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--accent); padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px; border-radius: 4px;
+  padding: 2px 6px; font-size: .84em; color: var(--accent); white-space: nowrap;
+}
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li { padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5); position: relative; font-size: 15px; }
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: .88em; color: var(--accent); }
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 5</div>
+    <h1>Computer Security — and Excel Chapters 3–5</h1>
+    <div class="sub">Tuesday, October 7, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#admin">Grades &amp; due dates</a>
+    <a href="#vocab">Threat vocabulary</a>
+    <a href="#malware">Malware</a>
+    <a href="#phishing">Phishing</a>
+    <a href="#passwords">Passwords &amp; MFA</a>
+    <a href="#defenses">Defenses</a>
+    <a href="#privacy">Cookies &amp; tracking</a>
+    <a href="#checklist">Your checklist</a>
+    <a href="#functions">Excel: functions</a>
+    <a href="#lookup">Lookups &amp; errors</a>
+    <a href="#printing">Printing</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <ul>
+    <li>Distinguish a <strong>threat</strong>, a <strong>vulnerability</strong>, an <strong>exploit</strong>, and a <strong>breach</strong>.</li>
+    <li>Name the three parts of the <strong>CIA triad</strong> and give a defense for each.</li>
+    <li>Tell a <strong>virus</strong> from a <strong>worm</strong>, a <strong>Trojan</strong>, <strong>ransomware</strong>, <strong>spyware</strong>, and a <strong>rootkit</strong>.</li>
+    <li>Spot a phishing message, and report one properly.</li>
+    <li>Explain why password reuse is the single most dangerous habit, and what a password manager and a passkey each fix.</li>
+    <li>Say what a firewall does and what it does <em>not</em> do.</li>
+    <li>In Excel: use <code>SUM</code>, <code>AVERAGE</code>, the <code>COUNT</code> family, text functions, <code>PMT</code>, <code>VLOOKUP</code>, and <code>XLOOKUP</code>; read Excel's error values; and control what prints.</li>
+  </ul>
+
+  <div class="callout callout-note">
+    <span class="label">A note on the schedule</span>
+    <p>I swapped weeks 5 and 6 so we could finish Excel, and then ran long on security anyway. <strong>Pivot tables, goal seek, and what-if data tables did not get covered.</strong> Those are the hardest items in Excel chapter 5, so they go <em>first</em> next week before anything else. Don't worry about them until then.</p>
+  </div>
+</section>
+
+<section id="admin">
+  <div class="eyebrow">Course business</div>
+  <h2><span class="topic-num">01</span>Grades, due dates, and the old textbook</h2>
+
+  <div class="callout callout-key">
+    <span class="label">How the zeroes work</span>
+    <p>If an assignment passes its due date without a submission, Canvas records a <strong>zero</strong>. That zero is not permanent. <strong>Complete the assignment and the grade overrides it</strong> once it syncs. I don't penalize late work on auto-graded assignments.</p>
+    <p>If you finish something and the zero <em>doesn't</em> clear within a day or two, <strong>tell me</strong> and I'll fix it manually.</p>
+  </div>
+
+  <p>The due dates exist so you don't drift. Attempting thirty-plus assignments in the final week is not a strategy that works — the material builds, and so does the time it takes.</p>
+
+  <h3>Duplicate assignments in the gradebook</h3>
+  <p>Everyone has now re-linked to the correct SimNet textbook, and I've transferred the work completed in the old edition. You may still see some assignments twice. The old ones are renamed to include <strong>"old textbook"</strong> and are weighted at zero — <strong>they do not count toward your grade.</strong> Work only from the current Modules page. If a transferred grade looks wrong, come find me.</p>
+
+  <h3>Homepage appearance</h3>
+  <p>The course homepage has lost most of its color. The college runs an accessibility checker, and color-coded content generates warnings for students with vision differences. The links are all still there.</p>
+</section>
+
+<section id="vocab">
+  <div class="eyebrow">Security</div>
+  <h2><span class="topic-num">02</span>The vocabulary, with a burglary analogy</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Term</th><th>Definition</th><th>In your neighborhood</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Threat</strong></td><td>Someone out there who wants to cause harm</td><td>Burglars exist in this city</td></tr>
+      <tr><td><strong>Vulnerability</strong></td><td>A weakness they could use — an unpatched system, a reused password, an unlocked door</td><td>You left a window unlatched</td></tr>
+      <tr><td><strong>Exploit</strong></td><td>The act of taking advantage of that weakness</td><td>Someone climbs through the window</td></tr>
+      <tr><td><strong>Breach</strong></td><td>They're in</td><td>The intruder is in your house</td></tr>
+      <tr><td><strong>Mitigation</strong></td><td>Anything that reduces the risk — patching, training, backups</td><td>Locks, alarms, motion lights</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Security vs. privacy</h3>
+  <p><strong>Security</strong> is about keeping unauthorized people out. <strong>Privacy</strong> is about controlling what happens to your data once you've legitimately shared it. Different problems, different defenses — a company can be perfectly secure and still sell everything it knows about you.</p>
+
+  <div class="callout callout-key">
+    <span class="label">The CIA triad</span>
+    <p><strong>Confidentiality</strong> — only the right people can see the data. <em>Defenses:</em> strong unique passwords, multi-factor authentication, encryption, HTTPS, VPNs.</p>
+    <p><strong>Integrity</strong> — the data is correct and hasn't been tampered with or lost. <em>Defenses:</em> backups, versioning, keeping copies in more than one place.</p>
+    <p><strong>Availability</strong> — you can get to it when you need it. <em>Defenses:</em> redundancy, a spare device, a UPS on your router, protection against denial-of-service attacks.</p>
+    <p>Not the Central Intelligence Agency.</p>
+  </div>
+
+  <h3>Hats</h3>
+  <ul>
+    <li><strong>White hat</strong> — an ethical hacker. Companies hire them for <em>penetration tests</em>, and many run <strong>bug bounty</strong> programs that pay researchers for reporting flaws. The term comes from Westerns: good guys wore white hats.</li>
+    <li><strong>Black hat</strong> — attacking for criminal gain.</li>
+    <li><strong>Script kiddie</strong> — someone with no real technical skill using tools (and increasingly AI) that others built. The lack of skill doesn't reduce the damage, or the legal consequences.</li>
+    <li><strong>Hacktivism</strong> — attacking for a political or social cause. The motive may feel justified; it's still illegal.</li>
+  </ul>
+  <p>Building a lab network at home to learn security is fine and encouraged. Touching systems you don't own is not, whatever the reason.</p>
+</section>
+
+<section id="malware">
+  <div class="eyebrow">Security</div>
+  <h2><span class="topic-num">03</span>Malware, by type</h2>
+  <p><strong>Malware</strong> is any software running on your system that you didn't intend to be there. It arrives because you clicked something, or because a vulnerability let it in on its own.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>What makes it that type</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Virus</strong></td><td>Attaches itself to a file or program and needs a <em>person</em> to run it. Then it copies itself into other files — the biological analogy is exact.</td></tr>
+      <tr><td><strong>Worm</strong></td><td><strong>Spreads itself across a network with no user action at all.</strong> That self-propagation is the dividing line from a virus, not whether it carries a payload.</td></tr>
+      <tr><td><strong>Trojan</strong></td><td>Disguised as something you want. Named for the wooden horse the Greeks left at Troy — the Trojans pulled it inside the walls themselves, and the soldiers hidden in it opened the gates that night.</td></tr>
+      <tr><td><strong>Ransomware</strong></td><td>Encrypts your files with a key only the attacker has, then demands payment — usually cryptocurrency.</td></tr>
+      <tr><td><strong>Spyware</strong></td><td>Watches quietly. Logs your keystrokes, records what sites you visit, captures passwords and PINs as you type them.</td></tr>
+      <tr><td><strong>Rootkit</strong></td><td>Buries itself so deep in the system that antivirus software may not detect it at all.</td></tr>
+      <tr><td><strong>Botnet / zombie</strong></td><td>One infected machine under remote control is a <em>zombie</em>. Thousands of them acting together are a <em>botnet</em>.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Distributed denial of service (DDoS)</h3>
+  <p>A botnet — often built from cheap routers and other poorly-secured devices whose owners never notice — all requests the same website at once. The flood overwhelms the site and it goes down. Large organizations buy DDoS-protection services specifically to absorb this.</p>
+
+  <h3>Ransomware, specifically</h3>
+  <p>Ransomware actively hunts for everything it can reach, including <strong>attached backup drives and synced cloud folders</strong>. Two consequences:</p>
+  <ul>
+    <li><strong>Keep your backup drive physically disconnected</strong> except while a backup is running.</li>
+    <li><strong>OneDrive version history is your escape hatch.</strong> Even if synced files get encrypted, you can restore them to a previous known-good state.</li>
+  </ul>
+  <p>The FBI advises against paying. Even when attackers do provide a key — and they often do, because a reputation for not decrypting would end their business — your system is <em>still infected</em>, and you may simply be re-encrypted and asked for more. The most famous US case was the <strong>Colonial Pipeline</strong> attack in 2021, which disrupted fuel supply across the East Coast; the company paid roughly $4.4 million in bitcoin.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Macros in Office documents</span>
+    <p>Word and Excel can contain <strong>macros</strong> — small embedded programs. Useful, and also a classic malware delivery method. If a document warns you that <strong>macros were blocked</strong>, that is a stop sign. Don't enable them because the document itself tells you to.</p>
+    <p><strong>"Enable Editing" is different and usually fine</strong> — that's Protected View, and you'll need to click it for the SimNet capstone file. The rule is about the source: enable editing on a file you deliberately downloaded from a site you trust; never on an unexpected attachment.</p>
+  </div>
+
+  <h3>Fake infection pop-ups</h3>
+  <p>A browser pop-up screaming that you're infected is almost always the attack, not a warning about one. Clicking it installs the thing it claims to be removing. <strong>Close the browser.</strong> Don't click anything inside the pop-up. If a machine is behaving strangely — searches redirecting to the wrong site, pop-ups appearing constantly — a reputable on-demand scanner such as Malwarebytes (free version, available for Windows and Mac) will scan and quarantine.</p>
+</section>
+
+<section id="phishing">
+  <div class="eyebrow">Security</div>
+  <h2><span class="topic-num">04</span>Phishing and social engineering</h2>
+  <p><strong>Phishing</strong> — spelled with a <em>ph</em> — is a message designed to look legitimate so you'll click, log in somewhere fake, or hand over information.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Variant</th><th>How it arrives</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Phishing</strong></td><td>A mass email — "your bank account needs attention"</td></tr>
+      <tr><td><strong>Spear phishing</strong></td><td>Targeted at <em>you</em>, using your real name, employer, or recent activity</td></tr>
+      <tr><td><strong>Smishing</strong></td><td>Text message — a fake delivery notice, a fake bank alert</td></tr>
+      <tr><td><strong>Vishing</strong></td><td>Phone call or voicemail — someone claiming to be IT, your bank, or a relative</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">The old advice no longer works</span>
+    <p>Your textbook says you can spot phishing by its spelling and grammar mistakes. <strong>That is obsolete.</strong> AI writes clean, fluent, well-targeted messages. If anything, flawless English is now neutral evidence. You have to judge by the <em>link</em> and the <em>ask</em>, not the prose.</p>
+  </div>
+
+  <h3>What to check instead</h3>
+  <ul>
+    <li><strong>Hover over the link before clicking.</strong> Your mail client shows the real destination. One I received showed a friendly "claim your gift card" button pointing at <code>password.land</code>.</li>
+    <li><strong>Read the domain right-to-left.</strong> <code>microsoft.com.accountverify.co</code> is <em>not</em> Microsoft — the real domain is the last part before the first slash, here <code>accountverify.co</code>.</li>
+    <li><strong>Look for character substitution.</strong> <code>rnicrosoft.com</code> uses <em>r</em> followed by <em>n</em>, which at a glance reads as <em>m</em>.</li>
+    <li><strong>Urgency and threats are a red flag.</strong> "Act now or your account closes."</li>
+    <li><strong>Free things are a red flag.</strong> You very rarely get something for nothing.</li>
+    <li><strong>A legitimate message tells you to go find them.</strong> "Call the number on our website" is a good sign; a link that does the work for you is not.</li>
+  </ul>
+
+  <h3>How to report it</h3>
+  <p>Outlook at the college has a built-in <strong>Report</strong> button — use it and choose "phishing." That sends it to the information security team rather than just deleting it, which helps protect everyone else. Many employers run their own simulated phishing tests; failing one usually just means extra training, but the exercise exists because the real thing works.</p>
+
+  <h3>Social engineering</h3>
+  <p>The most effective attacks never touch a vulnerability. A caller befriends a call-centre agent and collects a name and extension. A second caller, armed with those details, claims to be from the help desk and talks the agent into visiting a website. The account is compromised, and no software flaw was involved.</p>
+
+  <div class="callout callout-key">
+    <span class="label">AI voice cloning — tell your family about this one</span>
+    <p>It now takes very little recorded audio to generate a voice that sounds like a specific person. The scam targets older relatives: a call or voicemail that sounds exactly like a grandchild, stranded somewhere, needing money urgently.</p>
+    <p><strong>Agree on a family code word.</strong> A phrase only your family knows, used to verify that an urgent call is real. Don't use your mother's maiden name — that's discoverable on Facebook and genealogy sites. A first pet works better.</p>
+  </div>
+</section>
+
+<section id="passwords">
+  <div class="eyebrow">Security</div>
+  <h2><span class="topic-num">05</span>Passwords, managers, and passkeys</h2>
+
+  <div class="callout callout-key">
+    <span class="label">The single most important habit</span>
+    <p><strong>Never reuse a password.</strong> When some company gets breached, attackers take the email-and-password pairs and try them at banks, at Instagram, at everything. Reuse turns one company's bad day into your bad year.</p>
+  </div>
+
+  <p>Companies don't store your password directly — they store a <strong>hash</strong> of it. But hashes of common and predictable passwords can be reversed using precomputed dictionaries, which is why length and unpredictability matter more than swapping an <em>o</em> for a zero.</p>
+
+  <h3>What NIST actually recommends</h3>
+  <p>The <strong>National Institute of Standards and Technology</strong> sets US technical standards. Current guidance has moved away from what most of us were taught:</p>
+  <ul>
+    <li><strong>Long beats complex.</strong> A long passphrase you can remember is better than a short jumble you can't.</li>
+    <li><strong>Forced 90-day expiry is no longer recommended</strong> — it pushes people toward predictable variations. Plenty of employers still require it anyway.</li>
+    <li><strong>If it's so complex you write it down, it's counterproductive.</strong></li>
+  </ul>
+
+  <h3>Password managers</h3>
+  <p>The better answer: let software generate a long random password you never see or memorize.</p>
+  <ul>
+    <li><strong>Apple</strong> — iCloud Keychain, now the Passwords app</li>
+    <li><strong>Google Password Manager</strong> — Chrome <em>and</em> Android system-wide</li>
+    <li><strong>Microsoft Edge</strong> — built in</li>
+    <li><strong>Third-party</strong> — 1Password and others, usually a subscription</li>
+  </ul>
+  <p>Useful bonus: these managers check your saved passwords against known breach databases and flag the ones you need to change. Yes, you're trusting the vendor — but a reputable password manager is a far better bet than reusing one password everywhere.</p>
+  <p><em>Textbook correction: a password manager does not generate a new password at every login. It generates one strong password when you create or change the account, then remembers it.</em></p>
+
+  <h3>Multi-factor authentication</h3>
+  <p><strong>MFA</strong> adds a second proof beyond the password — typically an approval on your phone. It defeats spyware that captured your typing, because your computer and your phone being compromised simultaneously is very unlikely. Turn it on everywhere that offers it, starting with your bank and your email.</p>
+
+  <h3>Passkeys — where everything is heading</h3>
+  <div class="callout callout-info">
+    <span class="label">Why a passkey is stronger than any password</span>
+    <p>A passkey is a <strong>pair of cryptographic keys</strong>. The <strong>public key</strong> goes to the website; the <strong>private key</strong> stays in your password manager and <em>never leaves your device</em>.</p>
+    <p>Logging in, the site sends a random challenge. Your device solves it using the private key, proving who you are without transmitting any secret. <strong>There is no password to steal, phish, or leak in a breach</strong> — and because the key is bound to the real site's domain, a lookalike phishing page cannot trigger it.</p>
+    <p>In the demo: signing into GitHub produced a QR code, the phone scanned it, the two devices connected over Bluetooth, a fingerprint unlocked the passkey, and the login completed with no password typed. Because the passkey lives in the password manager rather than the handset, replacing a lost phone restores it.</p>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">Protect your phone PIN in public</span>
+    <p>If someone learns your PIN and then steals your phone, they have your email, your password manager, and your MFA approvals — your whole digital life. Thieves work in pairs: one watches you type, the other takes the phone.</p>
+    <p><strong>Unlock with your face or fingerprint in public.</strong> Save the PIN for private places. And if a stranger asks you to take their photo, don't hand over an unlocked phone.</p>
+  </div>
+</section>
+
+<section id="defenses">
+  <div class="eyebrow">Security</div>
+  <h2><span class="topic-num">06</span>Antivirus, firewalls, and patching</h2>
+
+  <h3>Antivirus — and its real limitation</h3>
+  <p><strong>Microsoft Defender</strong> is built into Windows, on by default, and genuinely good. macOS has a built-in equivalent called <strong>XProtect</strong> that Apple doesn't surface in the interface. <strong>Don't run two antivirus products at once</strong> — they interfere with each other.</p>
+  <p>Traditional antivirus works from <strong>signature files</strong> — fingerprints of known malware. Before a program runs, it's checked against that list. The limitation follows directly: <strong>a brand-new threat has no signature yet.</strong> That's why keeping signatures updated is not optional. Windows will warn you when they go stale.</p>
+
+  <div class="callout callout-key">
+    <span class="label">A firewall is not antivirus</span>
+    <p>Your home router already acts as a firewall. Devices inside your house hold <strong>private IP addresses</strong> that nobody on the internet can reach directly — only your router is visible from outside. Unsolicited inbound connections are blocked by default.</p>
+    <p><strong>What it doesn't do is stop outbound connections.</strong> If malware is already running on your machine, it can freely call out to its command-and-control server. A firewall is the guard at the door, not a search of everyone already inside.</p>
+    <p>Sign to watch for: your router showing connections to systems in places you've never dealt with.</p>
+  </div>
+
+  <h3>Patching, and where fixes come from</h3>
+  <p>A researcher — usually a white hat — finds a flaw and reports it privately to the vendor, sometimes for a bug bounty. The vendor develops a fix, publishes it, and only then issues an advisory describing the flaw. Microsoft concentrates its security updates on <strong>Patch Tuesday, the second Tuesday of each month</strong>.</p>
+  <p>Advisories carry severity scores. The worst allow an <strong>unauthenticated user to execute arbitrary code with root privileges</strong> — an attacker running whatever they like, as the most powerful account on the system.</p>
+  <p>All of which reduces to one instruction: <strong>turn on automatic updates, and restart when asked.</strong></p>
+
+  <h3>HTTPS and certificates</h3>
+  <p>HTTPS encrypts traffic between your browser and the site, and also proves the site is who it claims. Click the padlock to inspect the <strong>certificate</strong>: the domain it was issued for, the organization, the <strong>certificate authority</strong> that signed it, and the validity dates. Your browser ships with a list of authorities it trusts — a chain of trust.</p>
+  <p>Certificates expire, which is why <strong>your computer's clock must be correct</strong>; a badly wrong clock makes valid certificates appear invalid. And if you ever get a certificate warning, <strong>don't click through it.</strong></p>
+
+  <h3>Physical and environmental</h3>
+  <p>Hardware fails, and South Florida adds hurricanes, lightning, and power loss. <strong>Surge protectors</strong> on anything valuable; a small <strong>UPS</strong> on the router and modem keeps you online through a short outage. Availability is part of security.</p>
+</section>
+
+<section id="privacy">
+  <div class="eyebrow">Privacy</div>
+  <h2><span class="topic-num">07</span>Cookies, trackers, and data brokers</h2>
+
+  <p>A <strong>cookie</strong> is a small piece of named data a website stores in your browser and receives back on every subsequent visit. You can see them yourself: right-click a page → <strong>Inspect</strong> → <strong>Application</strong> → <strong>Cookies</strong>. Some expire when you close the tab (<em>session</em> cookies); others persist for years.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>Set by</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><strong>First-party</strong></td><td>The site you're actually visiting</td><td>Keeping you logged in, remembering your cart and preferences. Mostly benign and often necessary.</td></tr>
+      <tr><td><strong>Third-party</strong></td><td>An ad or tracker embedded in that page</td><td>Following you <em>between</em> sites to build an advertising profile.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Firefox blocks third-party cookies by default. <strong>Chrome does not</strong> — if you want them blocked, go into Settings and turn it on, along with the "do not track" request.</p>
+
+  <h3>Why blocking cookies didn't end tracking</h3>
+  <p>Tracking moved. The <strong>Meta Pixel</strong> is a small piece of JavaScript that sites embed voluntarily, reporting your visit back to Meta as first-party code — collecting much of what third-party cookies used to. This is how advertisers target by age, location, sex, and inferred interest, and why a product you looked at on Amazon follows you into a streaming show.</p>
+
+  <h3>Data brokers</h3>
+  <p><strong>Data brokers</strong> buy, combine, and resell personal information. Subscription services exist (roughly $10–20/month, often with family plans) that send deletion requests to hundreds of brokers on your behalf, every month. The legal basis traces back to <strong>GDPR</strong> and its right to erasure, which many companies now honor globally rather than maintaining two systems.</p>
+
+  <h3>Private browsing — what it does and doesn't do</h3>
+  <p>Incognito or private mode stops your <em>browser</em> from keeping history and cookies after you close the window. It does <strong>not</strong> hide your IP address, and the site still knows you visited. For that you'd need a VPN, which hides your traffic from the local network and your ISP, and shows the site the VPN's address instead of yours.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Fake Wi-Fi hotspots</span>
+    <p>Anyone can broadcast a network name. At a conference, a café, or on campus, confirm the real network name before connecting — "MDC Guest," not something that merely looks close. A fake access point exists to watch what passes through it.</p>
+  </div>
+
+  <h3>Check your own exposure</h3>
+  <p><strong>haveibeenpwned.com</strong> (spelled "pwned") tells you which breaches have included your email address. Worth doing for every address you use. My college address turned up in a <strong>McGraw-Hill</strong> breach — the publisher of this course's textbooks — which is a useful reminder that this isn't theoretical. Since I don't reuse passwords, the practical risk is spam rather than account takeover. That's the whole argument for not reusing passwords, in one example.</p>
+</section>
+
+<section id="checklist">
+  <div class="eyebrow">Security</div>
+  <h2><span class="topic-num">08</span>Your actual checklist</h2>
+  <ul class="reminder-list">
+    <li><strong>Turn on automatic updates</strong> on every device, and restart when prompted.</li>
+    <li><strong>Confirm your antivirus and firewall are on.</strong> Windows: Windows Security. Mac: System Settings → Privacy &amp; Security.</li>
+    <li><strong>Stop reusing passwords.</strong> Start a password manager — you already have one built into your phone and browser.</li>
+    <li><strong>Turn on MFA</strong> for email, banking, and school accounts.</li>
+    <li><strong>Try a passkey</strong> somewhere that offers one.</li>
+    <li><strong>Check your email at haveibeenpwned.com</strong> and change anything flagged.</li>
+    <li><strong>Back up to two places</strong>, and keep the external drive unplugged between backups.</li>
+    <li><strong>Agree a family code word</strong> against voice-cloning scams, and tell older relatives why.</li>
+    <li><strong>Hover before you click.</strong> Report phishing rather than just deleting it.</li>
+    <li><strong>Unlock your phone biometrically in public</strong>, never by typing the PIN.</li>
+  </ul>
+  <p>Textbook drift worth knowing: <strong>Safe Mode is no longer F8</strong> — hold <kbd>Shift</kbd> while clicking Restart.</p>
+</section>
+
+<section id="functions">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">09</span>Chapter 3: functions</h2>
+
+  <div class="callout callout-info">
+    <span class="label">How SimNet expects you to enter functions</span>
+    <p>There are three ways: the <strong>Function Arguments dialog</strong>, autocomplete as you type, or selecting cells with the mouse. <strong>Most SimNet tasks are built around the Function Arguments dialog</strong>, so practice that route even if typing is faster for you.</p>
+  </div>
+
+  <h3>SUM and ranges</h3>
+  <p><code>=SUM(A1,A2,A3)</code> lists individual cells. <code>=SUM(A1:A10)</code> uses a <strong>range</strong> — the colon means "through." Prefer ranges: add a value inside the range later and the total updates by itself.</p>
+
+  <h3>AVERAGE and the blank-cell trap</h3>
+  <div class="callout callout-key">
+    <span class="label">This one shows up on assessments</span>
+    <p><strong>AVERAGE ignores blank cells. It does not ignore zeros.</strong></p>
+    <p>Three cells containing 30, 60, 90 average to 60. Replace one with an <em>empty</em> cell and the remaining two average to 90 — the blank isn't counted at all. Replace it with a <em>zero</em> and you get 60, because zero is a number. A blank and a zero look almost identical in a spreadsheet and produce completely different answers.</p>
+  </div>
+
+  <h3>The COUNT family</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Function</th><th>Counts</th></tr></thead>
+    <tbody>
+      <tr><td><code>COUNT</code></td><td>Cells containing <strong>numbers</strong></td></tr>
+      <tr><td><code>COUNTA</code></td><td>Cells that are <strong>not empty</strong> (text included)</td></tr>
+      <tr><td><code>COUNTBLANK</code></td><td>Cells that <strong>are</strong> empty</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Date and time functions</h3>
+  <p><code>=TODAY()</code> returns today's date. <code>=NOW()</code> returns date <em>and</em> time. Recall that Excel stores a date as the number of days since January 1, 1900 — so with <code>NOW()</code>, the <strong>whole number is the date and the decimal fraction is the time of day</strong>. Format as a plain number to see it.</p>
+  <p>Custom date formats use codes: <code>MM</code> month, <code>DD</code> day, <code>YYYY</code> year, <code>HH</code> hour, <code>MM</code> minute (in a time context), <code>SS</code> second.</p>
+  <div class="callout callout-warn">
+    <span class="label">TODAY() and NOW() recalculate every time the file opens</span>
+    <p>Useful for a dashboard that should always show the current date. <strong>Wrong for a letter template</strong> — the date would change every time anyone opened it. For a date that stays put, type it, or use <kbd>Ctrl</kbd> + <kbd>;</kbd>, which inserts today's date as a fixed value.</p>
+  </div>
+
+  <h3>Text functions</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Function</th><th>Does</th></tr></thead>
+    <tbody>
+      <tr><td><code>PROPER</code></td><td>Capitalizes like a name — <code>maria lopez</code> → <code>Maria Lopez</code></td></tr>
+      <tr><td><code>UPPER</code> / <code>LOWER</code></td><td>All caps / all lowercase</td></tr>
+      <tr><td><code>LEN</code></td><td>Counts characters — <strong>spaces count</strong></td></tr>
+      <tr><td><code>CONCATENATE</code></td><td>Joins text. <strong>Adds no space</strong> — you must supply <code>" "</code> yourself</td></tr>
+      <tr><td><code>TEXTJOIN</code></td><td>Joins a whole range with a separator you choose, and takes an <strong>ignore_empty</strong> argument: <code>TRUE</code> skips blanks, <code>FALSE</code> leaves doubled separators</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Referencing other sheets and workbooks</h3>
+  <p>Start a formula with <code>=</code>, click a different sheet tab, click the cell you want. The reference updates automatically when the source changes. You can also reference a cell in a different <em>file</em> using bracket notation — Excel stores the file's path, so the link survives as long as you don't move or rename the source.</p>
+  <p>Watch for <strong>circular references</strong>: if A2 depends on B2 and B2 depends on A2, Excel can't resolve it and will tell you so.</p>
+  <p>You can also <strong>name</strong> a cell or range — right-click → Define Name — and then use that name in formulas. <code>=price*quantity</code> is far easier to read and debug than <code>=B4*C4</code>.</p>
+
+  <div class="callout callout-key">
+    <span class="label">PMT — the most useful function in this chapter</span>
+    <p><code>=PMT(rate, nper, pv)</code> calculates a loan payment.</p>
+    <p><strong>The trap: all three arguments must use the same time unit.</strong> Loans are advertised as an annual rate over a number of years, but you pay monthly. So divide the rate by 12 and multiply the years by 12:</p>
+    <p><code>=PMT(annual_rate/12, years*12, price)</code></p>
+    <p>A $25,000 car at 6% over 5 years gives about <strong>$483.32</strong> a month. The result comes out <strong>negative</strong> because it's money leaving you; put a minus sign in front of PMT to display it positive.</p>
+    <p>Once it's built, change one cell to see what a different rate or term does. A $250,000 mortgage at 7.5% over 30 years runs roughly $1,700 a month before taxes and insurance — and over the full term you pay more in interest than the house cost.</p>
+  </div>
+</section>
+
+<section id="lookup">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">10</span>Lookups, logic, and errors</h2>
+
+  <h3>IF</h3>
+  <p><code>=IF(test, value_if_true, value_if_false)</code>. Comparison operators: <code>=</code>, <code>&lt;&gt;</code> (not equal), <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>.</p>
+
+  <h3>VLOOKUP</h3>
+  <p><code>=VLOOKUP(lookup_value, table_range, column_number, FALSE)</code> — search the first column of the range for a value, and return whatever sits in the numbered column of the matching row.</p>
+  <div class="callout callout-warn">
+    <span class="label">Always pass FALSE</span>
+    <p>The last argument controls match type. <code>FALSE</code> means <strong>exact match</strong>. Leave it out and Excel does an approximate match, which <em>requires the first column to be sorted ascending</em> and otherwise returns wrong answers with no error at all. Silent wrongness is worse than an error message — always pass <code>FALSE</code> unless you specifically want a range lookup.</p>
+  </div>
+
+  <h3>XLOOKUP — the better option where available</h3>
+  <p><code>=XLOOKUP(lookup_value, lookup_array, return_array, "not found")</code>. You give the column to search and the column to return <em>directly</em>, instead of counting column positions, so inserting a column doesn't break it. It defaults to exact match, and the fourth argument lets you supply your own message instead of <code>#N/A</code>.</p>
+
+  <h3>Error values</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Error</th><th>Means</th></tr></thead>
+    <tbody>
+      <tr><td><code>#####</code></td><td>Not an error — the column is too narrow. Double-click the column border.</td></tr>
+      <tr><td><code>#VALUE!</code></td><td>Wrong type of data — usually arithmetic on text</td></tr>
+      <tr><td><code>#NAME?</code></td><td>Excel doesn't recognize a name — a typo'd function or an undefined named range</td></tr>
+      <tr><td><code>#DIV/0!</code></td><td>Division by zero, often because the divisor cell is still empty</td></tr>
+      <tr><td><code>#N/A</code></td><td>A lookup found no match</td></tr>
+      <tr><td><code>#REF!</code></td><td>A referenced cell no longer exists — usually deleted</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>One more: <strong>don't type commas inside numbers.</strong> Entering <code>1,000</code> may be stored as text and break your formulas. Type <code>1000</code> and let formatting add the comma for display.</p>
+</section>
+
+<section id="printing">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">11</span>Chapter 4: printing a wide spreadsheet</h2>
+  <p>Spreadsheets are wider than paper, so Excel splits them across pages in whatever way it likes unless you intervene. In <strong>File → Print</strong> you can see the result before committing:</p>
+  <ul>
+    <li><strong>Orientation → Landscape</strong> — more columns per page, the first thing to try.</li>
+    <li><strong>Scaling → Fit All Columns on One Page</strong> — forces the width to fit, shrinking the text.</li>
+    <li><strong>Page Layout view</strong> shows page boundaries while you edit, so you can see what will break where.</li>
+  </ul>
+  <p>To produce a PDF instead of paper, choose <strong>Save as PDF</strong> in the print dialog (Mac: the <em>PDF</em> dropdown at the bottom left; Windows: select <em>Microsoft Print to PDF</em> as the printer).</p>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">12</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Computer security adaptive learning assignment</strong> in Connect.</li>
+      <li><strong>The security video case</strong> — the Target breach, where malware on the in-store card readers captured customers' card numbers as they swiped. Six questions follow the video.</li>
+      <li><strong>Excel chapters 3, 4, and 5</strong> in SimNet.</li>
+      <li><strong>Catch up on anything showing a zero.</strong> The zero clears when the work is graded. If it doesn't, email me.</li>
+      <li><strong>Do at least three things from the security checklist above.</strong> Start with MFA on your email.</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="label">Next week, first thing</span>
+    <p><strong>Pivot tables, goal seek, and what-if data tables</strong> — the Excel chapter 5 analysis tools I didn't reach. They open the session. Then generative AI.</p>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">One to try before then</span>
+    <p>Open a blank sheet. In three cells type <code>30</code>, leave the next <em>empty</em>, then type <code>90</code>. Average all three. Now put a <code>0</code> in the empty cell and average again. The two answers differ — make sure you can explain why.</p>
+  </div>
+
+  <p><strong>Getting help:</strong> email me, or book a time through the link on the Start Here page. I also stay on after class, which is usually the quickest way to get a stuck assignment moving.</p>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
