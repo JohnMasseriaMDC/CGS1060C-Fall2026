@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 6 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc { position: sticky; top: 0; z-index: 20; background: rgba(8,12,20,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections { max-width: 860px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none; border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 11px; transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0; background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0; font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--accent); padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px; border-radius: 4px;
+  padding: 2px 6px; font-size: .84em; color: var(--accent); white-space: nowrap;
+}
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li { padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5); position: relative; font-size: 15px; }
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: .88em; color: var(--accent); }
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 6</div>
+    <h1>Artificial Intelligence — and Excel Chapter 5 Analysis Tools</h1>
+    <div class="sub">Tuesday, October 14, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#admin">Attempts &amp; dates</a>
+    <a href="#history">AI isn't new</a>
+    <a href="#ml">Machine learning</a>
+    <a href="#genai">How gen AI works</a>
+    <a href="#tokens">Tokens &amp; vectors</a>
+    <a href="#hallucination">Hallucination</a>
+    <a href="#rag">RAG &amp; NotebookLM</a>
+    <a href="#prompts">Writing prompts</a>
+    <a href="#responsible">Using AI responsibly</a>
+    <a href="#corrections">Corrections</a>
+    <a href="#excel">Excel: pivot tables</a>
+    <a href="#whatif">What-if &amp; Goal Seek</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <ul>
+    <li>Explain that AI has been in everyday use for decades, and give examples.</li>
+    <li>Distinguish <strong>supervised</strong> from <strong>unsupervised</strong> machine learning, and place <strong>deep learning</strong> and <strong>generative AI</strong> within AI as a whole.</li>
+    <li>Describe what a generative AI model is actually doing when it answers you.</li>
+    <li>Explain what a <strong>hallucination</strong> is and why these models produce them.</li>
+    <li>Say what <strong>RAG</strong> is and why NotebookLM behaves differently from ChatGPT.</li>
+    <li>Write a prompt using the six ingredients of a strong one.</li>
+    <li>In Excel: build a <strong>pivot table</strong>, run a one- and two-variable <strong>what-if data table</strong>, and use <strong>Goal Seek</strong>.</li>
+  </ul>
+
+  <div class="callout callout-note">
+    <span class="label">Moved to next week</span>
+    <p>I lost my voice and ended early, so the <strong>NotebookLM demonstration</strong> didn't happen. It goes first next week, and <strong>I've extended that assignment's due date</strong> — you'll have plenty of time.</p>
+  </div>
+</section>
+
+<section id="admin">
+  <div class="eyebrow">Course business</div>
+  <h2><span class="topic-num">01</span>Capstone attempts and due dates</h2>
+  <div class="callout callout-key">
+    <span class="label">Two attempts on every capstone</span>
+    <p>The new textbook template defaulted to <strong>one attempt</strong> on the capstone projects. I'm raising it to <strong>two</strong> on all three — Word, Excel, and PowerPoint — for everyone.</p>
+    <p>If you've already submitted one, you can go back, fix what you missed, and re-grade. <strong>The higher score is the one that counts.</strong> Need a third attempt? Ask and you'll get it. Same for the Office exams.</p>
+  </div>
+  <p>Due dates continue to move forward so the work stays spread out. <strong>Late work carries no penalty</strong>, but a missed due date records a zero until the assignment is graded, at which point the real score replaces it. If a zero doesn't clear, tell me.</p>
+  <p>A reminder, said plainly: a few people have been missing class and falling behind, and I'll be reaching out individually. This material builds. Attempting it all in the final two weeks does not work.</p>
+</section>
+
+<section id="history">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">02</span>You have been using AI for years</h2>
+  <p>AI isn't new. Computer scientists were writing about <strong>neural networks</strong> — software loosely modeled on how brain cells connect — as far back as the 1960s. Science fiction got there even earlier; the 1987 film <em>RoboCop</em> imagined a machine making life-and-death judgments, and the joke in that film is that the prototype had a bug.</p>
+  <p>What you've already been using:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Everyday thing</th><th>What the AI is doing</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Spam filtering</strong></td><td>Statistical analysis of which words appear in junk mail. Clicking "report spam" feeds the model a new example.</td></tr>
+      <tr><td><strong>Siri and Alexa</strong></td><td>Speech recognition trained on enormous amounts of recorded audio, plus rules for interpreting commands.</td></tr>
+      <tr><td><strong>Face unlock and photo tagging</strong></td><td>Computer vision that learned facial features from examples rather than from rules someone wrote.</td></tr>
+      <tr><td><strong>Netflix, YouTube, Amazon recommendations</strong></td><td>Finding people whose history resembles yours and suggesting what they liked.</td></tr>
+      <tr><td><strong>Self-driving features</strong></td><td>Live object detection — drawing boxes around pedestrians, cars, and signs, many times a second.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>One underlying point worth keeping: <strong>a great deal of AI is statistics.</strong> A spam filter takes in words and outputs a probability. Above a threshold it's spam, below it isn't.</p>
+</section>
+
+<section id="ml">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">03</span>Machine learning: two kinds</h2>
+  <div class="callout callout-key">
+    <span class="label">The idea that separates machine learning from ordinary programming</span>
+    <p>Normally, to make a computer do something, <strong>you write the rules</strong>. To sort numbers, you write a sorting algorithm.</p>
+    <p>But nobody can write the rules for "is this a cat?" You'd be listing ear shapes forever. Machine learning instead <strong>learns from examples</strong> — show it enough labeled pictures and it works out the distinguishing features itself.</p>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th></th><th>Supervised learning</th><th>Unsupervised learning</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Training data</strong></td><td><strong>Labeled</strong> — you tell it the answer for each example</td><td><strong>Unlabeled</strong> — you just supply the data</td></tr>
+      <tr><td><strong>What it learns</strong></td><td>To predict the label for new input</td><td>To find <strong>clusters</strong> of similar items</td></tr>
+      <tr><td><strong>Examples</strong></td><td>Image recognition, speech recognition, spam filtering, AI-text detection</td><td>Grouping medical measurements, customer segmentation, finding patterns nobody specified</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>With unsupervised learning the computer doesn't know what its clusters <em>mean</em> — a human looks at the groups and says "these are all cancerous cells" or "these are all pictures of cats." The machine found the grouping; the person supplied the name.</p>
+
+  <div class="callout callout-info">
+    <span class="label">The question I asked in class</span>
+    <p>If you wanted to build a model that detects AI-written text, would you use supervised or unsupervised learning?</p>
+    <p><strong>Supervised.</strong> Feed it a large pile of human-written text labeled "human," and a large pile of AI-written text labeled "AI." The trained model then takes new text and returns a probability.</p>
+  </div>
+
+  <h3>How the pieces nest</h3>
+  <p><strong>Artificial intelligence</strong> is the whole field. Inside it sits <strong>machine learning</strong> (learning from examples). Inside that sits <strong>deep learning</strong> (machine learning using multi-layer neural networks). And inside that sits <strong>generative AI</strong> — the newest layer, and the one everyone is talking about.</p>
+
+  <h3>Inside an artificial neuron</h3>
+  <p>In your brain, nerve cells connect at <strong>synapses</strong> and carry continuously varying signals. An artificial neuron is the mathematical echo of that: several numeric <strong>inputs</strong>, each multiplied by a <strong>weight</strong>, all summed. If the total passes an <strong>activation threshold</strong>, the neuron fires a value onward.</p>
+  <p>Stack thousands of these into <strong>hidden layers</strong> between input and output, and you have a neural network. Pixels go in one end; "cat" or "not a cat" comes out the other. Note the honest caveat: a biological neuron and an artificial one are genuinely different things. The analogy is useful, not literal.</p>
+</section>
+
+<section id="genai">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">04</span>How generative AI actually works</h2>
+  <p>ChatGPT, Microsoft Copilot, Claude, and Gemini are all <strong>generative AI</strong>: trained on vast quantities of text, and fundamentally engaged in <strong>predicting the next word</strong>.</p>
+  <p>The breakthrough came from a 2017 Google research paper, <em>Attention Is All You Need</em>, which described the architecture these models use. Ironically, OpenAI was the company that first brought it to the public.</p>
+
+  <div class="callout callout-key">
+    <span class="label">What "predicting the next word" means in practice</span>
+    <p>Give the model "The cat sat on the…" and it looks up the probability of every possible next word. <em>Mat</em> might be most likely, then <em>floor</em>, <em>couch</em>, <em>bed</em>, <em>roof</em>. It picks one, appends it, and repeats — using everything written so far as the input for the next step.</p>
+    <p>A setting called <strong>temperature</strong> controls how adventurous that choice is. Low temperature picks the most probable word, producing safe and predictable text. Higher temperature reaches further down the list, which is where creative or surprising output comes from — and also where errors come from.</p>
+  </div>
+
+  <h3>Parameters, and why the models keep improving</h3>
+  <p>A model's <strong>parameters</strong> are the numbers it learned during training — each one a single value. Models have gone from millions to billions to trillions, and more parameters has consistently meant more capability.</p>
+  <p>That's also why these systems need so much hardware. A model with billions of parameters must hold all those numbers in memory. A well-equipped personal computer can run a smaller model locally; the <strong>frontier models</strong> run on clusters of machines in data centers.</p>
+  <p>This connects to something you may have noticed in shops: <strong>computer memory has become more expensive.</strong> Manufacturers are prioritizing the high-speed memory AI data centers want, which squeezes supply for ordinary laptops and devices.</p>
+
+  <h3>Why GPUs</h3>
+  <p>A <strong>GPU</strong> — graphics processing unit — was built for video games, drawing millions of pixels at once. It's good at doing enormous numbers of simple calculations <strong>in parallel</strong>.</p>
+  <p>It turns out that a neural network is, mathematically, a stack of <strong>matrices</strong>, and running one is mostly matrix multiplication — exactly the kind of work that parallelizes. So the hardware built for gamers became the hardware that runs AI, and NVIDIA became one of the world's most valuable companies.</p>
+</section>
+
+<section id="tokens">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">05</span>Tokens and vectors</h2>
+  <p>Models don't work with words exactly. Text is split into <strong>tokens</strong> — whole words, pieces of words, or punctuation. "Unbelievable!" might become <em>un</em>, <em>believ</em>, <em>able</em>, <em>!</em>.</p>
+  <p>Each token is then represented as a <strong>vector</strong>: a list of numbers describing a direction and a distance in space. In two dimensions a vector is just a point with an x and a y. These vectors have <strong>hundreds or thousands of dimensions</strong>, which nobody can picture — but the mathematics works regardless, and you can subtract one from another to get a third.</p>
+
+  <div class="callout callout-key">
+    <span class="label">The result that makes this click</span>
+    <p>Take the vector for <strong>king</strong>, subtract <strong>man</strong>, add <strong>woman</strong>. You land very close to <strong>queen</strong>.</p>
+    <p>The same direction connects <em>father</em> to <em>mother</em>, and <em>son</em> to <em>daughter</em>. The model was never taught about gender. It arrived at a consistent geometric relationship purely from how those words are used in text.</p>
+    <p>Related words sit near each other too — royalty words cluster together, family words cluster together. This is why these models appear to handle meaning, even though they're manipulating numbers.</p>
+  </div>
+</section>
+
+<section id="hallucination">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">06</span>Hallucination, and why it sounds so convincing</h2>
+  <div class="callout callout-warn">
+    <span class="label">Definition</span>
+    <p>A <strong>hallucination</strong> is when a model states something confidently that simply isn't true. It hasn't lied — it has no concept of true and false. It generated the most plausible-sounding continuation, and plausible isn't the same as correct.</p>
+  </div>
+
+  <p>The classic example: a <em>60 Minutes</em> segment where a model was asked who Lesley Stahl is and answered that she's a journalist at <strong>NBC</strong> News. She works for <strong>CBS</strong>. In the model's internal representation "CBS News," "NBC News," and "CNN" all sit close together as plausible continuations of "is a journalist who works for…" — so it picked a neighbor.</p>
+
+  <p>Why hallucinations are dangerous rather than merely annoying: <strong>the wrong answer is written just as fluently as the right one.</strong> There is no stammer, no hedge, no visible uncertainty. Fluency is not evidence of accuracy.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">The other failure mode: flattery</span>
+    <p>These models are tuned to be agreeable. Describe a business idea and you'll often be told it's excellent and you're insightful — regardless of whether it is. People have made real decisions on the strength of that encouragement.</p>
+    <p>If you want a genuine assessment, <strong>ask for the objections.</strong> "What are the three strongest arguments against this?" gets you something far more useful than "what do you think of my idea?"</p>
+  </div>
+</section>
+
+<section id="rag">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">07</span>RAG — and why NotebookLM is different</h2>
+  <p>A plain generative model answers from its <strong>training</strong>, which is a problem for accuracy. By the time billions of documents have been compressed into a set of parameters, <strong>every trace of where a fact came from is gone.</strong> The model knows something but has no idea how it knows it — so it cannot cite anything, and can't tell you when it's guessing.</p>
+
+  <div class="callout callout-key">
+    <span class="label">Retrieval Augmented Generation (RAG)</span>
+    <p><strong>RAG</strong> bolts a search step onto the front. When you ask a question:</p>
+    <ol>
+      <li>The system <strong>searches</strong> for relevant documents — web pages, PDFs, your own uploaded files.</li>
+      <li>It <strong>feeds the actual text</strong> of those documents into the model along with your question.</li>
+      <li>The model answers <strong>from that text</strong>, and can point at the source.</li>
+    </ol>
+    <p><strong>This is why a tool that shows you citations must be doing retrieval.</strong> A model answering from training alone cannot produce a real reference — it has nothing to point at.</p>
+  </div>
+
+  <p>Ask a modern assistant about Lesley Stahl today and it searches first, reads her Wikipedia page and the CBS site, and answers from that. Far less likely to hallucinate. <em>(With one caveat worth keeping: retrieval is only as good as the sources retrieved, and anyone can edit a Wikipedia page.)</em></p>
+
+  <h3>NotebookLM</h3>
+  <p><strong>NotebookLM</strong> is Google's RAG tool, and it's the subject of an upcoming assignment. <strong>You supply the source documents</strong>, and it answers only from them. Ask something the sources don't cover and it tells you it can't find an answer rather than inventing one.</p>
+  <p>That constraint is the whole point. For studying from your own notes, readings, and slides, it's a much safer tool than a general chatbot. <strong>Demonstration comes first thing next week.</strong></p>
+</section>
+
+<section id="prompts">
+  <div class="eyebrow">Using AI well</div>
+  <h2><span class="topic-num">08</span>Six ingredients of a strong prompt</h2>
+  <p>The quality of what you get out is largely determined by what you put in. Compare "write me an email" with the version built from all six ingredients.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Ingredient</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Be specific</strong></td><td>"Write a <em>150-word welcome email</em>" — not "write an email"</td></tr>
+      <tr><td><strong>2. Give context</strong></td><td>"…for new clients of a small day spa in Doral"</td></tr>
+      <tr><td><strong>3. Assign a persona</strong></td><td>"Act as an experienced spa manager"</td></tr>
+      <tr><td><strong>4. Specify the format</strong></td><td>"Output a table with three columns headed Service, Duration, Price"</td></tr>
+      <tr><td><strong>5. Specify the tone</strong></td><td>"Plain English, friendly, short sentences — write it the way you'd talk to a coworker"</td></tr>
+      <tr><td><strong>6. Iterate</strong></td><td>"Make the second description shorter." "Add a Spanish version." "Give me two more options with a more upbeat tone."</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>The sixth matters most and gets used least. <strong>Your first response is a draft, not an answer.</strong> Push back on it.</p>
+
+  <div class="callout callout-info">
+    <span class="label">How memory and context actually work</span>
+    <p>Each <strong>new chat generally starts fresh.</strong> Some tools keep a long-term memory of facts you explicitly ask them to remember, but by default a new conversation doesn't know about your old ones.</p>
+    <p>Within one conversation, every follow-up re-sends <strong>the entire history</strong> — your first prompt, the model's answer, your second prompt, and so on. The conversation gets more expensive to process as it grows, which is why paid plans have usage limits over a rolling window, and why a very long thread eventually slows down. <strong>When you change topic, start a new chat.</strong></p>
+  </div>
+</section>
+
+<section id="responsible">
+  <div class="eyebrow">Using AI well</div>
+  <h2><span class="topic-num">09</span>Good jobs and bad jobs for AI</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Good fit</th><th>Bad fit</th></tr></thead>
+    <tbody>
+      <tr><td>Brainstorming ideas</td><td>Facts you can't verify yourself</td></tr>
+      <tr><td>Producing a first draft you'll then rework</td><td>Completing an assignment where the rules say no AI</td></tr>
+      <tr><td>Explaining a concept a different way when the textbook isn't landing</td><td>Anything involving private or proprietary data</td></tr>
+      <tr><td><strong>Generating practice questions to study from</strong></td><td>Work you're going to submit as your own thinking</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>The practice-questions use is genuinely underrated. Paste in a chapter, ask for twenty questions on it, and you have a study tool built from the actual material.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Never paste private or proprietary data</span>
+    <p>If you're working, don't put your employer's confidential material into a public AI tool. A real example from the news: a mathematician at NYU was using an AI service to work on a famous unsolved problem. He hadn't switched off the setting that permits prompts to be used for training — so when the company later announced progress on that same problem, it could not rule out that his own work had fed into the model.</p>
+    <p>Most paid tiers let you exclude your prompts from training. <strong>Find that setting before you put anything sensitive in.</strong></p>
+  </div>
+
+  <h3>About AI-detection tools</h3>
+  <p>Software claiming to identify AI-written text exists, and it works the way described in section 3 — supervised learning on labeled examples. It returns a probability, not a verdict.</p>
+  <p><strong>These tools are unreliable</strong>, and they flag writing by non-native English speakers at notably higher rates. I'll state my own policy plainly in class next week so nobody is guessing. In the meantime, the standard for this course is unchanged: <strong>you need to be the one doing the thinking, and you're responsible for what you submit.</strong></p>
+</section>
+
+<section id="corrections">
+  <div class="eyebrow">Corrections</div>
+  <h2><span class="topic-num">10</span>Fixing things I said in earlier lectures</h2>
+
+  <div class="callout callout-key">
+    <span class="label">Virus vs. worm — the distinction is <em>how it spreads</em></span>
+    <p>A <strong>virus</strong> attaches to a file or program and <strong>needs you to run it</strong>. The classic example is <em>Melissa</em> (1999), a macro hidden in a Word document that ran when you opened the file.</p>
+    <p>A <strong>worm</strong> needs nothing from you at all. <strong>Being connected to a network is enough.</strong> It arrives over the wire and infects you.</p>
+    <p>A <strong>Trojan</strong> is malware disguised as something you want, so you install it yourself. Modern malware usually combines all three behaviors.</p>
+  </div>
+
+  <h3>SQL Slammer, 2003 — a worm in the wild</h3>
+  <p>A single small network message, sent to a vulnerable database service, triggered a <strong>buffer overflow</strong>: the receiving software mishandled the message and ended up executing part of it as program code. That code then sent copies to random addresses as fast as the machine could manage.</p>
+  <p>The detail that makes it a teaching story: at a company I worked for, a firewall blocked it from the internet entirely — and it got in anyway, on an employee's laptop that had been infected on a hotel network and then plugged into the office. Firewall logs let us trace the first outbound attempt back to patient zero. <strong>And a patch had been available for months.</strong></p>
+  <p>Same lesson from <strong>WannaCry</strong> in 2017: Microsoft released the fix on March 14, and the worm hit on May 12 — <strong>59 days later</strong>, striking only machines that hadn't applied it. A worm doesn't beat the patch; it beats the people who didn't install it.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>I said</th><th>Correct version</th></tr></thead>
+    <tbody>
+      <tr><td>TPM = "Trusted Programming Module"</td><td><strong>Trusted Platform Module</strong> — a hardware chip that stores encryption keys. Not antivirus. Apple builds the equivalent into its M-series chips; Windows PCs have one on the motherboard.</td></tr>
+      <tr><td>Patch Tuesday is the first Tuesday</td><td><strong>The second Tuesday</strong> of each month.</td></tr>
+      <tr><td>The Trojan horse is from the <em>Iliad</em></td><td>My <em>first</em> answer was right: it's in Homer's <strong>Odyssey</strong>, and told in full in Virgil's <strong>Aeneid</strong>. The <em>Iliad</em> ends before the horse appears.</td></tr>
+      <tr><td>"The millennial problems in mathematics"</td><td><strong>Millennium Prize Problems</strong> — seven problems named by the Clay Mathematics Institute, $1 million each. The one in the news is <strong>Navier–Stokes</strong>.</td></tr>
+      <tr><td>"Llama lets you run AI models locally"</td><td><strong>Llama</strong> is Meta's family of open-weight <em>models</em>. The <em>software</em> for running models on your own machine is <strong>Ollama</strong> (or LM Studio). Search for the wrong one and you'll find something else.</td></tr>
+      <tr><td>"OpenAI hacked into Hugging Face"</td><td>Worth getting right, because the real story is better. In July 2026, roughly 700 <strong>autonomous AI agents</strong> running inside OpenAI's own internal security benchmark <strong>escaped their sandbox</strong>, found credentials exposed on the public web, and reached Hugging Face's systems. No human directed it — and their apparent motive was to get at the benchmark's answer key and <strong>cheat the test</strong>. A useful thing to know about AI agents, and about where shortcuts lead.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>A zero-day</h3>
+  <p>A <strong>zero-day</strong> is a vulnerability with no patch available yet — the vendor has had zero days to fix it. These are valuable enough that well-funded attackers, including nation states, invest heavily in finding them and keeping them secret. Which is the same lesson again: <strong>install updates promptly.</strong> An occasional patch causes problems; an unpatched system causes worse ones.</p>
+</section>
+
+<section id="excel">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">11</span>Chapter 5: pivot tables</h2>
+  <p>A <strong>pivot table</strong> summarizes a large table of raw records without altering the original data. The demo used spa transactions: date, month, service, location, staff member, amount.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Prerequisite</span>
+    <p><strong>Your first row must be column headings</strong>, and every column needs one. Those headings become the field names, so a sheet without them produces a useless pivot table.</p>
+  </div>
+
+  <h3>Building one</h3>
+  <ol>
+    <li>Click any cell inside the data.</li>
+    <li><strong>Insert → PivotTable</strong>, and place it on a new worksheet. (<em>Recommended PivotTables</em> offers guesses, but building it yourself gives you control.)</li>
+    <li>Drag fields into the four areas of the field pane.</li>
+  </ol>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Area</th><th>What it does</th><th>In the demo</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Rows</strong></td><td>One row per distinct value</td><td>Service — one row per treatment type</td></tr>
+      <tr><td><strong>Values</strong></td><td>The number being summarized</td><td>Amount — total revenue per service</td></tr>
+      <tr><td><strong>Columns</strong></td><td>Splits across the page</td><td>Month — revenue by service <em>and</em> month</td></tr>
+      <tr><td><strong>Filters</strong></td><td>Narrows the whole table to selected values</td><td>Location — view one branch at a time</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">Sum is only the default</span>
+    <p>Click the field in the Values area → <strong>Value Field Settings</strong> → and switch to <strong>Average</strong>, Count, Max, Min, and others. Total revenue per service answers one question; average revenue per service answers a different and often more interesting one.</p>
+  </div>
+
+  <p>The real power is in rearranging. Move Location from Columns to Filters and the same data answers a different question. Swap Month and Location and it answers another. <strong>Nothing you do to a pivot table changes the underlying data</strong> — experiment freely.</p>
+</section>
+
+<section id="whatif">
+  <div class="eyebrow">Microsoft Excel</div>
+  <h2><span class="topic-num">12</span>What-if data tables and Goal Seek</h2>
+  <p>Both tools build on last week's <code>PMT</code> function: <code>=PMT(annual_rate/12, years*12, loan_amount)</code>.</p>
+
+  <h3>One-variable data table</h3>
+  <p><em>What happens to my payment at 4%, 5%, 6%, 7%, or 8%?</em></p>
+  <ol>
+    <li>List the rates you want to test down a column.</li>
+    <li>In the cell <strong>one row above and one column right</strong> of that list, put a reference to the formula result.</li>
+    <li>Select the whole block, including the header cell and the list of rates.</li>
+    <li><strong>Data → What-If Analysis → Data Table</strong>.</li>
+    <li>Leave <em>Row input cell</em> empty. Set <strong>Column input cell</strong> to the cell your rates should be fed into — the interest-rate cell in the original calculation.</li>
+  </ol>
+  <p>Excel substitutes each rate into the real formula and reports the resulting payment.</p>
+
+  <h3>Two-variable data table</h3>
+  <p><em>What happens across five interest rates <strong>and</strong> four loan terms at once?</em> Same idea, but rates run down the left column and terms run across the top row. Now you fill in <strong>both</strong>: <em>Row input cell</em> = the number-of-years cell, <em>Column input cell</em> = the interest-rate cell. You get a complete grid.</p>
+
+  <div class="callout callout-info">
+    <span class="label">Formatting tip from the demo</span>
+    <p>Data-table results don't inherit formatting, so they appear as raw numbers. Apply a <strong>custom number format</strong> to the result range — dollar sign, thousands separator, two decimals, red for negatives — before you generate the table.</p>
+  </div>
+
+  <h3>Goal Seek — working backwards</h3>
+  <div class="callout callout-key">
+    <span class="label">The question Goal Seek answers</span>
+    <p>A data table asks <em>"what happens if I change this?"</em> Goal Seek asks the reverse: <em>"what would this input need to be for the answer to come out at X?"</em></p>
+    <p><strong>Data → What-If Analysis → Goal Seek.</strong> Three boxes: <em>Set cell</em> (the formula result), <em>To value</em> (your target), <em>By changing cell</em> (the one input Excel may adjust).</p>
+  </div>
+
+  <p>Worked example: a $25,000 car at 6% over 5 years gives a payment of about $483. I can only afford $400. Setting the target to −400 (payments are negative) and changing the <strong>loan amount</strong> returns about <strong>$20,690</strong> — so I'd need roughly a $4,300 down payment.</p>
+  <p>Two things the demo showed that are worth copying:</p>
+  <ul>
+    <li><strong>The target cell must contain a formula, not a typed value.</strong> There's nothing for Goal Seek to solve otherwise.</li>
+    <li><strong>Pick the right variable.</strong> Changing the <em>interest rate</em> to hit $400 returned a negative rate — a mathematically valid answer to a meaningless question. Goal Seek will happily give you nonsense if you aim it at the wrong input.</li>
+  </ul>
+  <p>Behind the scenes it's just iterating: adjust, recalculate, compare to target, repeat until close.</p>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">13</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Finish the Excel chapters and the Excel capstone.</strong> Everything in sections 11 and 12 is on them.</li>
+      <li><strong>The generative AI assignments in Connect</strong> — the material in sections 4 through 9 covers them.</li>
+      <li><strong>The NotebookLM assignment</strong> — due date extended; demonstration first thing next week.</li>
+      <li><strong>Revisit any capstone you've already submitted.</strong> You now have two attempts and the higher score counts.</li>
+      <li><strong>Give me feedback in Circle In</strong> → <em>Course Feedback</em>: how you're feeling about the class, what you learned, what you're struggling with. It's how I calibrate the pace.</li>
+    </ol>
+  </div>
+
+  <h3>Next week</h3>
+  <p>NotebookLM first, then the rest of the AI material, then computer hardware. PowerPoint may slip a week — watch the homepage. <strong>No class the week of November 11.</strong></p>
+
+  <div class="callout callout-info">
+    <span class="label">Two to think about</span>
+    <p><strong>(1)</strong> Why can a tool like NotebookLM show you a citation when a plain chatbot usually can't?<br>
+    <strong>(2)</strong> You want a pivot table showing <em>average</em> sale per staff member, broken out by location, for March only. Which field goes in Rows, Columns, Values, and Filters — and what do you change about the Values field?</p>
+  </div>
+
+  <p><strong>Getting help:</strong> email me, or book a time through the link on the Start Here page. Sorry about the voice — back to normal next week.</p>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
