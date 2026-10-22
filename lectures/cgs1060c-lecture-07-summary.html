@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 7 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc { position: sticky; top: 0; z-index: 20; background: rgba(8,12,20,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections { max-width: 860px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none; border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 11px; transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0; background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0; font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--accent); padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px; border-radius: 4px;
+  padding: 2px 6px; font-size: .84em; color: var(--accent); white-space: nowrap;
+}
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li { padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5); position: relative; font-size: 15px; }
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: .88em; color: var(--accent); }
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 7</div>
+    <h1>NotebookLM — and What's Inside the Box</h1>
+    <div class="sub">Tuesday, October 21, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#notebooklm">NotebookLM</a>
+    <a href="#assignment">The assignment</a>
+    <a href="#parts">Parts of a computer</a>
+    <a href="#cpu">CPU &amp; clock speed</a>
+    <a href="#chips">The four chips</a>
+    <a href="#memory">Memory hierarchy</a>
+    <a href="#storage">Storage</a>
+    <a href="#bits">Bits, bytes, ASCII</a>
+    <a href="#ports">Ports &amp; wireless</a>
+    <a href="#resolution">Resolution</a>
+    <a href="#boot">Booting up</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <ul>
+    <li>Use <strong>NotebookLM</strong> to ask questions grounded in documents you supply, and complete the assignment.</li>
+    <li>Name the main components inside a computer and say what each does.</li>
+    <li>Explain what <strong>gigahertz</strong> measures, and why faster clocks mean more heat.</li>
+    <li>Distinguish <strong>CPU</strong>, <strong>GPU</strong>, <strong>TPU</strong>, and <strong>NPU</strong>.</li>
+    <li>Describe the <strong>memory hierarchy</strong> from registers to the internet, and why each step is slower.</li>
+    <li>Explain the difference between <strong>volatile</strong> and <strong>non-volatile</strong> storage.</li>
+    <li>Convert between bits, bytes, kilo-, mega-, giga-, and terabytes, and say what ASCII and Unicode do.</li>
+    <li>Identify common ports and wireless standards, and know what gets encrypted.</li>
+  </ul>
+
+  <div class="callout callout-note">
+    <span class="label">Schedule</span>
+    <p><strong>Computer software and buying a computer</strong> move to next week. We have buffer built into the semester, so nothing is being cut — just shifted.</p>
+  </div>
+</section>
+
+<section id="notebooklm">
+  <div class="eyebrow">AI tools</div>
+  <h2><span class="topic-num">01</span>NotebookLM in practice</h2>
+  <p>Quick recap from last week. A plain chatbot answers from its <strong>training</strong> — and by the time billions of documents are compressed into a model's parameters, every trace of <em>where</em> a fact came from is gone. That's why models hallucinate, and why they usually can't cite anything.</p>
+  <p><strong>RAG</strong> — Retrieval Augmented Generation — fixes this by searching for relevant documents first and feeding their actual text to the model along with your question. <strong>NotebookLM is RAG where you choose the documents.</strong> No web search; it uses only what you upload.</p>
+
+  <h3>Getting started</h3>
+  <ol>
+    <li>Go to <strong>notebook.google.com</strong> and sign in — your MDC Google account works.</li>
+    <li>Click <strong>Create new notebook</strong>.</li>
+    <li>Upload your sources (PDFs, and it also accepts other formats including video).</li>
+    <li>Ask questions in the chat panel.</li>
+  </ol>
+
+  <div class="callout callout-key">
+    <span class="label">Watch the footnotes</span>
+    <p>Every answer carries small numbered links. <strong>Click them.</strong> They jump to the exact passage in the source document that the answer came from, so you can confirm the tool read it correctly.</p>
+    <p>This is the whole value of NotebookLM over a general chatbot, and it's the habit to build: <strong>trust but verify.</strong> Grounding makes hallucination far less likely — it doesn't make it impossible, particularly when sources conflict or say something ambiguous.</p>
+  </div>
+
+  <h3>What it does when it doesn't know</h3>
+  <p>In the demo I deliberately asked something the documents don't answer — what the spa's most expensive service is. The response: <em>"The sources do not state what Bayside Day Spa's most expensive service is, as they do not include a complete price menu."</em> Then it offered what the sources <em>do</em> say.</p>
+  <p>I didn't have to instruct it not to make something up. <strong>Being restricted to the sources is the default behavior</strong>, and that's exactly why this tool suits studying.</p>
+
+  <h3>Other things it can do</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Feature</th><th>What it produces</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Mind map</strong></td><td>A visual breakdown of the topics across your sources. Downloads as a PNG you can drop into a document.</td></tr>
+      <tr><td><strong>Audio overview</strong></td><td>A spoken summary, podcast-style. Takes a minute or two to generate — it writes the script first, then runs it through text-to-speech.</td></tr>
+      <tr><td><strong>Quiz</strong></td><td>Generates practice questions from your sources. <strong>This is the underrated one</strong> — upload a chapter and let it quiz you.</td></tr>
+      <tr><td><strong>Notes</strong></td><td>Saves a response for later. Careful here: a saved note <em>becomes a source</em>, so later answers get built on generated text. Any error compounds.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">Copyright and your textbook</span>
+    <p>You could upload textbook chapters to generate practice questions. If you do, <strong>keep that notebook private</strong> — the textbook is copyrighted material and sharing it publicly isn't yours to do.</p>
+  </div>
+</section>
+
+<section id="assignment">
+  <div class="eyebrow">Assignment</div>
+  <h2><span class="topic-num">02</span>The NotebookLM assignment</h2>
+
+  <div class="callout callout-info">
+    <span class="label">Due date extended</span>
+    <p>Originally November 4 — <strong>extended to the end of November.</strong> I grade this one by hand. That said, do it while it's fresh.</p>
+  </div>
+
+  <h3>Steps</h3>
+  <ol>
+    <li><strong>Pick a topic you care about.</strong> Ideas from the guidance PDF: AI in medical imaging, antibiotic resistance, nursing and physician staffing shortages. Pick something from your own field.</li>
+    <li><strong>Find three PDF documents</strong> on it. Search technique matters here:
+      <ul>
+        <li><code>antibiotic resistance filetype:PDF</code> — returns PDFs only</li>
+        <li><code>site:cdc.gov</code> or <code>site:.gov</code> or <code>site:.edu</code> — restricts to trustworthy sources</li>
+        <li><code>"exact phrase in quotes"</code> — matches that phrase precisely rather than the individual words</li>
+      </ul>
+    </li>
+    <li><strong>Upload all three</strong> into a new notebook.</li>
+    <li><strong>Ask at least five questions</strong>, and capture the exchanges — copy and paste, or screenshot (<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>4</kbd> on Mac, <kbd>Win</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> on Windows).</li>
+    <li><strong>Generate a mind map</strong> and include it.</li>
+    <li><strong>Write a reflection.</strong> If you use AI to help write it, <strong>include your prompt</strong> so I can see what you put in. Some colleges now permit AI on application essays on exactly this condition — the AI doesn't know who you are, so whatever makes the piece yours has to come from your prompt.</li>
+    <li><strong>Submit a PDF or Word file</strong> through Canvas. (In Word: File → Save As → PDF.)</li>
+  </ol>
+
+  <div class="callout callout-warn">
+    <span class="label">Don't use the demo files</span>
+    <p>The sample zip on the homepage contains the three Bayside Day Spa PDFs I used in class. They're there so you can follow the demo. <strong>Submitting work based on them costs 50% of the grade</strong> — the point of the assignment is choosing your own topic and finding your own sources.</p>
+  </div>
+
+  <h3>Keep your uploads reasonable</h3>
+  <p>Everything you upload is converted to <strong>tokens</strong> and processed on every question you ask. More pages means more compute, slower answers, and faster consumption of the free tier. Three focused documents beat three 400-page reports.</p>
+</section>
+
+<section id="parts">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">03</span>What's in the box</h2>
+  <div class="callout callout-key">
+    <span class="label">Hardware vs. software</span>
+    <p><strong>Hardware</strong> is what you can physically touch. <strong>Software</strong> is the instructions that tell it what to do.</p>
+    <p>The old analogy still works: your record player was the hardware, the record was the software. Same machine, different music.</p>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Component</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CPU</strong></td><td>Runs the instructions — the general-purpose brain</td></tr>
+      <tr><td><strong>RAM</strong></td><td>Working memory. <strong>Volatile</strong> — contents vanish when power is lost</td></tr>
+      <tr><td><strong>SSD / hard drive</strong></td><td>Permanent storage. <strong>Non-volatile</strong> — survives power loss</td></tr>
+      <tr><td><strong>GPU</strong></td><td>Massively parallel math; graphics, video, and AI</td></tr>
+      <tr><td><strong>Motherboard</strong></td><td>The board everything plugs into; carries the buses that connect them</td></tr>
+      <tr><td><strong>Input</strong></td><td>Keyboard, trackpad, camera, microphone, touchscreen</td></tr>
+      <tr><td><strong>Output</strong></td><td>Display, speakers, printer</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Why sleep is instant and a cold boot isn't</h3>
+  <p>Close your laptop lid and it enters a very low power state — just enough electricity to keep the bits alive in volatile RAM. Everything is still there, so opening the lid resumes immediately.</p>
+  <p>A full power-off empties RAM completely. On restart the machine must run self-tests and reload the operating system from the SSD, which takes real time.</p>
+  <p>Practical consequence: <strong>work you haven't saved lives only in volatile RAM.</strong> Lose power and it's gone. That's the whole argument for AutoSave.</p>
+
+  <h3>Categories of computer</h3>
+  <p>Desktops, laptops, 2-in-1s that fold into tablets, tablets with keyboards, smartphones — all personal devices, one user at a time. Then <strong>embedded computers</strong>, which are everywhere and invisible: your smart TV, your thermostat, your watch, the little board inside a piece of lab equipment. And <strong>shared machines</strong> — servers, mainframes, and the clustered data centers running AI models.</p>
+</section>
+
+<section id="cpu">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">04</span>The processor, clock speed, and heat</h2>
+
+  <h3>The fetch–decode–execute cycle</h3>
+  <p>A CPU does the same four things endlessly: <strong>fetch</strong> an instruction from memory, <strong>decode</strong> what it means, <strong>execute</strong> it (add, multiply, compare), <strong>store</strong> the result. Then fetch the next one. Billions of times a second.</p>
+
+  <h3>What gigahertz measures</h3>
+  <p>A <strong>hertz</strong> is one cycle per second. A <strong>megahertz</strong> is a million (FM radio broadcasts in this range). A <strong>gigahertz</strong> is a billion. A chip running at 3.8 GHz has an internal clock ticking <strong>3.8 billion times per second</strong>, and most modern CPUs run between 2 and 5 GHz.</p>
+  <div class="callout callout-info">
+    <span class="label">A textbook nuance</span>
+    <p>Your book may describe gigahertz as "billions of instructions per second." Strictly it's billions of <em>clock cycles</em> per second. Only if a chip completes one instruction per cycle do those numbers match — and modern chips sometimes do several, sometimes need several cycles for one.</p>
+  </div>
+
+  <h3>Cores and hyperthreading</h3>
+  <p>Early CPUs had one <strong>core</strong> and did one thing at a time. Modern ones have 4, 8, or 16; high-end desktops reach 32; large servers go to 192. <strong>Hyperthreading</strong> lets a single core work on two instruction streams at once, taking advantage of the idle moments while the core waits on memory.</p>
+
+  <div class="callout callout-key">
+    <span class="label">Faster clock = more heat. This is the fundamental limit.</span>
+    <p>Every switching transistor gives off heat, and heat is what stops chips going faster.</p>
+    <p><strong>Heat sink</strong> — a metal block with large surface area, pressed against the chip, drawing heat away. <strong>Fan</strong> — moves cooler air across the heat sink's fins. <strong>Liquid cooling</strong> — used in high-end machines, because liquids carry away far more heat than air can.</p>
+    <p>You know this from experience: 60°F air is cool but survivable, while 60°F water will pull the heat out of you dangerously fast.</p>
+    <p>Chips also carry <strong>thermal sensors</strong>. Too hot and the system will slow the clock down — <em>thermal throttling</em> — or shut off entirely rather than damage itself. That's why a laptop with blocked vents gets slow.</p>
+  </div>
+</section>
+
+<section id="chips">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">05</span>CPU vs. GPU vs. TPU vs. NPU</h2>
+  <p>From the video. These aren't competitors — they're a division of labor.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Chip</th><th>Stands for</th><th>What it's for</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CPU</strong></td><td>Central Processing Unit</td><td>General-purpose work: the operating system, applications, logic, anything sequential. Few cores, each very capable.</td></tr>
+      <tr><td><strong>GPU</strong></td><td>Graphics Processing Unit</td><td>Massive parallel math. Thousands of simple cores. Games, video, and <strong>training</strong> large AI models.</td></tr>
+      <tr><td><strong>TPU</strong></td><td>Tensor Processing Unit</td><td>Google's custom AI chip, built for data centers — their answer to depending on GPU vendors.</td></tr>
+      <tr><td><strong>NPU</strong></td><td>Neural Processing Unit</td><td>Small, power-efficient AI chip <strong>inside your phone or laptop</strong>. Runs already-trained models locally (<em>inference</em>), not training.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">Why a GPU beats a CPU at graphics and AI</span>
+    <p>Think about the pixels on your screen. What happens in one corner is independent of the other corner, so those calculations can all happen <strong>simultaneously</strong>.</p>
+    <p>A CPU with 8 powerful cores does 8 things at once. A GPU has <strong>thousands</strong> of much simpler cores — they only add, multiply, and divide, but there are enormous numbers of them. For a million independent calculations, that wins overwhelmingly.</p>
+    <p>And it turns out a neural network is, mathematically, stacks of <strong>matrices</strong>, and running one is mostly matrix multiplication — the same parallel problem. Hardware built for gamers became the hardware that runs AI.</p>
+  </div>
+
+  <p><strong>The NPU is why your phone can do AI offline.</strong> Apple calls theirs the Neural Engine; Qualcomm builds it into Snapdragon; Intel and AMD now ship laptop chips with one. Background blur on a video call, voice isolation, making a dark photo usable, live transcription — that's the NPU, and it's faster and more private because nothing leaves the device.</p>
+
+  <h3>Instruction sets: x86 vs. ARM</h3>
+  <p>Chips speak different machine languages. <strong>x86</strong> is Intel's, and AMD uses the same one — so software compiled for x86 runs on both. <strong>ARM</strong> is a different instruction set, used by Apple's M-series and Qualcomm's Snapdragon.</p>
+  <p>It's like English and Spanish. Both express the same ideas; a book must be published in one or the other. ARM came from the <strong>RISC</strong> approach — Reduced Instruction Set Computer — a simpler set of instructions that could run very efficiently. Windows was x86-only for years; Microsoft has since ported it to ARM.</p>
+
+  <h3>Who makes GPUs</h3>
+  <p>NVIDIA, AMD, and Intel all do; NVIDIA currently makes the most powerful. Their market went through three waves: gaming, then cryptocurrency mining, and now AI. Each wave made GPUs harder for ordinary buyers to get.</p>
+</section>
+
+<section id="memory">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">06</span>The memory hierarchy</h2>
+  <div class="callout callout-key">
+    <span class="label">One idea explains the whole ladder: distance costs time</span>
+    <p>Electrical signals travel at close to the speed of light — fast, but not instant. The further data has to travel, the longer it takes. So computers are built as a <strong>hierarchy</strong>: tiny and fast closest to the processor, huge and slow furthest away.</p>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Level</th><th>Where</th><th>Speed</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Registers</strong></td><td>Inside the CPU core — where arithmetic actually happens</td><td>Fastest. Only a handful exist.</td></tr>
+      <tr><td><strong>L1 cache</strong></td><td>On the chip, closest to the core</td><td>Extremely fast, very small</td></tr>
+      <tr><td><strong>L2 / L3 cache</strong></td><td>On the chip, progressively further out</td><td>Fast, progressively larger</td></tr>
+      <tr><td><strong>RAM</strong></td><td>Separate chips on the motherboard</td><td>Slower — the signal leaves the processor</td></tr>
+      <tr><td><strong>SSD</strong></td><td>Storage inside the machine</td><td>About 1 millisecond</td></tr>
+      <tr><td><strong>Hard drive</strong></td><td>Spinning storage</td><td>10–100 ms when busy</td></tr>
+      <tr><td><strong>Network / internet</strong></td><td>Another computer entirely</td><td>Slowest by far</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>How cache works</h3>
+  <p>When the CPU needs an instruction, it checks the cache first. If it's there — a <em>hit</em> — it's retrieved almost instantly. If not, it goes out to RAM, and while it's there it grabs <strong>a large block</strong> rather than one item, on the reasonable bet that what you need next sits nearby. When cache fills up, the least recently used contents get overwritten.</p>
+  <p>Launching Chrome for the first time shows the whole ladder in action: the program loads from SSD into RAM, instructions move from RAM into cache, and from cache into registers to execute. Each step is faster and smaller than the one before.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">There is a global RAM shortage — and it's why computers cost more</span>
+    <p>AI data centers are consuming enormous quantities of memory, and chip manufacturers are redirecting production toward the faster, more expensive memory those data centers want. That leaves less being made for ordinary laptops and phones. Same dynamic as generic drug shortages: manufacturers favor the higher-margin product.</p>
+    <p>It also affects SSDs and SD cards. And it won't resolve quickly — <strong>a new fabrication plant takes two to three years to build.</strong></p>
+    <p><em>Buying advice:</em> 16 GB of RAM is a realistic minimum now, not the 4–16 GB range the textbook quotes. And on most modern laptops — all Macs, increasingly everything — <strong>memory is soldered in and cannot be upgraded later.</strong> Buy more than you need today.</p>
+  </div>
+</section>
+
+<section id="storage">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">07</span>Storage: spinning disks vs. solid state</h2>
+
+  <h3>Inside a hard drive</h3>
+  <p>Spinning metal platters — 7,200 RPM in a laptop, up to 15,000 in a server — with data written in concentric circles, and a read-write head on a moving arm. Moving that arm to a different track is a <strong>seek</strong>, and it takes milliseconds. That mechanical movement is the entire performance problem.</p>
+  <p><strong>Thrashing</strong> is what happens when several programs want data from opposite ends of the disk at once: the arm spends its time travelling rather than reading. It's why older machines bogged down with several applications open.</p>
+
+  <h3>Solid-state drives</h3>
+  <p>No moving parts — the same flash technology as the SD card in a camera. <strong>Truly random access</strong>: reaching any byte costs the same as reaching any other. Faster, quieter, more shock-resistant, and lower power.</p>
+
+  <div class="callout callout-info">
+    <span class="label">Why spinning disks still exist</span>
+    <p><strong>Cost per byte at very high capacity.</strong> Backup systems write large files start-to-finish, which is sequential — the weakness of a spinning disk never shows up. For databases and anything doing scattered reads, SSDs win by an enormous margin.</p>
+    <p>Textbook drift: <strong>SSDs don't need defragmenting</strong>, and modern operating systems optimize them automatically.</p>
+  </div>
+
+  <h3>Units</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Unit</th><th>Size</th><th></th><th>Unit</th><th>Size</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Bit</strong></td><td>One 0 or 1</td><td></td><td><strong>Millisecond</strong></td><td>1/1,000 second</td></tr>
+      <tr><td><strong>Byte</strong></td><td>8 bits — 256 possible values</td><td></td><td><strong>Microsecond</strong></td><td>1/1,000,000 second</td></tr>
+      <tr><td><strong>Kilobyte</strong></td><td>~1 thousand bytes</td><td></td><td><strong>Nanosecond</strong></td><td>1/1,000,000,000 second</td></tr>
+      <tr><td><strong>Megabyte</strong></td><td>~1 million bytes</td><td></td><td colspan="2"></td></tr>
+      <tr><td><strong>Gigabyte</strong></td><td>~1 billion bytes</td><td></td><td colspan="2"></td></tr>
+      <tr><td><strong>Terabyte</strong></td><td>~1 trillion bytes</td><td></td><td colspan="2"></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Same metric prefixes you already know: a kilogram is a thousand grams, a milliliter is a thousandth of a liter. <em>One wrinkle: the textbook may define a kilobyte as 1,024 bytes rather than 1,000. Both are in use — drive manufacturers use 1,000, memory uses 1,024. Answer whichever your assignment expects.</em></p>
+</section>
+
+<section id="bits">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">08</span>Bits, bytes, and character encoding</h2>
+  <p>Everything in a computer is zeros and ones. Eight bits make a byte, and a byte holds <strong>256</strong> distinct values.</p>
+
+  <h3>ASCII</h3>
+  <p><strong>ASCII</strong> — American Standard Code for Information Interchange — assigns a number to each English character. It defines 128 characters, which fits comfortably in a byte with room to spare.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Character</th><th>ASCII value</th></tr></thead>
+    <tbody>
+      <tr><td>The digit <code>0</code></td><td>48</td></tr>
+      <tr><td>Uppercase <code>A</code></td><td>65</td></tr>
+      <tr><td>Lowercase <code>a</code></td><td>97</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>A consequence worth knowing: <strong>uppercase letters have lower values than lowercase</strong>, so a sort by raw character code puts <code>ZEBRA</code> before <code>apple</code>. That's why a name typed in all caps sometimes jumps to the top of a sorted list.</p>
+
+  <h3>Unicode</h3>
+  <p>ASCII covers English and not much else — no Spanish <em>ñ</em>, no Cyrillic, no Greek, no Hebrew or Arabic, and certainly not the thousands of Chinese characters. <strong>Unicode</strong> solves this with a scheme covering roughly 150,000 characters, still growing — and most new additions now are emoji.</p>
+  <p><em>Textbook drift:</em> the book says Unicode characters take 2 bytes. That's one encoding (UTF-16). The dominant one today, <strong>UTF-8</strong>, uses <strong>1 to 4 bytes</strong> depending on the character — so English text stays one byte per character and only other scripts cost more.</p>
+  <p>Other number systems exist too — <strong>binary</strong> (digits 0–1), <strong>octal</strong> (0–7), and hexadecimal. Fun detail: "10" exists in every system but means something different in each. In binary it's 2, in octal it's 8, in decimal it's 10.</p>
+</section>
+
+<section id="ports">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">09</span>Ports and wireless standards</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Connector</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><strong>USB-C</strong></td><td>The oval reversible connector now used for power and data on phones and laptops. Apple switched from Lightning with the iPhone 15, largely driven by EU rules requiring a common charger.</td></tr>
+      <tr><td><strong>HDMI</strong></td><td>Standard display and audio cable for TVs and monitors. Two notched corners.</td></tr>
+      <tr><td><strong>DisplayPort</strong></td><td>Similar, more common on computer monitors and multi-monitor setups. One square corner, one notched.</td></tr>
+      <tr><td><strong>Ethernet (RJ45)</strong></td><td>Wired networking. Rated by category — Cat5, Cat5e, Cat6.</td></tr>
+      <tr><td><strong>3.5 mm jack</strong></td><td>Standard headphone connector.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="label">Correction from class</span>
+    <p>I said HDMI carries content encryption and DisplayPort doesn't. <strong>Both support HDCP</strong>, the copy-protection scheme used by streaming devices. The real differences lie elsewhere: HDMI carries audio-return and TV remote-control features, while DisplayPort supports daisy-chaining several monitors from one port.</p>
+  </div>
+
+  <h3>Why Ethernet cables are twisted</h3>
+  <p>Open one and you find eight wires in four <strong>twisted pairs</strong>. Any wire carrying current acts a little like an antenna — radiating interference, and picking it up. Twisting the pairs makes the two wires' fields cancel, which both protects the signal and keeps it from disturbing its neighbors.</p>
+
+  <h3>Wireless</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Standard</th><th>Range</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Wi-Fi</strong></td><td>A building</td><td>Networking. <em>The name doesn't stand for anything.</em></td></tr>
+      <tr><td><strong>Bluetooth</strong></td><td>A room</td><td>Earbuds, keyboards, mice, AirTags. Short range is a security feature — someone across the world can't reach your Bluetooth.</td></tr>
+      <tr><td><strong>NFC</strong></td><td>A few centimetres</td><td>Tap-to-pay, transit cards, hotel keys.</td></tr>
+      <tr><td><strong>Infrared</strong></td><td>Line of sight</td><td>Older TV remotes — literally a blinking light you can't see.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Wi-Fi and Bluetooth share the <strong>2.4 GHz</strong> band — the same frequency a microwave oven uses. A leaking microwave can genuinely disrupt Wi-Fi nearby, and if yours is leaking that's a reason to replace it for more than network reasons.</p>
+  <p>Bluetooth's short range is also why the passkey demo worked the way it did: your phone and laptop pair over Bluetooth to prove they're physically in the same room.</p>
+</section>
+
+<section id="resolution">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">10</span>Display resolution — the question from class</h2>
+  <p>Standard HD is <strong>1920 × 1080</strong> pixels. 4K is <strong>3840 × 2160</strong>.</p>
+
+  <div class="callout callout-key">
+    <span class="label">4K has four times the pixels, not twice</span>
+    <p>You doubled the width <em>and</em> you doubled the height. 2 × 2 = <strong>4</strong>.</p>
+    <p>1920 × 1080 ≈ 2.1 million pixels. 3840 × 2160 ≈ 8.3 million. The name makes it sound like twice as much; it's four times. And going from 4K to 8K quadruples it again.</p>
+  </div>
+
+  <p>This is why 4K streaming demands so much more bandwidth. <strong>Compression</strong> is what makes it practical — and much of that compression work runs on the GPU.</p>
+  <p>It also explains something you've probably seen: watch a football game and the image goes blocky during fast action. A talking head barely changes between frames, so there's little new information to send. Twenty-two players moving at once means almost every pixel changes, the compressor can't keep up, and you see <strong>pixelation</strong>.</p>
+</section>
+
+<section id="boot">
+  <div class="eyebrow">Computer hardware</div>
+  <h2><span class="topic-num">11</span>What happens when you press the power button</h2>
+  <ol>
+    <li><strong>Firmware runs.</strong> The <strong>BIOS</strong> — Basic Input Output System, now usually called <strong>UEFI</strong> — lives in read-only, non-volatile memory on the motherboard. It's deliberately write-protected, because malware in your firmware would survive any reinstall and could leave the machine permanently unusable, or <em>bricked</em>.</li>
+    <li><strong>Self-tests.</strong> Memory and essential hardware are checked. This is what the manufacturer logo is hiding.</li>
+    <li><strong>The TPM verifies integrity.</strong> The <strong>Trusted Platform Module</strong> confirms the firmware and operating system haven't been tampered with and that the hardware hasn't changed.</li>
+    <li><strong>Keys are released.</strong> If the checks pass, the TPM hands over the disk encryption key so the OS can read your encrypted drive.</li>
+    <li><strong>The operating system loads</strong> from SSD into RAM, and you get a desktop.</li>
+  </ol>
+  <p>Your phone does the same sequence — which is why a full restart takes noticeably longer than waking from sleep.</p>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">12</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Last week's assignments are due October 28.</strong> Late submissions are accepted, but don't build a backlog.</li>
+      <li><strong>The NotebookLM assignment</strong> — extended to the end of November. Do it now while the demo is fresh.</li>
+      <li><strong>Extra credit discussion post (2 points):</strong> look at your own device, sort your apps by size, and report what you found — what's taking up the most storage, and did anything surprise you? <strong>Time-boxed: post before next class.</strong></li>
+      <li><strong>Give feedback in Circle In</strong> → your class → <strong>More</strong> → <strong>Course Feedback</strong>. (Thanks to Genesis for finding the path.)</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Extra credit from tonight</span>
+    <p>Everyone who took the <strong>CPU/GPU/TPU/NPU quiz</strong> receives <strong>2 points extra credit</strong>. Nothing further to do.</p>
+  </div>
+
+  <h3>Next week</h3>
+  <p><strong>Computer software and buying a computer</strong>, then databases and analytics. We have buffer in the schedule, so the shift costs us nothing.</p>
+
+  <div class="callout callout-note">
+    <span class="label">One to think about</span>
+    <p>Your laptop has 8 GB of RAM and a 512 GB SSD, and you can upgrade exactly one of them for the same money. Which do you pick, and why? Be ready with a reason — we'll start there.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
