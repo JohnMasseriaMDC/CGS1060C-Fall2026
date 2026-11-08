@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGS 1060C — Lecture 8 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc { position: sticky; top: 0; z-index: 20; background: rgba(8,12,20,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections { max-width: 860px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none; border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 11px; transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0; background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0; font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--accent); padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px; border-radius: 4px;
+  padding: 2px 6px; font-size: .84em; color: var(--accent); white-space: nowrap;
+}
+pre {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px 16px; overflow-x: auto; font-size: 13.5px; line-height: 1.6;
+}
+pre code { background: none; border: none; padding: 0; color: var(--text); }
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li { padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5); position: relative; font-size: 15px; }
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: .88em; color: var(--accent); }
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 8</div>
+    <h1>Software, Databases &amp; Data Analytics</h1>
+    <div class="sub">Tuesday, October 28, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#admin">Course business</a>
+    <a href="#software">Software layers</a>
+    <a href="#licenses">Licenses</a>
+    <a href="#buying">Buying a computer</a>
+    <a href="#db-basics">Database basics</a>
+    <a href="#keys">Keys &amp; relationships</a>
+    <a href="#integrity">Data integrity</a>
+    <a href="#queries">Queries &amp; ACID</a>
+    <a href="#nosql">NoSQL &amp; big data</a>
+    <a href="#analytics">Data analytics</a>
+    <a href="#charts">Charts &amp; honesty</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <ul>
+    <li>Distinguish <strong>system software</strong> from <strong>application software</strong>, and describe the layers between hardware and you.</li>
+    <li>Explain what a software <strong>license</strong> is and why you don't own the software you buy.</li>
+    <li>Judge whether a computer is worth buying from its specifications.</li>
+    <li>Map spreadsheet concepts onto database concepts: table, record, field, query.</li>
+    <li>Explain <strong>primary keys</strong>, <strong>foreign keys</strong>, and why databases avoid duplicating data.</li>
+    <li>Say what the four <strong>ACID</strong> properties guarantee and why a bank needs them.</li>
+    <li>Distinguish <strong>relational</strong> from <strong>NoSQL</strong> databases and name a use case for each.</li>
+    <li>Pick the right chart for a question, and spot a misleading one.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="label">Two apologies, and what they mean for you</span>
+    <p><strong>The first few minutes weren't recorded.</strong> I started the recording late. That stretch covered updated due dates — see the next section, which has everything you missed.</p>
+    <p><strong>I also lectured for about 15 minutes with my microphone muted</strong> after the second break. Thanks to Genesis for catching it. I re-taught that material, so nothing is missing from the recording after the break — but the analytics section runs later in the video than you'd expect.</p>
+  </div>
+</section>
+
+<section id="admin">
+  <div class="eyebrow">Course business</div>
+  <h2><span class="topic-num">01</span>Where we are, and what's due</h2>
+  <ul class="reminder-list">
+    <li><strong>We're in week 8 of 16.</strong> Halfway. There is still plenty of time to finish everything and do well — but only if you work steadily.</li>
+    <li><strong>No class on November 11</strong> (holiday).</li>
+    <li><strong>Due dates have been updated.</strong> Check Canvas for the current ones.</li>
+    <li><strong>Late work is accepted with no penalty</strong> on auto-graded assignments. A missed due date records a zero, and that zero is replaced when the work is graded. If it doesn't clear, email me.</li>
+    <li><strong>Don't let it pile up.</strong> Attempting thirty-plus assignments in the final two weeks does not work. The material builds, and so does the time it takes.</li>
+  </ul>
+  <p>My goal is for everyone to finish this course with a grade that helps them. If something is blocking you, tell me — asking for an extension always works, silence doesn't.</p>
+</section>
+
+<section id="software">
+  <div class="eyebrow">Computer software</div>
+  <h2><span class="topic-num">02</span>The layers between you and the hardware</h2>
+
+  <div class="callout callout-key">
+    <span class="label">The organizing idea</span>
+    <p>Software splits into two branches. <strong>System software</strong> runs the machine. <strong>Application software</strong> is what you actually use. The operating system is the bridge between the physical hardware and your applications — which is why you can use Excel without knowing whether there's an Intel, AMD, or Snapdragon chip underneath.</p>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Layer</th><th>What lives there</th></tr></thead>
+    <tbody>
+      <tr><td><strong>You</strong></td><td>Keyboard, mouse, touch, voice</td></tr>
+      <tr><td><strong>Application software</strong></td><td>Word, Excel, Teams, Chrome</td></tr>
+      <tr><td><strong>Utilities</strong></td><td>Small tools bundled with the OS — copy, search, disk cleanup</td></tr>
+      <tr><td><strong>Operating system</strong></td><td>Windows, macOS, Linux, Chrome OS, iOS, Android</td></tr>
+      <tr><td><strong>Drivers</strong></td><td>Translators that let the OS talk to a specific printer, camera, or gadget</td></tr>
+      <tr><td><strong>Hardware</strong></td><td>CPU, RAM, storage, screen, ports</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>The operating systems, and who's related to whom</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>OS</th><th>Maker</th><th>Lineage</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Windows 11</strong></td><td>Microsoft</td><td>Its own</td></tr>
+      <tr><td><strong>macOS</strong></td><td>Apple</td><td>Derived from <strong>Unix</strong></td></tr>
+      <tr><td><strong>Linux</strong></td><td>Open source community</td><td>Unix-like</td></tr>
+      <tr><td><strong>Chrome OS</strong></td><td>Google</td><td>Built on the Linux kernel</td></tr>
+      <tr><td><strong>Android</strong></td><td>Google</td><td>Built on the Linux kernel</td></tr>
+      <tr><td><strong>iOS / iPadOS</strong></td><td>Apple</td><td>Shares macOS's Unix roots</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>Unix</strong> was created at Bell Laboratories for minicomputers. Because macOS and Linux both descend from it, the command-line commands are nearly identical — learn one and you can work on the other. The <strong>kernel</strong> is the core of an operating system, the part that actually manages hardware.</p>
+  <p>Worth noticing how much Linux you already use without knowing it: an Android phone, a Chromebook, a Samsung tablet, an Amazon Fire tablet or Kindle, most web servers you visit, and the world's top supercomputers.</p>
+
+  <h3>Drivers</h3>
+  <p>A <strong>driver</strong> is the software that lets your operating system talk to a particular piece of hardware. Most happen invisibly now — Windows ships with printer drivers or fetches them automatically. You notice drivers only when one is missing: I plugged a small radio device into my Chromebook and it worked immediately, plugged the same device into my Mac and nothing happened, and installing a driver fixed it.</p>
+
+  <h3>Local applications vs. web applications</h3>
+  <p>Word exists as an installed program and as a web app in your browser. The web version is always the latest version, needs no installation, and never needs updating. The installed version is still somewhat more capable, though the gap keeps narrowing.</p>
+  <p>For organizations, the web model solves a real problem: when software is installed on hundreds of machines, every update and every rollback is a project. When it's a website, you change it once.</p>
+
+  <div class="callout callout-note">
+    <span class="label">Textbook drift</span>
+    <ul>
+      <li><strong>There is no Windows 12.</strong> The current line is Windows 11, now at version 26H2.</li>
+      <li><strong>Windows 10 lost support</strong> in October 2025 — over a year ago. If a machine at home still runs it, it is not getting security fixes.</li>
+      <li><strong>Launchpad was retired in macOS 26.</strong> To uninstall a Mac app now, drag it to the Trash.</li>
+      <li><strong>Software doesn't come on CDs or DVDs.</strong> It comes from app stores and websites.</li>
+      <li>The book says Linux runs most video games. PlayStation and Xbox don't — but the <strong>Steam Deck</strong> does, and so does every Chromebook.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="licenses">
+  <div class="eyebrow">Computer software</div>
+  <h2><span class="topic-num">03</span>You don't own software — you license it</h2>
+  <div class="callout callout-key">
+    <span class="label">The core point</span>
+    <p>When you "buy" software you are buying a <strong>right to use it</strong> under conditions someone else sets. The agreement is called the <strong>EULA</strong> — End User License Agreement — and it is a real legal contract, even though nobody reads it.</p>
+    <p>Same as a movie. Buying a DVD never gave you the right to copy it and hand copies to friends.</p>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Model</th><th>How it works</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Perpetual license</strong></td><td>Pay once, use that version forever. Updates often cost extra. Increasingly rare.</td></tr>
+      <tr><td><strong>Subscription</strong></td><td>Pay monthly or yearly, per user. Stop paying and you lose access. Microsoft 365 and Adobe work this way.</td></tr>
+      <tr><td><strong>Open source</strong></td><td>Source code is public and modifiable — but it still carries a license, and the terms vary enormously. Linux, Firefox, LibreOffice.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Companies prefer subscriptions because recurring revenue is predictable. There's a defensible reason too: all software has bugs, so it needs continuous fixing, and continuous work needs continuous funding.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Licenses can change — the Java story</span>
+    <p><strong>Java</strong> is software that lets programs written in the Java language run on any machine. A Java program compiles to <em>bytecode</em>, and the Java Virtual Machine on your computer translates that bytecode into instructions your specific chip understands. Write once, run anywhere.</p>
+    <p>Java came from <strong>Sun Microsystems</strong> and was free. Sun was bought by <strong>Oracle</strong>, and Oracle changed the licensing. Companies now get audited, discover they're running unlicensed copies, and receive bills in the millions. Java is the standard example of why "free today" is not "free forever."</p>
+  </div>
+
+  <h3>Installing software safely</h3>
+  <ul>
+    <li><strong>Use official sources</strong> — the Microsoft Store, Mac App Store, Google Play, the developer's own site, or your school's software page. Apple and Google screen their stores for malware and can disable an app remotely if they find it.</li>
+    <li><strong>Never install "free" copies of paid software.</strong> It's piracy, and whoever cracked it had a motive. Pirated installers are one of the most reliable sources of malware.</li>
+    <li><strong>Never act on a pop-up telling you to download something.</strong> That's the attack, not a warning about one. Close the browser.</li>
+    <li><strong>Watch the extra checkboxes.</strong> Even reputable download sites bundle additional software you didn't ask for.</li>
+    <li><strong>Be suspicious when an installer demands administrator rights.</strong> Sometimes legitimate, always worth a second thought.</li>
+  </ul>
+</section>
+
+<section id="buying">
+  <div class="eyebrow">Practical</div>
+  <h2><span class="topic-num">04</span>Buying a computer</h2>
+  <p>Start with the question most people skip: <strong>what are you actually going to do with it?</strong></p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>If you're studying…</th><th>Then…</th></tr></thead>
+    <tbody>
+      <tr><td>Business, accounting, engineering, nursing</td><td>Windows or Mac both work. Windows machines generally cost less — more manufacturers competing, where only Apple makes Macs.</td></tr>
+      <tr><td>Graphic design, music, video editing</td><td>Macs have the edge, though Windows is capable.</td></tr>
+      <tr><td>Computer science</td><td>Either. Macs include Unix natively; Windows can run Linux inside it. Both routes want plenty of memory.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Minimum specifications worth paying for</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Spec</th><th>Minimum</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><strong>RAM</strong></td><td><strong>16 GB</strong></td><td>The single most important number. Usually soldered in and impossible to upgrade later.</td></tr>
+      <tr><td><strong>Storage</strong></td><td>512 GB (256 GB workable)</td><td>Easier to work around — you can offload files to the cloud.</td></tr>
+      <tr><td><strong>Screen</strong></td><td>13″, 1920 × 1080 (FHD)</td><td>Anything less is cramped for coursework.</td></tr>
+      <tr><td><strong>Ports</strong></td><td>HDMI or USB-C for an external monitor</td><td>Check before you buy; thin laptops drop ports.</td></tr>
+      <tr><td><strong>Warranty</strong></td><td>One year minimum</td><td>Consider accidental damage coverage — a cracked $1,500 laptop screen can be a $1,000 repair.</td></tr>
+      <tr><td><strong>Battery life</strong></td><td>Check the real figure</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">Why RAM matters most: the potato bag</span>
+    <p>Twenty pounds of potatoes and a ten-pound bag means you're constantly taking potatoes in and out. That's what your computer does when it runs out of RAM — it shuffles data between memory and storage, a process called <strong>swapping</strong>, and when it gets bad enough it's called <strong>thrashing</strong>. Everything crawls.</p>
+    <p>Every browser tab you open consumes memory. Running out of storage is annoying; running out of RAM makes the machine unusable. And remember from last week — <strong>there's a global RAM shortage driven by AI data centers</strong>, so prices aren't falling soon. Buy more than you need today.</p>
+  </div>
+
+  <h3>Built-in tools worth knowing</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Task</th><th>Windows</th><th>Mac</th></tr></thead>
+    <tbody>
+      <tr><td>See what's using disk space</td><td>Storage Sense</td><td>Settings → General → Storage</td></tr>
+      <tr><td>Anti-malware</td><td>Windows Defender (built in)</td><td>XProtect (built in)</td></tr>
+      <tr><td>Backup</td><td>OneDrive, or a network share</td><td>Time Machine, iCloud</td></tr>
+      <tr><td>Screenshot</td><td><kbd>Win</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td><kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>5</kbd></td></tr>
+      <tr><td>Free office suite</td><td colspan="2">LibreOffice — open source, runs on both</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>The Windows Snipping Tool is now as good as the paid screenshot utilities people used to buy.</p>
+</section>
+
+<section id="db-basics">
+  <div class="eyebrow">Databases</div>
+  <h2><span class="topic-num">05</span>Databases, starting from spreadsheets</h2>
+
+  <div class="callout callout-key">
+    <span class="label">Learn this mapping and most of the vocabulary follows</span>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>In a spreadsheet</th><th>In a database</th></tr></thead>
+      <tbody>
+        <tr><td>Worksheet</td><td><strong>Table</strong></td></tr>
+        <tr><td>Row</td><td><strong>Record</strong></td></tr>
+        <tr><td>Column</td><td><strong>Field</strong></td></tr>
+        <tr><td>Filter</td><td><strong>Query</strong></td></tr>
+        <tr><td>Typing data in</td><td><strong>Form</strong></td></tr>
+        <tr><td>Printing it out</td><td><strong>Report</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <p>The data hierarchy builds upward: a <strong>character</strong> is one letter or digit; several characters make a <strong>field</strong>; several fields make a <strong>record</strong>; many records make a <strong>table</strong>; tables live in <strong>files</strong>; and a <strong>database</strong> is made up of those files.</p>
+
+  <h3>You're already in dozens of databases</h3>
+  <p>Your student record at the college, keyed by your student ID, holding your courses, grades, and financial aid. Your doctor's patient portal. Your lab results. Your bank balance. The Contacts app on your phone is a database. Amazon's record of every order placed today.</p>
+
+  <h3>Why not just use a spreadsheet?</h3>
+  <p>Modern spreadsheets can be shared and edited simultaneously, so that's no longer the reason. The real reasons are:</p>
+  <ul>
+    <li><strong>No audit trail.</strong> If a phone number changes in a shared spreadsheet, there's no record of who changed it or when.</li>
+    <li><strong>No access control.</strong> You can't let someone see most of a sheet but not the salary column.</li>
+    <li><strong>No protection against duplication.</strong> Which leads to the central principle below.</li>
+  </ul>
+
+  <div class="callout callout-key">
+    <span class="label">Store each fact once</span>
+    <p>If Maria Lopez's phone number is written in twenty appointment rows and she changes her number, you must find and fix twenty places. Miss one and your data is now wrong.</p>
+    <p>A relational database stores the phone number <strong>once</strong>, in the client record, and everywhere else <em>points at it</em>. Change it in one place and every reference is correct.</p>
+  </div>
+
+  <h3>Data types are guardrails</h3>
+  <p>When you design a table you choose a <strong>type</strong> for each field, and the type restricts what can be stored:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>Guardrail</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Short text</strong></td><td>Almost none — letters, digits, symbols, emoji all accepted</td></tr>
+      <tr><td><strong>Date/Time</strong></td><td>Must be a real date. Stops someone typing "next Tuesday." Stored as a number internally, exactly like Excel dates.</td></tr>
+      <tr><td><strong>Number</strong></td><td>Digits only. Stops the letter O being typed for a zero.</td></tr>
+      <tr><td><strong>Yes/No</strong></td><td>Only two possible values</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Choosing types well is most of what database <em>design</em> means. A phone number stored as free text will eventually contain garbage.</p>
+</section>
+
+<section id="keys">
+  <div class="eyebrow">Databases</div>
+  <h2><span class="topic-num">06</span>Keys and relationships</h2>
+  <p>These are called <strong>relational databases</strong> because data in one table <em>relates</em> to data in another. The model was designed by <strong>Edgar F. Codd</strong> at IBM in 1970 and is still how most of the world's important data is stored.</p>
+
+  <h3>Primary key</h3>
+  <ul>
+    <li><strong>Unique</strong> for every record in its table</li>
+    <li><strong>Never null</strong></li>
+    <li><strong>Should never change</strong></li>
+  </ul>
+  <p>Your student ID is a primary key. So is an employee ID. Databases build an <strong>index</strong> on the primary key, which is why a system with a million client records can find one instantly instead of reading all million.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">Textbook correction: never use an SSN as a primary key</span>
+    <p>The book offers Social Security number as an example of a good primary key. It is a bad one. An SSN is <strong>PII</strong> — personally identifiable information — and a primary key gets copied into every related table, spread through every query, and seen by everyone with access. That's the opposite of what you want for sensitive data. Use a meaningless generated ID instead.</p>
+  </div>
+
+  <h3>Foreign key</h3>
+  <p>A <strong>foreign key</strong> is a field in one table that points at the primary key of another. In the spa example, the appointments table carries a <code>client_id</code> and a <code>service_id</code>; each links the appointment to exactly one client and one service.</p>
+  <p>That's how the pointer works in practice: appointment 5001 holds client ID → Maria Lopez, and service ID S3 → Massage, $95. The price lives once, in the services table.</p>
+
+  <h3>Null</h3>
+  <p><strong>Null is not zero.</strong> Zero is a value. Null means <em>no value is stored here</em> — we don't know Maria's phone number, as opposed to her phone number being 0. If a field must always be filled, mark it <strong>required</strong> and the database will refuse records without it.</p>
+
+  <h3>Relationship types</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>One-to-many</strong></td><td>One client has many appointments. By far the most common.</td></tr>
+      <tr><td><strong>Many-to-one</strong></td><td>The same relationship seen from the other side — many employees report to one manager.</td></tr>
+      <tr><td><strong>One-to-one</strong></td><td>One employee has one parking permit.</td></tr>
+      <tr><td><strong>Many-to-many</strong></td><td>Students and courses — each student takes many courses, each course has many students.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout callout-note">
+    <span class="label">Correction from class</span>
+    <p>I described "one employee has one manager" as one-to-one. It isn't — <strong>that's many-to-one</strong>, because one manager has many employees. The parking permit is the genuine one-to-one.</p>
+  </div>
+</section>
+
+<section id="integrity">
+  <div class="eyebrow">Databases</div>
+  <h2><span class="topic-num">07</span>Data integrity</h2>
+  <p><strong>Data integrity</strong> asks: can I trust this data? Five dimensions:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Dimension</th><th>Question</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Accuracy</strong></td><td>Is the birthdate actually right?</td></tr>
+      <tr><td><strong>Timeliness</strong></td><td>Is it current, or three years stale?</td></tr>
+      <tr><td><strong>Completeness</strong></td><td>Does the address have all its parts?</td></tr>
+      <tr><td><strong>Consistency</strong></td><td>Is Florida stored as FL everywhere, or sometimes "Fla." or "Florida"?</td></tr>
+      <tr><td><strong>Compliance</strong></td><td>Is protected data restricted to the people entitled to see it?</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Consistency is enforced at two levels, and good systems use both. <strong>In the interface:</strong> a drop-down list of states instead of a free-text box, so the wrong value can't be typed. <strong>In the database:</strong> rules defining which values are permitted, so anything that slips past the interface is rejected anyway.</p>
+  <p>Compliance is why access control exists at the field level, not just the table level. A professor looking up a student record needs their email; they have no business need for the student's Social Security number.</p>
+
+  <h3>DBMS — the five parts</h3>
+  <p>A <strong>Database Management System</strong> is the software running the database. It provides:</p>
+  <ol>
+    <li>The <strong>engine</strong> that stores and retrieves data</li>
+    <li><strong>Data definition</strong> — defining tables, fields, and types</li>
+    <li><strong>Data manipulation</strong> — add, change, delete, query</li>
+    <li>An <strong>administrative interface</strong> for forms and views</li>
+    <li><strong>Administration</strong> — backup, recovery, and security</li>
+  </ol>
+</section>
+
+<section id="queries">
+  <div class="eyebrow">Databases</div>
+  <h2><span class="topic-num">08</span>Queries, and the ACID guarantees</h2>
+
+  <h3>A SELECT statement</h3>
+  <p><strong>SQL</strong> is the language used to ask a database questions. The structure is readable even if you've never written one:</p>
+  <pre><code>SELECT first_name, phone
+FROM clients
+WHERE city = 'Doral'
+ORDER BY first_name;</code></pre>
+  <ul>
+    <li><strong>SELECT</strong> — which fields you want back</li>
+    <li><strong>FROM</strong> — which table</li>
+    <li><strong>WHERE</strong> — the filter</li>
+    <li><strong>ORDER BY</strong> — how to sort the result</li>
+  </ul>
+  <p>Change the WHERE clause and you ask a different question: every client whose last visit was more than 90 days ago, for instance.</p>
+
+  <div class="callout callout-key">
+    <span class="label">ACID — the four guarantees that make databases trustworthy</span>
+    <p><strong>A — Atomicity.</strong> A transaction happens completely or not at all. Move $100 from savings to checking: the system subtracts $100 from savings, then adds $100 to checking. If the power fails between those two steps, your $100 has vanished. Atomicity means the database notices the incomplete transaction on restart and <strong>rolls it back</strong> entirely.</p>
+    <p><strong>C — Consistency.</strong> The database's rules always hold. If phone number is required, a record without one is rejected rather than quietly stored broken.</p>
+    <p><strong>I — Isolation.</strong> Simultaneous transactions don't corrupt each other. If you and your spouse both withdraw at the same instant, both could read a $500 balance, both subtract $100, and both write $400 — the bank loses $100. Isolation makes the second transaction <strong>wait</strong> until the first commits.</p>
+    <p><strong>D — Durability.</strong> Once a transaction commits, it survives a crash or power loss. The database writes to an <strong>audit trail</strong> at the moment of commit, so on restart it can tell which transactions finished and which must be undone.</p>
+  </div>
+</section>
+
+<section id="nosql">
+  <div class="eyebrow">Databases</div>
+  <h2><span class="topic-num">09</span>NoSQL and big data</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th></th><th>Relational (SQL)</th><th>NoSQL</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Structure</strong></td><td>Rigid — tables, fields, and types defined in advance</td><td>Flexible — unstructured or semi-structured</td></tr>
+      <tr><td><strong>Best for</strong></td><td>Banking, grades, inventory — anything needing exactness</td><td>Shopping carts, sensor streams, documents, websites</td></tr>
+      <tr><td><strong>Adding a field</strong></td><td>Requires changing the schema</td><td>Just add it to new records</td></tr>
+      <tr><td><strong>Examples</strong></td><td>Oracle, Microsoft SQL Server, MySQL, PostgreSQL, Access</td><td>MongoDB, DynamoDB, Redis, Cassandra</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="label">Two corrections</span>
+    <p><strong>Textbook:</strong> NoSQL is <em>not a product</em>. It's a category, and it stands for "<strong>not only SQL</strong>." The products are MongoDB, DynamoDB, Redis, and Cassandra.</p>
+    <p><strong>From class:</strong> I kept saying "Progress" when I meant <strong>PostgreSQL</strong>, usually shortened to <strong>Postgres</strong>. That's the open-source relational database Amazon offers cheaply through AWS, because unlike Oracle or SQL Server there's no license fee to pass on. <em>Progress</em> is an unrelated company — search for Postgres.</p>
+  </div>
+
+  <h3>Kinds of NoSQL</h3>
+  <ul>
+    <li><strong>Document stores</strong> (MongoDB, Cassandra) hold documents, usually in <strong>JSON</strong> — JavaScript Object Notation, a compact text format of name/value pairs: <code>{"name": "John", "age": 30, "city": "New York"}</code>.</li>
+    <li><strong>Key-value stores</strong> (Redis) take a unique key and hand back a value. A shopping cart works this way: your session ID is the key, the list of items is the value.</li>
+    <li><strong>Graph databases</strong> model relationships between things — who knows whom, what connects to what.</li>
+  </ul>
+  <p>Good rule of thumb: <strong>not for your bank account.</strong> Excellent for shopping carts, website sessions, and Internet-of-Things sensors streaming a reading every hour.</p>
+
+  <h3>Big data: the four Vs</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>V</th><th>Means</th><th>Tesla example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Volume</strong></td><td>How much</td><td>Every car recording from multiple cameras continuously</td></tr>
+      <tr><td><strong>Velocity</strong></td><td>How fast it arrives</td><td>Multiply by every car on the road, right now</td></tr>
+      <tr><td><strong>Variety</strong></td><td>How many kinds</td><td>Video, GPS, sensor readings, driver inputs</td></tr>
+      <tr><td><strong>Veracity</strong></td><td>Whether it's trustworthy</td><td>A distorted camera image shouldn't train the driving model</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Warehouses, marts, and mining</h3>
+  <ul>
+    <li>A <strong>data warehouse</strong> is a central store of historical data for a whole organization.</li>
+    <li>A <strong>data mart</strong> is a smaller slice of one, serving a single department.</li>
+    <li><strong>Data mining</strong> is searching that data for patterns worth knowing.</li>
+  </ul>
+  <div class="callout callout-key">
+    <span class="label">The ironic part</span>
+    <p>A transactional database works hard to <strong>eliminate</strong> duplicated data. A data warehouse deliberately <strong>puts the duplication back</strong> — a process called <em>denormalization</em>.</p>
+    <p>Why: a normalized database is optimized for fast, safe <em>updates</em>. A warehouse is optimized for fast <em>analytical queries</em> over enormous history, and duplicating data means those queries don't have to join a dozen tables. You trade storage for speed, which is exactly the right trade when you have hundreds of terabytes and nobody is updating them.</p>
+  </div>
+</section>
+
+<section id="analytics">
+  <div class="eyebrow">Data analytics</div>
+  <h2><span class="topic-num">10</span>Turning data into decisions</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>Question</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Descriptive</strong></td><td>What happened?</td><td>Last month's revenue by service</td></tr>
+      <tr><td><strong>Predictive</strong></td><td>What's likely to happen?</td><td>Which clients are about to stop booking</td></tr>
+      <tr><td><strong>Prescriptive</strong></td><td>What should we do?</td><td>GE monitors jet engine sensors in real time and replaces a part <em>before</em> it fails</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Classifying data</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Pair</th><th>Distinction</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Qualitative / Quantitative</strong></td><td>How good was it? (survey ratings) vs. how many / how long (numbers)</td></tr>
+      <tr><td><strong>Discrete / Continuous</strong></td><td>Whole numbers — you can't serve 14½ clients — vs. measurements like temperature or weight</td></tr>
+      <tr><td><strong>Nominal / Ordinal</strong></td><td>Categories with <em>no</em> order (types of service) vs. categories <em>with</em> order (poor, fair, good, excellent)</td></tr>
+      <tr><td><strong>Structured / Unstructured</strong></td><td>Database rows and columns vs. photos, video, audio, free text</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><em>Note: some publisher materials reverse nominal and ordinal. The definitions above are correct.</em></p>
+
+  <h3>Where data comes from</h3>
+  <ul>
+    <li><strong>First-party</strong> — you collected it, from your own customers.</li>
+    <li><strong>Second-party</strong> — another organization's first-party data, shared or sold to you directly. A spa buying a partner gym's member list.</li>
+    <li><strong>Third-party</strong> — bought from <strong>data brokers</strong>, who aggregate from many sources.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="label">Privacy and aggregation — the subtle problem</span>
+    <p>Obviously private: name, SSN, email, phone, medical records, account numbers.</p>
+    <p>The harder problem is that <strong>enough individually harmless fields, combined, identify a specific person.</strong> Age range, ZIP code, job title, and number of children aren't private individually. Together they may describe exactly one person.</p>
+    <p>This is why Google won't run an ad targeted too narrowly — if your filters shrink the audience below a threshold, the ad is blocked. Otherwise, one click tells you precisely who that person is, and they never agreed to that.</p>
+    <p>Note that this is a <strong>privacy</strong> problem, not a security one. The data wasn't stolen. It was used in a way the person didn't expect.</p>
+  </div>
+
+  <h3>Cleaning data ("wrangling")</h3>
+  <p>Real data arrives messy. Before analyzing anything you:</p>
+  <ul>
+    <li><strong>Deduplicate</strong> — merge the two Maria Lopez records</li>
+    <li><strong>Standardize</strong> — every "Florida," "Fla.," and "FL" becomes FL</li>
+    <li><strong>Format consistently</strong> — one date format, one currency format</li>
+    <li><strong>Fix types</strong> — "$1.95" stored as text can't be summed; store 1.95 as a number</li>
+    <li><strong>Trim</strong> — strip stray spaces, fix capitalization</li>
+  </ul>
+  <p>Small data: a spreadsheet handles it. Millions of rows: use a database. This is also where last week's Excel text functions earn their keep.</p>
+
+  <h3>Tools</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Tool</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Excel</strong></td><td>Great for hundreds or thousands of rows and quick what-if work</td></tr>
+      <tr><td><strong>Power BI</strong></td><td>Microsoft. Desktop version is <strong>Windows only</strong> — Mac users need the web version. Natural fit if your organization already uses Microsoft 365.</td></tr>
+      <tr><td><strong>Tableau</strong></td><td>Runs natively on Mac. Strong when pulling from many different data sources.</td></tr>
+      <tr><td><strong>Python</strong></td><td>The professional choice for serious analysis and machine learning. More tool than most roles need.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="charts">
+  <div class="eyebrow">Data analytics</div>
+  <h2><span class="topic-num">11</span>Choosing charts, and not misleading people</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Chart</th><th>Use when</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Line</strong></td><td>Something changes over time. Time on the x-axis.</td></tr>
+      <tr><td><strong>Bar</strong></td><td>Comparing separate groups — regions, age brackets, products</td></tr>
+      <tr><td><strong>Scatter</strong></td><td>Looking for a relationship between two measurements — square footage vs. sale price</td></tr>
+      <tr><td><strong>Pie</strong></td><td>Parts of a whole adding to 100%, and <strong>only with a handful of slices</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>A pie chart with a hundred slices communicates nothing. If you have a long tail, group it into an "Other" slice.</p>
+
+  <div class="callout callout-key">
+    <span class="label">Correlation is not causation</span>
+    <p><strong>Ice cream sales and sunburns rise together.</strong> Ice cream doesn't cause sunburn — summer causes both.</p>
+    <p>A real published study found that countries consuming more chocolate win more Nobel Prizes. Chocolate doesn't make you smarter. Wealthy countries have both more chocolate and better-funded research.</p>
+    <p>When two things move together, always ask whether something else is driving both.</p>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">Three ways charts mislead</span>
+    <p><strong>Truncated axis.</strong> Start a bar chart's y-axis at 48% instead of 0 and a two-point difference looks like a landslide. Set the floor to zero and it nearly disappears. <em>Sometimes</em> scaling is legitimate — when a small difference genuinely matters — but you must be able to justify it.</p>
+    <p><strong>Cherry-picking.</strong> Discarding results you don't like. Decide your rules for collecting and excluding data <em>before</em> you see the results.</p>
+    <p><strong>Too many categories.</strong> A chart nobody can read isn't informative, however accurate.</p>
+  </div>
+
+  <h3>How companies actually use this</h3>
+  <p><strong>Web analytics</strong> is one of the biggest applications. A company builds a <strong>funnel</strong>: everyone lands on the homepage, fewer reach a product page, fewer add to cart, fewer check out. The interesting question is where people drop off and why. Those answers come from web logs — which are unstructured data, loaded into a data mart and queried.</p>
+  <p>Your textbook frames it as <em>data + organizational knowledge = problem solved.</em> Reasonable, with one addition: <strong>data + knowledge + the right tool.</strong> Data alone tells you nothing, and neither does a tool without someone who understands the business.</p>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">12</span>Before next class</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>Check Canvas for updated due dates</strong> — these were covered in the unrecorded opening.</li>
+      <li><strong>Connect assignments</strong> for software, databases, and data analytics.</li>
+      <li><strong>Finish any outstanding Excel work</strong>, including the Excel capstone and exam.</li>
+      <li><strong>The NotebookLM assignment</strong> — still extended through the end of November.</li>
+      <li><strong>Anything showing a zero</strong> — complete it and the zero clears when it's graded.</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Getting unstuck</span>
+    <p>Use the <strong>AI tutor in Circle In</strong> for a specific question — it's built to guide you to an answer rather than hand one over. If that doesn't solve it, <strong>email me a screenshot</strong> of what you're seeing, or <strong>book a time</strong> through the Canvas link. I also stay on after class.</p>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="label">Two to think about</span>
+    <p><strong>(1)</strong> A table has a column called <code>client_id</code> that points at another table's primary key. What is that column called?<br>
+    <strong>(2)</strong> A transfer subtracts $100 from savings, then the power fails before it's added to checking. Which ACID property gets your money back, and what does the database do on restart?</p>
+  </div>
+
+  <p><strong>Reminder:</strong> no class on November 11.</p>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>

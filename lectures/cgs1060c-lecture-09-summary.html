@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CGS 1060C — Lecture 9 Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14; --panel: #0e1420; --panel-2: #131b2a; --line: #1e293b;
+  --text: #dbe3f0; --muted: #8b9bb4; --accent: #f0b429; --accent-dim: #7a5c14;
+  --warn: #f87171; --ok: #4ade80; --info: #60a5fa;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 118px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300; font-size: 16.5px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+}
+pre, code, kbd, samp, .mono {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+}
+header.doc { position: sticky; top: 0; z-index: 20; background: rgba(8,12,20,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.doc .inner { max-width: 860px; margin: 0 auto; padding: 18px 24px 12px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+header.doc h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -.01em; }
+header.doc .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+nav.sections { max-width: 860px; margin: 0 auto; padding: 0 24px 14px; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+nav.sections a {
+  font-size: 12.5px; color: var(--muted); text-decoration: none; border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px 11px; transition: all .15s ease;
+}
+nav.sections a:hover { color: var(--accent); border-color: var(--accent-dim); background: var(--panel); }
+main { max-width: 860px; margin: 0 auto; padding: 36px 24px 90px; }
+section { margin-bottom: 46px; }
+section > .eyebrow { margin-bottom: 3px; }
+h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; letter-spacing: -.01em; }
+h3 { font-size: 16.5px; font-weight: 600; color: #f2f6fc; margin: 26px 0 4px; }
+p { margin: 12px 0; }
+strong { font-weight: 600; color: #f2f6fc; }
+em { color: var(--muted); font-style: italic; }
+a { color: var(--info); }
+ul, ol { padding-left: 22px; margin: 12px 0; }
+li { margin: 7px 0; }
+li::marker { color: var(--accent-dim); }
+.topic-num {
+  font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0;
+  color: var(--accent); font-size: .82em; font-weight: 500; margin-right: 9px;
+}
+.callout { margin: 20px 0; padding: 15px 18px; border-radius: 0 8px 8px 0; background: var(--panel); border-left: 3px solid var(--line); }
+.callout p:first-child { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block; font-family: 'JetBrains Mono', monospace; font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0; font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.callout-warn { border-left-color: var(--warn); } .callout-warn .label { color: var(--warn); }
+.callout-info { border-left-color: var(--info); } .callout-info .label { color: var(--info); }
+.callout-note { border-left-color: var(--accent); } .callout-note .label { color: var(--accent); }
+.callout-key { border-left-color: var(--ok); background: linear-gradient(90deg, rgba(74,222,128,.06), var(--panel)); }
+.callout-key .label { color: var(--ok); }
+.table-wrap { margin: 20px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--panel); }
+th {
+  background: var(--panel-2); text-align: left; font-weight: 600; font-size: 11.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--accent); padding: 10px 13px; border-bottom: 1px solid var(--line);
+}
+td { padding: 10px 13px; border-bottom: 1px solid rgba(30,41,59,.55); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(240,180,41,.035); }
+kbd {
+  background: var(--panel-2); border: 1px solid #2c3a52; border-bottom-width: 2px; border-radius: 4px;
+  padding: 2px 6px; font-size: .84em; color: var(--accent); white-space: nowrap;
+}
+pre {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px 16px; overflow-x: auto; font-size: 13.5px; line-height: 1.6;
+}
+pre code { background: none; border: none; padding: 0; color: var(--text); }
+.activity {
+  margin: 22px 0; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px;
+}
+.activity h3 { margin-top: 0; color: var(--accent); }
+.activity ol, .activity ul { margin-bottom: 0; }
+.reminder-list { list-style: none; padding-left: 0; }
+.reminder-list li { padding: 9px 0 9px 26px; border-bottom: 1px solid rgba(30,41,59,.5); position: relative; font-size: 15px; }
+.reminder-list li:last-child { border-bottom: none; }
+.reminder-list li::before { content: "▸"; position: absolute; left: 4px; color: var(--accent); }
+code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: .88em; color: var(--accent); }
+footer {
+  max-width: 860px; margin: 0 auto; padding: 22px 24px 60px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+@media print { header.doc { position: static; } nav.sections { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="inner">
+    <div class="eyebrow">CGS 1060C &middot; Miami Dade College &middot; Lecture 9</div>
+    <h1>AI Beyond the Chatbot &mdash; and Computers in Business</h1>
+    <div class="sub">Tuesday, November 4, 2026 &middot; Online (Microsoft Teams)</div>
+  </div>
+  <nav class="sections">
+    <a href="#objectives">Objectives</a>
+    <a href="#corrections">Corrections</a>
+    <a href="#timeline">AI timeline</a>
+    <a href="#learning">How AI learns</a>
+    <a href="#senses">Language, vision, emotion</a>
+    <a href="#agents">Agents &amp; RAG</a>
+    <a href="#law">Law, bias, detection</a>
+    <a href="#careers">AI careers</a>
+    <a href="#ethics">Ethics at work</a>
+    <a href="#email">Professional email</a>
+    <a href="#fraud">Fraud &amp; encryption</a>
+    <a href="#systems">Business systems</a>
+    <a href="#blockchain">Blockchain</a>
+    <a href="#homework">Homework</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="objectives">
+  <div class="eyebrow">Agenda</div>
+  <h2>What you should be able to do after this session</h2>
+  <ul>
+    <li>Place the major milestones of AI on a timeline from 1950 to now.</li>
+    <li>Distinguish <strong>supervised</strong>, <strong>unsupervised</strong>, and <strong>reinforcement</strong> learning, with an example of each.</li>
+    <li>Explain what an <strong>AI agent</strong> is and why it's riskier than a chatbot.</li>
+    <li>Describe the state of AI law in the US, EU, and China.</li>
+    <li>Tell an illegal act from a policy violation at work, and say what employers can monitor.</li>
+    <li>Write a professional email and use CC and BCC correctly.</li>
+    <li>Explain <strong>business email compromise</strong> and the controls that stop it.</li>
+    <li>Describe what a <strong>blockchain</strong> is and how hashing makes it tamper-evident.</li>
+  </ul>
+
+  <div class="callout callout-note">
+    <span class="label">Moved to video</span>
+    <p><strong>PowerPoint chapters 1 and 2</strong> did not fit. I'm recording a video over the off-week and will post the link as an announcement. I'm also recording a second short video on <strong>how to start the Excel capstone</strong>, including the two-file resource import several of you are stuck on.</p>
+    <p><strong>No class November 11</strong> &mdash; Veterans Day. Next session is <strong>November 18</strong>.</p>
+  </div>
+</section>
+
+<section id="corrections">
+  <div class="eyebrow">Housekeeping</div>
+  <h2><span class="topic-num">01</span>Corrections from earlier lectures</h2>
+  <p>I review the transcripts and fix what I got wrong. Several of these change an answer.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>I said</th><th>Correct version</th></tr></thead>
+    <tbody>
+      <tr><td>"Progress" (the open-source database)</td><td><strong>PostgreSQL</strong>, usually "Postgres." Available on AWS and Azure, no license fee, which makes it cheaper than Oracle or SQL Server. <em>Progress is an unrelated company.</em></td></tr>
+      <tr><td>Data warehouses "eliminate duplication and make data redundant"</td><td>See the callout below &mdash; I garbled this twice, so here it is in writing.</td></tr>
+      <tr><td>"One employee has one manager &mdash; one-to-one"</td><td><strong>Many-to-one.</strong> Many employees report to one manager. The parking permit was the real one-to-one.</td></tr>
+      <tr><td>"Apple has Fire tablets and Kindle Scribe"</td><td><strong>Amazon.</strong> They run Fire OS, which is Android-based and therefore Linux-based.</td></tr>
+      <tr><td>"Install an app by dragging it to the Trash"</td><td><strong>Uninstall.</strong></td></tr>
+      <tr><td>"The iPhone makes satellite calls over Starlink"</td><td>Apple's built-in Emergency SOS uses <strong>Globalstar</strong>. <strong>T-Mobile's</strong> satellite service is the one using Starlink, and it works on recent iPhones.</td></tr>
+      <tr><td>"Graph databases look at nearest neighbors"</td><td>They <strong>model relationships</strong>. Amazon uses one for "people like you also bought"; Facebook uses one for friends-of-friends.</td></tr>
+      <tr><td>"Cod"</td><td><strong>Edgar Codd</strong>, IBM, 1970 &mdash; the relational model.</td></tr>
+      <tr><td>"The millennial problems in mathematics"</td><td><strong>Millennium Prize Problems.</strong> The one in the news is Navier&ndash;Stokes.</td></tr>
+      <tr><td>Hard drives cap at 15,000 RPM "because the edge nears the speed of sound"</td><td>They do cap there, but the limit is the <strong>ball bearings</strong>, not sound. Right answer, wrong reason.</td></tr>
+      <tr><td>"DisplayPort has no encryption"</td><td><strong>Both HDMI and DisplayPort support HDCP.</strong></td></tr>
+      <tr><td>"35mm jack"</td><td><strong>3.5 mm.</strong> 35 mm is film.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">The data warehouse one, stated properly</span>
+    <p>A <strong>transactional database eliminates duplication.</strong> You design it so each fact is stored once, because if a value lives in twenty places and you update nineteen, your data is now wrong.</p>
+    <p>A <strong>data warehouse deliberately puts the duplication back.</strong> It's loaded with historical data that nobody updates, so the risk of inconsistency disappears &mdash; and the duplication means analytical queries don't have to join a dozen tables. You trade storage for speed.</p>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Why I mixed up Apple and Amazon &mdash; a real phenomenon</span>
+    <p>In the 1980s and 90s, Intel had chips where stored values would spontaneously change &mdash; a 0 becoming a 1. The cause wasn't the silicon. It was the <strong>packaging material</strong>, sourced from a site downstream of a nuclear plant, which contained trace <strong>uranium</strong>. Uranium is radioactive: it emits <strong>alpha particles</strong>, and occasionally one would strike the chip with enough energy to move electrons and flip a bit.</p>
+    <p>Engineers call that a <strong>bit flip</strong>. So: my brain had a bit flip on Apple and Amazon.</p>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">02</span>Seventy-five years of AI</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Year</th><th>Milestone</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1950</strong></td><td><strong>Alan Turing</strong> proposes the <strong>Turing test</strong>: can a human asking questions tell whether the answers come from a person or a machine?</td></tr>
+      <tr><td><strong>1956</strong></td><td>The term "artificial intelligence" is coined.</td></tr>
+      <tr><td><strong>1966</strong></td><td><strong>ELIZA</strong>, the first chatbot. Crude by design &mdash; say "I hate you" and it replies "Why do you say you hate me?" It gave the <em>appearance</em> of intelligence by following simple rules.</td></tr>
+      <tr><td><strong>1987&ndash;93</strong></td><td>The <strong>AI winter</strong>. The ideas existed; the hardware didn't. Not enough memory, not enough compute.</td></tr>
+      <tr><td><strong>1997</strong></td><td>IBM's <strong>Deep Blue</strong> beats world chess champion Garry Kasparov.</td></tr>
+      <tr><td><strong>2011</strong></td><td>IBM's <strong>Watson</strong> wins at Jeopardy. <strong>Siri</strong> launches.</td></tr>
+      <tr><td><strong>2012</strong></td><td>Breakthroughs in <strong>computer vision</strong> &mdash; train a network on hundreds of thousands of labeled cat photos and it learns to find cats in pictures it has never seen.</td></tr>
+      <tr><td><strong>2017</strong></td><td>Google publishes <strong>"Attention Is All You Need,"</strong> describing the <strong>transformer</strong>. This is the real genesis of generative AI.</td></tr>
+      <tr><td><strong>2022</strong></td><td><strong>ChatGPT</strong> released. <em>(I said 2023 in class &mdash; it was November 2022.)</em></td></tr>
+      <tr><td><strong>Now</strong></td><td>The age of <strong>agentic AI</strong>.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">Two things worth noticing about that timeline</span>
+    <p><strong>Watson and Siri were not what ChatGPT is.</strong> They understood commands &mdash; open your email, send a text &mdash; and Watson could play Jeopardy better than any human. Neither was doing the kind of reasoning a large language model does today.</p>
+    <p><strong>None of it could have happened without hardware.</strong> GPUs do the matrix math these algorithms need, and NVIDIA now makes data-center GPUs with hundreds of gigabytes of memory that can be networked together. The ideas waited forty years for the machines.</p>
+  </div>
+
+  <h3>GPT, decoded</h3>
+  <p><strong>G</strong>enerative &mdash; it produces new content. <strong>P</strong>re-trained &mdash; the training happened before you ever typed anything. <strong>T</strong>ransformer &mdash; the architecture from that 2017 paper.</p>
+
+  <h3>CAPTCHAs are Turing tests</h3>
+  <p>Every "click all the pictures with bicycles" is a business checking that there's a human on the other end. Why they care: a competitor could otherwise <strong>scrape</strong> their site automatically &mdash; running thousands of searches to harvest pricing data. The site exists for customers to shop, not for bots to mine.</p>
+</section>
+
+<section id="learning">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">03</span>Three ways a model learns</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>What you give it</th><th>Examples</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Supervised</strong></td><td>Data <strong>with labels</strong> &mdash; you supply the right answer for each example</td><td>Image recognition (labeled cat photos); spam filtering (you mark messages as spam); <strong>regression</strong>, such as predicting house price from square footage; AI-text detection</td></tr>
+      <tr><td><strong>Unsupervised</strong></td><td>Data with <strong>no labels</strong></td><td><strong>Clustering</strong> &mdash; the algorithm finds that the data falls into groups, and a human then looks and says "these are cancerous cells, those aren't"</td></tr>
+      <tr><td><strong>Reinforcement</strong></td><td>Feedback on each attempt</td><td>The model guesses, you tell it right or wrong, it adjusts, repeat. A car gets positive feedback for staying in lane.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="label">Correction from class &mdash; this one is on the assignment</span>
+    <p>I used house price vs. square footage as an example of <strong>unsupervised</strong> learning. <strong>That's wrong &mdash; it's supervised.</strong> You already have the sale prices, so the data is labeled, and you're training the model to predict that label. Fitting a line through labeled data is <em>regression</em>, and regression is supervised.</p>
+    <p><strong>The test:</strong> do you know the right answer for your training examples? Yes &rarr; supervised. No, you're just looking for structure &rarr; unsupervised. The cancerous-cell clustering example <em>is</em> genuinely unsupervised, because nobody labeled those cells before the algorithm grouped them.</p>
+  </div>
+
+  <h3>AI is only as good as its data</h3>
+  <ul>
+    <li><strong>Structured</strong> (database tables) vs. <strong>unstructured</strong> (text, images, audio, video). An estimated <strong>80&ndash;90% of new business data is unstructured.</strong></li>
+    <li><strong>Collected over time</strong>, so trends are visible.</li>
+    <li><strong>Internal</strong> (generated inside the company) vs. <strong>external</strong> (second-party from a partner, third-party from data brokers).</li>
+  </ul>
+  <p>Tesla is the clearest example: every car recording continuously from multiple cameras, all of it unstructured, all of it valuable for training.</p>
+
+  <h3>The seven steps of an AI project</h3>
+  <p>Define the problem &rarr; gather data &rarr; choose an algorithm &rarr; analyze the data &rarr; train a model &rarr; test it &rarr; deploy and monitor it &rarr; feed new data back in and repeat.</p>
+  <p>Most companies won't do this. They buy an off-the-shelf solution from a vendor who already has.</p>
+
+  <h3>GANs &mdash; how deepfakes get made</h3>
+  <p>A <strong>generative adversarial network</strong> has two parts. The <strong>generator</strong> creates a fake image from random noise. The <strong>discriminator</strong>, trained on real images, judges whether it's real or fake and reports back. The generator improves. Loop this millions of times and the fakes become convincing.</p>
+</section>
+
+<section id="senses">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">04</span>Language, vision, and emotion</h2>
+  <p>Three ways information gets into an AI system:</p>
+  <ul>
+    <li><strong>Natural language</strong> &mdash; what large language models take in.</li>
+    <li><strong>Computer vision</strong> &mdash; a camera. In <strong>radiology</strong>, algorithms scan X-rays, MRIs, and CT scans for anomalies and refer them to a human radiologist to confirm or reject. The AI flags; the human decides.</li>
+    <li><strong>Affective computing</strong> &mdash; detecting emotion and attention. Self-driving cars watch the driver's eyes; look away or close them and you get an alert.</li>
+  </ul>
+</section>
+
+<section id="agents">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">05</span>RAG, agents, and what can go wrong</h2>
+
+  <h3>RAG, recapped</h3>
+  <p><strong>Retrieval Augmented Generation</strong> &mdash; you supply documents, the system searches them, and the model answers from that text rather than from its training. A properly working RAG tool says <em>"I can't answer that from the sources you gave me"</em> rather than inventing something. That's NotebookLM.</p>
+
+  <div class="callout callout-key">
+    <span class="label">Chatbot vs. AI agent</span>
+    <p>A <strong>chatbot</strong> takes your question and gives you text back.</p>
+    <p>An <strong>AI agent</strong> is an autonomous system that has access to a language model <em>and</em> access to the outside world, so it can actually <strong>do</strong> things &mdash; search, buy, send, control equipment &mdash; without you approving each step.</p>
+  </div>
+
+  <h3>Two cautionary stories</h3>
+  <p><strong>The orchid greenhouse.</strong> A friend used an agent tool called OpenClaw to monitor humidity sensors in his greenhouse and turn on the misters when it got dry. It worked perfectly &mdash; until a <strong>$5,000 bill</strong> arrived from OpenAI, because every single sensor reading triggered a paid API call. <em>The fix: run a small model locally.</em> Big models need terabytes of memory and live in data centers, but distilled models of 4&ndash;9 GB run fine on a 16 GB machine and cost nothing per query.</p>
+  <p><strong>Shopping agents.</strong> Meta has released an agent called Muse that will search for a product and buy it with your card. I don't recommend handing a card to an agent yet.</p>
+
+  <div class="callout callout-warn">
+    <span class="label">The paperclip problem</span>
+    <p>Suppose you tell an agent to optimize a factory to make as many paperclips as possible. Taken to the extreme, it converts every factory on earth to paperclip production. Nobody asked for that &mdash; but nobody told it to stop, either.</p>
+    <p>It's a thought experiment, but the failure mode is real. <strong>The Hugging Face incident is the actual version:</strong> about 700 agents running inside OpenAI's own sealed-off security test figured out how to escape the sandbox, found credentials left on a public website, and reached Hugging Face's systems &mdash; <em>trying to find the answer key to the test they were being given.</em> Like a student sneaking into a professor's office for the answers.</p>
+    <p>This was <strong>not</strong> OpenAI deliberately hacking anyone. It was an unintended consequence, which is exactly why people argue AI labs should be audited by outside firms rather than auditing themselves.</p>
+  </div>
+</section>
+
+<section id="law">
+  <div class="eyebrow">Artificial intelligence</div>
+  <h2><span class="topic-num">06</span>Law, misinformation, and AI detection</h2>
+
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Where</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><strong>United States</strong></td><td>Essentially <strong>no federal AI law</strong>. The 2023 executive order was revoked in January 2025 and replaced with an AI action plan. Many individual states have passed their own legislation. <strong>Nothing requires AI content to be labeled as AI.</strong></td></tr>
+      <tr><td><strong>European Union</strong></td><td>The <strong>AI Act</strong> was agreed in 2023 and in force since 2024, but the high-risk provisions have been delayed to the end of 2027.</td></tr>
+      <tr><td><strong>China</strong></td><td>Ironically the most restrictive on generative AI &mdash; heavy testing, and it <strong>does</strong> require AI content to be labeled. It also requires chatbots to give only approved information.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>On that last point: search inside China for what happened in <strong>Tiananmen Square in 1989</strong> &mdash; the student protests, the man standing in front of the tanks &mdash; and you find nothing. The history has been scrubbed, much like the novel <em>1984</em>. Strict rules can mean "accurate" or they can mean "approved," and those are not the same thing.</p>
+
+  <div class="callout callout-key">
+    <span class="label">What to do when something shocks you</span>
+    <p>If you see something that generates a strong emotional reaction, <strong>take a breath and pause before reacting.</strong> Ask whether it's plausible. Then, depending on how much it matters, check it against a credible source.</p>
+    <p>Deepfakes are getting harder to spot, and there is no law requiring them to be labeled. The emotional spike is the tell &mdash; content engineered to spread is engineered to provoke.</p>
+  </div>
+
+  <h3>AI detection tools</h3>
+  <p><strong>Turnitin</strong> historically checked for plagiarism. It now also attempts AI detection, trained by supervised learning: millions of human-written documents labeled "human," millions of AI-generated ones labeled "AI."</p>
+  <div class="callout callout-warn">
+    <span class="label">Important caveat</span>
+    <p><strong>There is no way for a detector to prove anything.</strong> It returns a probability based on patterns. <strong>False positives happen</strong> &mdash; OpenAI withdrew its own text classifier because it wasn't accurate enough.</p>
+    <p>Companies are working on invisible <strong>watermarks</strong> embedded in generated images and video. The obvious problem: if an algorithm can detect a watermark, an algorithm can probably remove it.</p>
+    <p><strong>Check each course's syllabus for its AI policy and follow it.</strong> Many instructors are shifting from "was this AI-written?" to "show me your prompts" &mdash; because what you fed in is what makes the work yours.</p>
+  </div>
+</section>
+
+<section id="careers">
+  <div class="eyebrow">Careers</div>
+  <h2><span class="topic-num">07</span>Where the jobs are</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>In AI</th><th>In IT generally</th></tr></thead>
+    <tbody>
+      <tr><td><strong>UX designer</strong> &mdash; designs the interface people actually use</td><td><strong>Program manager</strong> &mdash; directs staff and projects, sets policy and training</td></tr>
+      <tr><td><strong>AI engineer</strong> &mdash; builds AI systems</td><td><strong>Security manager</strong> &mdash; protects the network and advises leadership on risk</td></tr>
+      <tr><td><strong>AI practitioner</strong> &mdash; uses AI effectively to do a job. The college offers courses in this; you don't need to be an engineer.</td><td><strong>IT technician / help desk</strong> &mdash; note that hardware is moving to the cloud, so understanding <em>software</em> matters more than it used to</td></tr>
+      <tr><td><strong>Machine learning engineer</strong> / <strong>data scientist</strong> &mdash; for the math and science inclined</td><td><strong>Data analyst</strong> &mdash; pulls data together and <strong>cleanses</strong> it (all the different spellings of "Florida"; state codes that don't match the 50 valid ones go on an exception list for a human to review)</td></tr>
+      <tr><td><strong>Clinical informatics</strong> &mdash; healthcare data. Relevant to the nursing students here.</td><td><strong>Database administrator</strong> &mdash; manages databases and designs schemas</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout callout-info">
+    <span class="label">And Excel, everywhere</span>
+    <p>Excel is the Swiss Army knife of IT. You can connect it directly to a relational database, run a SQL query, and pull the results in as rows and columns &mdash; then sort, analyze, and pivot. That combination turns up in almost every office job.</p>
+  </div>
+</section>
+
+<section id="ethics">
+  <div class="eyebrow">Computers in business</div>
+  <h2><span class="topic-num">08</span>Ethics and monitoring at work</h2>
+
+  <div class="callout callout-key">
+    <span class="label">Two different kinds of wrong</span>
+    <p><strong>Illegal acts</strong> &mdash; theft, pirating software, using company equipment for unlawful purposes. Rare, but it happens.</p>
+    <p><strong>Policy violations</strong> &mdash; breaking the rules your employer set, without breaking the law. Far more common.</p>
+  </div>
+
+  <p>You almost certainly agreed to an <strong>acceptable use policy</strong> when you enrolled, covering the equipment and software the college gives you access to. Employers have the same thing, and most run periodic security training and testing to keep people current.</p>
+
+  <h3>What employers can see</h3>
+  <ul>
+    <li><strong>Which systems you connect to</strong> and <strong>which websites you visit.</strong> Most companies block categories &mdash; gambling, pornography &mdash; using services that classify sites.</li>
+    <li>They <em>could</em> decrypt your traffic, though most don't. Restricting access is simpler.</li>
+    <li><strong>Remote desktop</strong> software &mdash; a help desk technician can see your screen and guide you through a problem, much like a screen share.</li>
+  </ul>
+
+  <h3>Handling data responsibly</h3>
+  <p>If your job gives you access to other people's information, there are rules about what you may download, store, and send. As a professor I have access to student records, and downloading that to a personal machine and emailing it would be a serious problem.</p>
+
+  <div class="callout callout-info">
+    <span class="label">A Florida-specific wrinkle</span>
+    <p>Every email I send carries a notice that under Florida's <strong>sunshine laws</strong>, most written communication to and from college employees about college business is a <strong>public record</strong>, available to the public and media on request. I'm effectively a state employee. It's a real consequence of working in government, and worth knowing if you ever do.</p>
+  </div>
+</section>
+
+<section id="email">
+  <div class="eyebrow">Computers in business</div>
+  <h2><span class="topic-num">09</span>Professional communication</h2>
+
+  <h3>Pick the right channel</h3>
+  <p>Email, instant message, phone, video call, and face-to-face are not interchangeable. They differ in formality, in speed, and in <strong>data retention policy</strong>.</p>
+  <div class="callout callout-warn">
+    <span class="label">Tone is the thing that gets lost</span>
+    <p>Face-to-face, you have expression and body language. Email strips all of it; instant messaging strips even more. A message you intended as neutral can read as hostile.</p>
+    <p><strong>Bad news goes face-to-face.</strong> A reprimand, a performance review, certainly a termination. Deliver it in person or on video, then follow up in writing. Starting with email is how a small problem becomes a large one.</p>
+  </div>
+
+  <h3>Anatomy of a good email</h3>
+  <ul>
+    <li><strong>Specific subject line</strong> &mdash; it may be the only part they read.</li>
+    <li><strong>Proper salutation</strong> &mdash; "Good morning, Mr. Morris."</li>
+    <li><strong>Brief body, on purpose.</strong></li>
+    <li><strong>A call to action</strong> &mdash; "Please let me know by Friday." Put it on its own line so it stands out.</li>
+  </ul>
+
+  <h3>To, CC, and BCC</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Field</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td><strong>To</strong></td><td>The person who needs to act.</td></tr>
+      <tr><td><strong>CC</strong> (carbon copy)</td><td>People who need to know but don't need to act. If a message is for one person and FYI for three, put one in To and three in CC.</td></tr>
+      <tr><td><strong>BCC</strong> (blind carbon copy)</td><td>Recipients hidden from everyone else. <strong>Use sparingly.</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout callout-key">
+    <span class="label">Why BCC causes trouble &mdash; and the one time it's right</span>
+    <p><strong>The trap:</strong> if you're BCC'd and you hit Reply All, everyone suddenly sees you had a copy they didn't know about. It looks like you've been quietly forwarding things to your boss, and people become careful about what they tell you.</p>
+    <p>Also note: if the <em>visible</em> recipients reply all, you <strong>won't</strong> get their replies &mdash; their copy has no record you existed.</p>
+    <p><strong>The legitimate use:</strong> mass mailings. If HR sends to 1,000 people in the To field and fifty of them reply all, everyone gets fifty messages. Instead, address it to yourself and BCC the list. Reply All then reaches only the sender.</p>
+  </div>
+</section>
+
+<section id="fraud">
+  <div class="eyebrow">Computers in business</div>
+  <h2><span class="topic-num">10</span>Fraud, and the encryption that protects you</h2>
+
+  <div class="callout callout-warn">
+    <span class="label">Business email compromise</span>
+    <p>The textbook calls these "wire-wire scams." The modern term is <strong>business email compromise</strong>. A message impersonates your IT department, a vendor, or your boss &mdash; "our bank account has changed, please wire payment to this new account."</p>
+    <p><strong>The old tells are gone.</strong> Spelling mistakes and clumsy phrasing used to give these away. Fraudsters now use AI, and the messages read perfectly.</p>
+  </div>
+
+  <h3>What still works</h3>
+  <ul>
+    <li><strong>Check the sending domain carefully.</strong> Is it really <code>microsoft.com</code>, or <code>a-microsoft.com</code>, or something else entirely?</li>
+    <li><strong>Treat urgency as the signal.</strong> Essentially every fraud manufactures time pressure. Your boss emailing "I need this ASAP" is exactly when to stop and verify through a channel you chose.</li>
+    <li><strong>Dual approval and MFA.</strong> Companies now require <em>two</em> people to approve a wire transfer, both using multi-factor authentication.</li>
+  </ul>
+
+  <h3>End-to-end encryption, properly explained</h3>
+  <div class="callout callout-key">
+    <span class="label">Which key does what</span>
+    <p>To <strong>encrypt a message</strong> so only one person can read it, you use <strong>their public key</strong>. Only their private key can decrypt it. <em>(The slide in class had this backwards &mdash; it's the recipient's public key, not the sender's.)</em></p>
+    <p>To <strong>prove you sent it</strong>, you <strong>hash</strong> the message &mdash; run it through an algorithm that produces a short 256-bit value &mdash; then encrypt that hash with <strong>your private key</strong>. The recipient decrypts the hash with your public key, recomputes the hash themselves, and compares. If they match, it came from you and wasn't altered. That's a <strong>digital signature</strong>.</p>
+    <p>Anyone intercepting the traffic sees scrambled text. This is <strong>asymmetric</strong> encryption &mdash; different keys to encrypt and decrypt. (HTTPS uses asymmetric encryption to set up the connection, then switches to a faster <strong>symmetric</strong> key for the actual conversation.)</p>
+  </div>
+
+  <h3>Working from home securely</h3>
+  <ul class="reminder-list">
+    <li>Connect through your employer's <strong>VPN</strong>.</li>
+    <li>Change your router's <strong>default password</strong> and turn on <strong>WPA3</strong> encryption for your Wi-Fi.</li>
+    <li>Put a <strong>slider over your webcam</strong>. Watch for the indicator light &mdash; a green LED means the camera is live.</li>
+    <li>Keep <strong>one device for work</strong> and don't share it with family.</li>
+    <li><strong>Unique passwords everywhere, in a password manager.</strong> If you do one thing for your security, do this one.</li>
+    <li>Make sure <strong>Windows Defender</strong> is on and auto-updating. On a Mac this happens automatically.</li>
+  </ul>
+</section>
+
+<section id="systems">
+  <div class="eyebrow">Computers in business</div>
+  <h2><span class="topic-num">11</span>The systems companies run on</h2>
+
+  <div class="callout callout-key">
+    <span class="label">The information-systems pyramid</span>
+    <p><strong>Top &mdash; executives:</strong> dashboards, looking for trends.<br>
+    <strong>Middle &mdash; managers:</strong> decision support systems.<br>
+    <strong>Base &mdash; supervisors and operations:</strong> <strong>transaction processing systems</strong> recording every sale, order, and payment.</p>
+    <p>Data flows upward. Every sale eventually lands in the general ledger, which is how a company reports quarterly earnings.</p>
+  </div>
+
+  <h3>ERP</h3>
+  <p><strong>Enterprise Resource Planning</strong> &mdash; a suite covering the applications every company needs: purchasing, sales, shipping, human resources, finance. At its core is the <strong>general ledger</strong>, which tracks assets, receivables, and payables. Major vendors: <strong>SAP</strong>, <strong>Oracle</strong>, <strong>Microsoft Dynamics</strong>.</p>
+
+  <h3>Supply chain management</h3>
+  <p><strong>Just-in-time manufacturing</strong> means parts arrive exactly when you need them. Inventory sitting in a warehouse is money doing nothing, so the ideal is for a component to show up as the line starts running.</p>
+  <div class="callout callout-info">
+    <span class="label">Efficient, and fragile &mdash; the COVID lesson</span>
+    <p>Businesses optimized so hard for just-in-time that when COVID disrupted supply chains, factories couldn't build because suppliers couldn't ship because <em>their</em> suppliers had problems. A cascading failure.</p>
+    <p>Two examples of how hard this is to run well. <strong>Starbucks</strong> must predict what each store will sell tomorrow so supplies arrive fresh. <strong>Wendy's</strong> doesn't use frozen beef, so their supply chain is racing a spoilage clock on every delivery.</p>
+  </div>
+</section>
+
+<section id="blockchain">
+  <div class="eyebrow">Computers in business</div>
+  <h2><span class="topic-num">12</span>Blockchain and cryptocurrency</h2>
+
+  <p>A <strong>blockchain</strong> is a <strong>shared ledger</strong> &mdash; a record of transactions that is <strong>public</strong> and <strong>replicated across many computers</strong>, rather than held in one company's private database. Transfer money between Wells Fargo accounts and the record sits in Wells Fargo's database. Transfer Bitcoin and the record is visible to everyone, forever.</p>
+
+  <h3>Wallets and keys</h3>
+  <p>A <strong>wallet</strong> has an address, and an associated <strong>public key</strong> and <strong>private key</strong>. To send a coin you add a record to the blockchain &mdash; your address, the amount, the destination address &mdash; and <strong>sign it with your private key</strong>. Anyone can verify the signature with your public key. If it checks out, the transaction is valid.</p>
+
+  <div class="callout callout-key">
+    <span class="label">How hashing chains the blocks &mdash; the live demo</span>
+    <p>A <strong>hash</strong> takes any amount of data and produces a fixed-length value &mdash; 256 bits for SHA-256. In class I ran <code>shasum</code> on a file to show this. <strong>Change a single bit of the input and most of the output bits change.</strong> And the odds of two different inputs producing the same hash are astronomically small.</p>
+    <p>Now the clever part. <strong>Each block contains the hash of the previous block.</strong> So block 2 holds block 1's hash; when block 2 is hashed, that value is baked in; block 3 holds block 2's hash, and so on.</p>
+    <p>Tamper with block 1 and its hash changes, which breaks block 2, which breaks block 3, all the way down the chain. That's what makes a blockchain <strong>tamper-evident</strong>.</p>
+  </div>
+
+  <h3>Mining</h3>
+  <p>New blocks must be validated. Bitcoin uses <strong>proof of work</strong>: miners search for a value that, when hashed with the block, produces a hash beginning with a specific number of zeros. There's no shortcut &mdash; you try a number, hash it, try the next. Current difficulty requires roughly <strong>148 trillion attempts</strong> on average, and a block takes about ten minutes.</p>
+  <p>Whoever finds it adds the block and collects the reward: currently <strong>3.125 Bitcoin</strong> plus transaction fees &mdash; around $250,000 at recent prices. Hence the pools, the warehouses of hardware, and the enormous electricity consumption.</p>
+  <p><strong>Ethereum stopped mining</strong> and switched to <strong>staking</strong>, which achieves the same validation without the energy. <em>Your textbook says new cryptocurrency is created by mining &mdash; true for Bitcoin, no longer true for Ethereum.</em></p>
+
+  <h3>A short history, and an irony</h3>
+  <ul>
+    <li><strong>Bitcoin</strong> &mdash; paper published October 2008 under the pseudonym <strong>Satoshi Nakamoto</strong>, whose identity is still unknown. First block January 2009.</li>
+    <li><strong>Ethereum</strong> &mdash; 2015. Stores extra information on-chain, enabling <strong>smart contracts</strong>, decentralized finance, and NFTs.</li>
+    <li><strong>Bitcoin Cash</strong> &mdash; split from Bitcoin in 2017.</li>
+  </ul>
+
+  <div class="callout callout-warn">
+    <span class="label">The contradiction at the center of crypto</span>
+    <p>Cryptocurrency was invented so that <strong>no central authority</strong> would control the money. But managing your own wallet and keys is genuinely difficult, so most people buy through an <strong>exchange</strong> &mdash; Binance, Coinbase &mdash; and leave their coins there.</p>
+    <p>Which means the coins sit in the <em>exchange's</em> wallet, under the <em>exchange's</em> control. The entire point of decentralization, undone by convenience.</p>
+    <p>And that's what gets attacked. Attackers recently stole an estimated <strong>$6 billion from Binance</strong>. Earlier, <strong>FTX</strong> &mdash; one of the largest US exchanges &mdash; collapsed through outright fraud; its founder is serving a long federal sentence. FTX failed the way banks fail: it didn't hold what it claimed to hold, and when everyone tried to withdraw at once, there was nothing there. A <strong>run on the bank</strong>.</p>
+  </div>
+</section>
+
+<section id="homework">
+  <div class="eyebrow">Due next</div>
+  <h2><span class="topic-num">13</span>Before November 18</h2>
+
+  <div class="activity">
+    <h3>Your tasks</h3>
+    <ol>
+      <li><strong>The two Connect adaptive learning assignments</strong> &mdash; Artificial Intelligence (listed as Emerging Technologies) and Computers in Business. Everything above covers them.</li>
+      <li><strong>Watch for two videos</strong> I'm recording over the off-week: PowerPoint chapters 1&ndash;2, and how to get started on the Excel capstone.</li>
+      <li><strong>Catch up on anything showing a zero.</strong> Past-due assignments record a zero, and it clears when the work is graded.</li>
+      <li><strong>If you're significantly behind, email me this week.</strong> The withdrawal deadline has passed for students, but I can still withdraw someone for non-attendance &mdash; I would much rather help you finish. There is enough time left for everyone to do well.</li>
+    </ol>
+  </div>
+
+  <div class="callout callout-info">
+    <span class="label">Two to think about</span>
+    <p><strong>(1)</strong> Turing test or CAPTCHA &mdash; which is the concept and which is the example?<br>
+    <strong>(2)</strong> You're training a model to predict a used car's price from its mileage and year, using 10,000 past sales with their actual prices. Supervised or unsupervised? How do you know?</p>
+  </div>
+
+  <p><strong>No class November 11</strong> (Veterans Day). Next session <strong>November 18</strong>. If anything is blocking you, email me or book a time &mdash; that's always faster than waiting.</p>
+</section>
+
+</main>
+
+<footer>
+  <span>CGS 1060C &middot; Introduction to Computer Technology and Applications</span>
+  <span>jmasseri@mdc.edu</span>
+</footer>
+
+</body>
+</html>
